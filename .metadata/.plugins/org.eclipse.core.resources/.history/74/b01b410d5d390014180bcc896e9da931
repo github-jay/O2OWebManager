@@ -1,0 +1,66 @@
+package com.o2oweb.action;
+
+import java.util.List;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.dao.UseraddressDao;
+import com.o2oweb.entity.User;
+import com.o2oweb.entity.Useraddress;
+import com.o2oweb.util.BaseAction;
+import com.opensymphony.xwork2.ActionContext;
+
+@Scope("request")
+@Service("listAddress")
+public class listAddress extends BaseAction {
+	
+	@Autowired
+	private UseraddressDao addressDao;
+	
+	@Override
+	public String execute() throws Exception {
+		User user = (User) ActionContext.getContext().getSession().get("user");
+		JSONObject obj = new JSONObject();
+		
+		DetachedCriteria dc = DetachedCriteria.forClass(Useraddress.class);
+		dc.add(Restrictions.eq("userId", user.getUserId()));
+		dc.addOrder(Order.desc("lastuse"));
+		
+		Page page = addressDao.pagedQuery(dc, 0, 5);
+		
+		List addresses = (List) page.getData();
+		JSONArray jsa = list2jsonArray(addresses);
+		
+		obj.accumulate("addresses", jsa);
+		
+		writeResponse(obj);
+		
+		return super.execute();
+	}
+	
+	private JSONArray list2jsonArray(List list){
+		JSONArray jsa = new JSONArray();
+		
+		for(int i = 0;i<list.size();i++){
+			Useraddress address = (Useraddress) list.get(i);
+			JSONObject obj = new JSONObject();
+			obj.accumulate("name", address.getUsername());
+			obj.accumulate("address", address.getAddress());
+			obj.accumulate("tel", address.getTel());
+			obj.accumulate("addressId", address.getIdUserAddress());
+			jsa.add(obj);
+		}
+		
+		
+		return jsa;
+	}
+}

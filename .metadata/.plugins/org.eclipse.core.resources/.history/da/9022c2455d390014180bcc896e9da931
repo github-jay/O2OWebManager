@@ -1,0 +1,88 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="<%=basePath%>" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>i·quick--i快客</title>
+<link rel="stylesheet" type="text/css" href="css/home3.css" />
+<!--JS语言接口-->
+<script type="text/javascript" src="#"></script>
+<!-- # 为JS接口文件 -->
+<script type="text/javascript" src="#"></script>
+<!-- # 为JS接口文件 -->
+<script type="text/javascript" src="#"></script>
+<!-- # 为JS接口文件 -->
+<!--endJS接口-->
+</head>
+
+<body>
+	<div id="mini">
+		<div id="mini_nav">
+			<strong>您好！欢迎来到I·快客，祝您购物愉快！</strong>
+			<p>
+				<span>[</span><a target="_blank" href="#">注册</a><span>]</span><span>[<a
+					target="_blank" href="#">登录</a><span>]</span><a target="_top"
+					href=javascript:window.external.AddFavorite('http://';,'I·快客')>加入收藏夹</a><span>|</span><a
+					id="add_desktop" href="distoico.php?urltp=www.#.com&amp;url=I·快客">设置一键登录</a>
+			</p>
+		</div>
+	</div>
+	<div id="content">
+		<div id="con_left">
+			<div id="con_inner">
+				<div id="logo"></div>
+				<div id="top_img">
+					<img src="images/topimg.png" height="275" width="280" />
+				</div>
+				<div id="map">
+					<div id="xinshiqu" class="float"></div>
+					<div id="tianshanqu" class="float"></div>
+					<div id="shaqu" class="float"></div>
+					<div id="shuiqu" class="float"></div>
+					<img src="images/wlmqmap.png" width="860" height="600"
+						usemap="#map" border="0" />
+					<map name="map" id="map">
+						<area shape="poly"
+							coords="337,372,406,360,405,250,420,130,419,111,370,109,217,174,185,208,271,264"
+							href="?block=XSQ" title="新市区" class="yinying" onmouseover=""
+							onmouseout="" />
+						<area shape="poly"
+							coords="404,458,409,366,333,380,268,275,205,232,149,196,108,193,22,214,21,295,58,368,61,448,100,496,112,521,75,578,423,580,435,564,429,501"
+							href="?block=ShaQ" title="沙区" class="yinying" onmouseover=""
+							onmouseout="" />
+						<area shape="poly"
+							coords="434,498,413,456,413,252,426,134,491,66,515,66,570,65,574,156,582,441,552,473,479,499"
+							href="?block=ShuiQ" title="水区" class="yinying" onmouseover=""
+							onmouseout="" />
+						<area shape="poly"
+							coords="436,507,442,551,446,578,482,577,605,579,586,453,560,478,477,510"
+							href="?block=TSQ" title="天山区" class="yinying" onmouseover=""
+							onmouseout="" />
+					</map>
+				</div>
+				<!--map end-->
+			</div>
+			<!--con_inner end-->
+		</div>
+		<!--con_left end-->
+	</div>
+	<!--content end-->
+
+	<div id="border">
+		<p>
+			@copyright by:outstanding <br /> 经营者名称 地址： 联系方式： 营业执照号：
+		</p>
+	</div>
+	<div id="footer">
+		<img src="images/footer.jpg" height="113" width="860" />
+	</div>
+</body>
+</html>

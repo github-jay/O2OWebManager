@@ -1,0 +1,130 @@
+package com.o2oweb.action;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.directwebremoting.json.types.JsonArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.o2oweb.dao.ItemDao;
+import com.o2oweb.dao.OrderDao;
+import com.o2oweb.dao.OrderItemDao;
+import com.o2oweb.dao.UseraddressDao;
+import com.o2oweb.entity.Item;
+import com.o2oweb.entity.Order;
+import com.o2oweb.entity.Orderitem;
+import com.o2oweb.entity.User;
+import com.o2oweb.entity.Useraddress;
+import com.o2oweb.util.BaseAction;
+import com.opensymphony.xwork2.ActionContext;
+
+@Scope("request")
+@Service("orderAction")
+public class OrderAction extends BaseAction {
+
+	@Autowired
+	private OrderDao orderDao;
+	
+	@Autowired
+	private OrderItemDao orderItemDao;
+	
+	@Autowired
+	private ItemDao itemDao;
+	
+	@Autowired
+	private UseraddressDao addressDao;
+
+	private String addressId;
+
+	
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
+	}
+
+	/**
+	 * 创建订单
+	 */
+	@Override
+	public String execute() throws Exception {
+		//获取购物车集合
+		Map<String,Integer> cart =  (Map<String, Integer>) ActionContext.getContext().getSession().get("cart");
+		//获取登录的用户对象
+		User user = (User) ActionContext.getContext().getSession().get("user");
+		Integer userid = user.getUserId();
+		
+		List<Item> items = getItems(cart.keySet().iterator());
+		//创建订单对象
+		Order order = new Order();
+		order.setOrderNum(getTimeMark());
+		order.setStartTime(new Date());
+		order.setUserId(userid);
+		
+		List<Useraddress> addressList = addressDao.getAddrs(userid);
+		order.setOrderName(items.get(0).getItemName());
+		if(addressList.size() == 0){
+			//未设置收货地址
+			order.setAddress("无");
+		}else {
+			Useraddress address = null;
+			if(addressId == null){
+				address = addressList.get(0);
+			}else {
+				address = addressDao.getAddr(Integer.valueOf(addressId));
+			}
+			address.setLastuse(new Date());
+			addressDao.update(address);
+			String completAddress = add2comAdd(address);
+			order.setAddress(completAddress);
+			
+		}
+		orderDao.save(order);
+		for(Item item:items){
+			Integer num = cart.get(String.valueOf(item.getItemId()));
+			Orderitem orderItem = new Orderitem();
+			
+			orderItem.setItemId(item.getItemId());
+			orderItem.setItemNum(num);
+			orderItem.setItemPrice(item.getPrice() * item.getDiscount());
+			orderItem.setOrderNum(order.getOrderNum());
+			
+			orderItemDao.save(orderItem);
+		}
+		//存储订单商品
+		JSONObject obj = new JSONObject();
+		obj.accumulate("result", true);
+		writeResponse(obj);
+		return super.execute();
+	}
+	
+	private List<Item> getItems(Iterator<String> keys){
+		List<Item> items = new LinkedList<Item>();
+		while(keys.hasNext()){
+			String key = keys.next();
+			Item item = itemDao.getItem(Integer.valueOf(key));
+			items.add(item);
+		}
+		return items;
+	}
+
+	private String getTimeMark(){
+		Date nowtime = new Date();
+		String marke = "i"+nowtime.getMonth() + nowtime.getDay()+ nowtime.getHours()+nowtime.getMinutes();
+		return marke;
+	}
+	private String add2comAdd(Useraddress userAddress){
+		String comAdd = "收货人：" +userAddress.getUsername() + "	联系电话：" + userAddress.getTel() + "	收货地址："+userAddress.getAddress();
+		return comAdd;
+	}
+}

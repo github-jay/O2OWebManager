@@ -1,0 +1,142 @@
+package com.o2oweb.action;
+
+import java.util.List;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.directwebremoting.json.types.JsonArray;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.dao.ItemDao;
+import com.o2oweb.dao.OrderDao;
+import com.o2oweb.dao.OrderItemDao;
+import com.o2oweb.entity.Item;
+import com.o2oweb.entity.Order;
+import com.o2oweb.entity.Orderitem;
+import com.o2oweb.entity.User;
+import com.o2oweb.util.BaseAction;
+import com.opensymphony.xwork2.ActionContext;
+
+@Scope("request")
+@Service("orderListAction")
+public class ListOrder extends BaseAction {
+
+	@Autowired
+	private OrderDao orderDao;
+	
+	@Autowired
+	private OrderItemDao orderItemDao;
+	
+	@Autowired
+	private ItemDao itemDao;
+	
+
+	private int start = 0;
+	private int size = 10;
+
+	private String orderNum;
+	
+	
+	public String getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(String orderNum) {
+		this.orderNum = orderNum;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	//订单分页或者返回单个订单
+	@Override
+	public String execute() throws Exception {
+		User  user = (User) ActionContext.getContext().getSession().get("user");
+		int userId = user.getUserId();
+		JSONObject obj = new JSONObject();
+		if(orderNum == null){
+			//说明是订单分页
+			DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
+			dc.add(Restrictions.eq("userId", userId));
+			dc.addOrder(org.hibernate.criterion.Order.desc("startTime"));
+			Page page = orderDao.pagedQuery(dc, start, size);
+			List orders = (List) page.getData();
+			JSONArray jsa = orderList2ja(orders);
+			
+			obj.accumulate("orders", jsa);
+		}else {
+			//请求订单细节
+			Order order = orderDao.getOrder(orderNum);
+			if(order == null){
+				obj.accumulate("failure", "订单号不存在");
+			}else {
+				JSONObject orderJson = order2json(order);
+				obj.accumulate("order", orderJson);
+				List<Orderitem> orderItems = orderItemDao.getItems(order.getOrderNum());
+				JSONArray jsa = new JSONArray();
+				for(Orderitem oitem:orderItems){
+					JSONObject oitemobj = orderitem2Json(oitem);
+					Item item  = itemDao.getItem(oitem.getItemId());
+					oitemobj.accumulate("imageId", item.getImageId());
+					jsa.add(oitemobj);
+				}
+				obj.accumulate("items", jsa);
+			}
+		}
+		
+		writeResponse(obj);
+		return super.execute();
+	}
+	private JSONArray orderList2ja(List orders){
+		JSONArray jsa = new JSONArray();
+		for(int i = 0;i< orders.size();i++){
+			Order order = (Order) orders.get(i);
+			JSONObject ojson = order2json(order);
+			jsa.add(ojson);
+		}
+		
+		return jsa;
+	}
+	private JSONObject order2json(Order order){
+		JSONObject ojson = new JSONObject();
+		ojson.accumulate("orderNum", order.getOrderNum());
+		ojson.accumulate("orderName", order.getOrderName());
+		ojson.accumulate("userId", order.getUserId());
+		ojson.accumulate("startTime", order.getStartTime().toString());
+		if(order.getFinishTime() != null){
+			ojson.accumulate("finisTime", order.getFinishTime().toString());
+		}else {
+			ojson.accumulate("finisTime", "N/A");
+		}
+		ojson.accumulate("address", order.getAddress());
+		ojson.accumulate("ispaied", order.getIsPaied());
+		ojson.accumulate("isout", order.getChekOut());
+		return ojson;
+	}
+	private JSONObject orderitem2Json(Orderitem oitem){
+		JSONObject ojson = new JSONObject();
+		ojson.accumulate("itemId", oitem.getItemId());
+		ojson.accumulate("itemNum", oitem.getItemNum());
+		ojson.accumulate("price", oitem.getItemPrice());
+		return ojson;
+	}
+}

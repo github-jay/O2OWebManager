@@ -1,0 +1,15 @@
+package com.o2oweb.action;
+
+import net.sf.json.JSONObject;
+
+import com.o2oweb.util.BaseAction;
+
+public class SearchAction extends BaseAction{
+	private JSONObject jsonObject;
+
+	@Override
+	public String execute() throws Exception {
+		return super.execute();
+	}
+
+}

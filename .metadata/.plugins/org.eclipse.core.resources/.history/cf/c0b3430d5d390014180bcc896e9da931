@@ -1,0 +1,139 @@
+package com.o2oweb.action;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.Cookie;
+
+import net.sf.json.JSONObject;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.util.BaseAction;
+import com.opensymphony.xwork2.ActionContext;
+
+@Scope("request")
+@Service("buyAction")
+public class BuyAction extends BaseAction {
+
+	private int itemId;
+	private int num;
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
+	}
+
+	public String addItem() {
+		Cookie cookie = getCartCookie();
+		Map<String, Integer> cart = (Map) ActionContext.getContext()
+				.getSession().get("cart");
+		// 判断购物车是否存在
+		if (cart == null) {
+			cart = new HashMap<String, Integer>();
+			readCookie(cookie, cart);
+
+			ActionContext.getContext().getSession().put("cart", cart);
+		}
+		Integer oldNum = (Integer) cart.get(itemId + "");
+		// 判断该物品是否已存在
+		if (oldNum == null) {
+			cart.put(itemId + "", num);
+		} else {
+			cart.put(itemId + "", oldNum + num);
+		}
+
+		addCookie(cookie, cart);
+		writeResponse("true");
+
+		return "success";
+	}
+
+	public String getCart() {
+		Map<String, Integer> cart = (Map) ActionContext.getContext()
+				.getSession().get("cart");
+
+		// 判断购物车是否存在
+		if (cart == null) {
+			cart = new HashMap<String, Integer>();
+			Cookie cookie = getCartCookie();
+			readCookie(cookie, cart);
+			ActionContext.getContext().getSession().put("cart", cart);
+		}
+		JSONObject obj = JSONObject.fromObject(cart);
+		writeResponse(obj.toString());
+
+		return "success";
+	}
+
+	private void addCookie(Cookie cookie, Map<String, Integer> cart) {
+		// 存在旧cookie则删除
+		if (cookie != null) {
+			cookie.setMaxAge(0);
+			ServletActionContext.getResponse().addCookie(cookie);
+		}
+
+		Cookie newCookie = new Cookie("cart", mapToString(cart));
+		newCookie.setMaxAge(60 * 60 * 24 * 30);
+		ServletActionContext.getResponse().addCookie(newCookie);
+	}
+
+	private String mapToString(Map<String, Integer> cart) {
+		Set<String> set = cart.keySet();
+		StringBuffer sb = new StringBuffer();
+		Iterator<String> it = set.iterator();
+		if (it.hasNext()) {
+			String key = it.next() + "";
+			sb.append(key + "_" + cart.get(key));
+			
+			while (it.hasNext()) {
+				key = it.next() + "";
+				sb.append("_" + key + "_" + cart.get(key));
+			}
+		}
+
+		return sb.toString();
+	}
+
+	private Cookie getCartCookie() {
+		Cookie[] cookies = ServletActionContext.getRequest().getCookies();
+		if (cookies == null)
+			return null;
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("cart")) {
+				return cookie;
+			}
+		}
+		return null;
+	}
+
+	private void readCookie(Cookie cookie, Map<String, Integer> cart) {
+		if (cookie == null)
+			return;
+
+		String value = cookie.getValue();
+
+		String[] kvs = value.split("_");
+		if (kvs.length % 2 == 0) {
+			for (int i = 0; i < kvs.length;)
+				cart.put(kvs[i++], Integer.parseInt(kvs[i++]));
+		}
+
+	}
+
+}

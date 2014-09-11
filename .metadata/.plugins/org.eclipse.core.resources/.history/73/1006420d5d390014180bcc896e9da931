@@ -1,0 +1,27 @@
+package com.o2oweb.action;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.BaseAction;
+
+@Scope("session")
+@Service("items")
+public class jump2items extends BaseAction {
+
+	private String category;
+	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	@Override
+	public String execute() throws Exception {
+		
+		return super.execute();
+	}
+}

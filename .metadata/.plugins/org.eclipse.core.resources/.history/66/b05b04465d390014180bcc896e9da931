@@ -1,0 +1,80 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="<%=basePath%>">
+    
+    <title>My JSP 'LevelDemo.jsp' starting page</title>
+    
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+	<script src="<%=basePath %>pages/js/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript">
+	var jsonarray = null;
+	var sublevels;
+	var baseUrl = "<%=basePath%>item/levelAction";
+	var itemUrl = "<%=basePath%>item/itemAction";
+	$(document).ready(function (){
+		sublevels =$('#sublevels');
+		sublevels.hide(); 
+		if(jsonarray==null){
+			loaddata();
+		}
+	});
+	function mouseon(){
+		sublevels.show();
+		if(sublevels.children().length==0){
+			addsub2top();
+		}
+	}
+	function mouseout(){
+		sublevels.hide();
+	}
+	function loaddata(){
+		var category = $('#toplevel').attr('category');
+		alert(category);
+		$.ajax({url:baseUrl,data:{category:category},dataType:'json',type:'POST',
+		success:function(data){
+			//alert(data.sublevels);
+			jsonarray = data;
+		}});
+	}
+	function addsub2top(){
+		var jsobj;
+		//alert(jsonarray);
+		var levels = jsonarray.sublevels;
+		for(var i = 0;i < levels.length;i++){
+			jsobj = levels[i];
+			var suba = $('<a></a>');
+			var br = $('<br>');
+			var suburl = itemUrl+"?category="+jsobj['category'];
+			suba.attr('href',suburl);
+			suba.html(jsobj['levelName']);
+			sublevels.append(suba);
+			sublevels.append(br);
+		}
+	
+	}
+	</script>
+  </head>
+  
+  <body>
+    This is my JSP page. <br>
+    <div onmouseover="mouseon()" onmouseout="mouseout()">
+    <a id="toplevel" category="7"   id="toplevel" href="<%=basePath%>jump/itemAction?category=7">食品饮料</a>
+    <div id="sublevels"  style="width: 400px;height: 400px;background-color: red">
+    </div>
+    </div>
+  </body>
+</html>

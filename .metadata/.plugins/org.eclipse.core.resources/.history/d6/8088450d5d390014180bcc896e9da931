@@ -1,0 +1,99 @@
+package com.o2oweb.action;
+
+import java.util.Set;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.BaseAction;
+import com.o2oweb.dto.BlockAndType;
+import com.opensymphony.xwork2.ActionContext;
+
+@Scope("session")
+@Service("jumpAction")
+public class jumpAction extends BaseAction {
+
+	private Set<String> blockset;
+	private String[] typeset;
+	private String block;
+	private String main;
+	private String type;
+
+	public void setType(String type) {
+
+		this.type = type;
+
+	}
+
+	public void setBlock(String block) {
+
+		this.block = block;
+
+	}
+
+	public jumpAction() {
+		this.blockset = BlockAndType.blockset;
+		this.typeset = BlockAndType.typeset;
+	}
+
+	@Override
+	public String execute() throws Exception {
+		if (getReturnUrl() == null) {
+			setReturnUrl(getRequest().getRequestURL().toString()); // 设置returnURL为主页
+		}
+		if (blockset.contains(block) && !typeset[0].equals(type)
+				& !typeset[1].equals(type)) { // 只选择了区域
+			ActionContext.getContext().put("block", block);
+			// 设置返回路径
+			String returnURL = getRequest().getRequestURL().toString()
+					+ "?block=" + block;
+			setReturnUrl(returnURL);
+
+			block = null;
+			type = null;
+			return "toSelect";
+		}
+		if (blockset.contains(block)) { // 选择了区域并且选择了购物类型
+			String returnURL = getRequest().getRequestURL().toString()
+					+ "?block=" + block + "&type=" + type;
+			setReturnUrl(returnURL);
+			if (type.equals(typeset[0])) {
+				ActionContext.getContext().put("type", type);
+				block = null;
+				type = null;
+				return "toShop";
+			}
+			if (type.equals(typeset[1])) {
+				block = null;
+				type = null;
+				return "toFood";
+			}
+		}
+		block = null;
+		type = null;
+
+		return super.execute();
+	}
+
+	public String toLogin() {
+		if (getReturnUrl() == null) {
+			setReturnUrl(getRequest().getRequestURL().toString()); // 设置returnURL为主页
+		}
+		return "toLogin";
+	}
+
+	public String toReg() {
+		if (getReturnUrl() == null) {
+			setReturnUrl(getRequest().getRequestURL().toString()); // 设置returnURL为主页
+		}
+		return "toRet";
+	}
+
+	public String toReturn() {
+		return "toReturn";
+	}
+
+	public String toItemList() {
+		return "toReturn";
+	}
+}

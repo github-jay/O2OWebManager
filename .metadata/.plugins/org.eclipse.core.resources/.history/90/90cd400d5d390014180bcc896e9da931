@@ -1,0 +1,90 @@
+package com.o2oweb.action;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.BaseAction;
+import com.o2oweb.dto.BlockAndType;
+import com.o2oweb.dto.Page3ABean;
+import com.o2oweb.entity.Index3ainfo;
+import com.o2oweb.service.Page3Service;
+
+@Service("page3Action")
+public class Page3Action extends BaseAction {
+	private Page3Service page3Service;
+	private String block;
+	private String type;
+	private Page3ABean page3bean;
+	private Map<String, Page3ABean> page3s;
+
+	
+	@Override
+	public String execute() throws Exception {
+		if(page3s == null){
+			initMap();
+		}
+		page3bean = page3s.get(block);
+		return SUCCESS;
+	}
+	
+	public void setBlock(String block) {
+		this.block = block;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Page3Service getPage3Service() {
+		return page3Service;
+	}
+
+	public String getBlock() {
+		return block;
+	}
+
+	public String getType() {
+		return type;
+	}
+	
+
+	public Page3ABean getPage3bean() {
+		return page3bean;
+	}
+
+	public void setPage3bean(Page3ABean page3bean) {
+		this.page3bean = page3bean;
+	}
+
+	@Resource
+	public void setPage3Service(Page3Service page3Service) {
+		this.page3Service = page3Service;
+	}
+	/**
+	 *初始化page3 页面集合，做成单例
+	 */
+	private void initMap(){
+		page3s = new HashMap<String, Page3ABean>();
+		Iterator<String> iterator = BlockAndType.blockset.iterator();
+		String templetBlock = null;
+		Index3ainfo template3info = null;
+		Page3ABean template3Bean = null;
+		while(iterator.hasNext()){
+			templetBlock = iterator.next();
+			template3info = page3Service.getpageByAreacode(templetBlock);
+			if(template3info != null){
+				template3Bean = new Page3ABean(template3info);
+				page3s.put(templetBlock, template3Bean);
+			}
+		}
+		templetBlock = null;
+		template3info = null;
+		template3Bean = null;
+	}
+}

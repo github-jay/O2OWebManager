@@ -1,0 +1,106 @@
+package com.o2oweb.action;
+
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.dao.ItemDao;
+import com.o2oweb.dao.ItemLevelDao;
+import com.o2oweb.entity.Item;
+import com.o2oweb.entity.Itemlevel;
+import com.o2oweb.util.BaseAction;
+import com.opensymphony.xwork2.ActionContext;
+
+@Scope("request")
+@Service("itemAction")
+public class ItemAction extends BaseAction {
+	
+	@Autowired
+	private ItemDao itemDao;
+	@Autowired
+	private ItemLevelDao levelDao;
+	private int size = 10;
+	private int start;
+	private int category;
+	
+	private String[] fields = {"itemId","itemName","price","discount","imageId","stockNum"};
+	
+	public int getStart() {
+		return start;
+	}
+	public int getCategory() {
+		return category;
+	}
+	public void setStart(int start) {
+		this.start = start;
+	}
+	public void setCategory(int category) {
+		this.category = category;
+	}
+	@Override
+	public String execute() throws Exception {
+		 Itemlevel thislevel = levelDao.getLevel(category);
+		 JSONObject obj = new JSONObject();
+		 
+		List<Itemlevel> sublevels = levelDao.getNextLevels(category);
+		if (sublevels.size() == 0) {
+			DetachedCriteria dc = DetachedCriteria.forClass(Item.class);
+			dc.add(Restrictions.eq("levelId", category));
+			Page page = itemDao.pagedQuery(dc, start, size);
+			List items = (List) page.getData();
+			
+			obj.accumulate("totalNum", page.getTotalCount());
+			JSONArray itemsarray = items2json(items);
+			obj.accumulate("items", itemsarray);
+			writeResponse(obj);
+			return "sublevel";
+		}else {
+			obj.accumulate("totalNum", "N/A");
+			for(Itemlevel sublevel:sublevels){
+				DetachedCriteria dc = DetachedCriteria.forClass(Item.class);
+				dc.add(Restrictions.eq("levelId", sublevel.getIdItemLevel()));
+				Page page = itemDao.pagedQuery(dc, 0, 5);
+				List items = (List) page.getData();
+				JSONArray itemsarray = items2json(items);
+				obj.accumulate(sublevel.getLevelName(), itemsarray);
+			}
+			writeResponse(obj);
+			return "toplevel";
+		}
+	}
+	
+	private JSONArray items2json(List list) throws Exception{
+		JSONArray jsa = new JSONArray();
+		List<HashMap<String,String>> toJsonArray = new LinkedList<HashMap<String, String>>();
+		
+		for(Object obj:list){
+			Class itemclass = obj.getClass();
+			HashMap<String,String> itemmap = new HashMap<String, String>();
+			for(String fieldname:fields){
+				Field field = itemclass.getDeclaredField(fieldname);
+				field.setAccessible(true);
+				Object fieldvaule = field.get(obj);
+				if(fieldvaule != null){
+					itemmap.put(fieldname, fieldvaule.toString());
+				}else {
+					itemmap.put(fieldname, "");
+				}
+			}
+			toJsonArray.add(itemmap);
+		}
+		jsa.addAll(toJsonArray);
+		return jsa;
+	}
+}

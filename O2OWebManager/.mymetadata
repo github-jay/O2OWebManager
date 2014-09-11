@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="O2OWebManager"
+  id="myeclipse.1410402797432"
+  context-root="/O2OWebManager"
+  j2ee-spec="5.0"
+  archive="O2OWebManager.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

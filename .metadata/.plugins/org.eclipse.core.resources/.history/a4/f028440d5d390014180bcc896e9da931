@@ -1,0 +1,61 @@
+package com.o2oweb.action;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.dao.ItemLevelDao;
+import com.o2oweb.entity.Itemlevel;
+import com.o2oweb.util.BaseAction;
+
+@Scope("request")
+@Service("levelAction")
+public class levelAction extends BaseAction {
+	@Autowired
+	private ItemLevelDao levelDao;
+	
+	private String category;
+
+	
+	
+	public String getCategory() {
+		return category;
+	}
+
+
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+
+
+	@Override
+	public String execute() throws Exception {
+		System.out.println(this.category);
+		int categoryInt = Integer.valueOf(category);
+		List<Itemlevel> sublevels = levelDao.getNextLevels(categoryInt);
+		List<HashMap<String,String>> toJsonArray = new LinkedList<HashMap<String, String>>();
+		for(Itemlevel sublevel:sublevels){
+			HashMap<String,String> map = new HashMap<String, String>();
+			map.put("levelName", sublevel.getLevelName());
+			map.put("category", sublevel.getIdItemLevel()+"");
+			toJsonArray.add(map);
+		}
+		JSONArray jsa = new JSONArray();
+		jsa.addAll(toJsonArray);
+		JSONObject obj = new JSONObject();
+		obj.accumulate("sublevels", jsa);
+		System.out.println(obj.toString());
+		writeResponse(obj);
+		return super.execute();
+	}
+}

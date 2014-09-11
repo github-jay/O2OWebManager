@@ -1,0 +1,650 @@
+function topFixed(){
+	document.getElementById("rightbar").style.display="block";
+	if(navigator.userAgent.indexOf("MSIE 6.0")>0){document.getElementById("rightbar").style.top=document.documentElement.clientHeight+document.documentElement.scrollTop-document.getElementById("rightbar").clientHeight-44+"px";document.getElementById("rightbar").style.position="absolute";}
+}
+//页面打开判断弹出层广告显示方式(显示or隐藏)
+var sameBanner = false;
+var t_hotDeal = -1;
+function initHotDeal(){
+	jQuery("#hot_deal_def").click(showAdv).hover(function(){
+			t_hotDeal = setTimeout(function(){
+				if(isShowHotDeal){
+					showAdv();
+					isShowHotDeal=false;
+				}
+			},250);
+		},function(){clearTimeout(t_hotDeal);isShowHotDeal = true;});
+	jQuery("#hot_deal_cur").click(function(){closeHotDeal();checkCookie();isShowHotDeal = false;});
+	jQuery("#hot_deal_close").click(function(){closeHotDeal();checkCookie();});
+	historyCookie = checkCookie();
+	if(!historyCookie || !sameBanner){showAdv();}else{hideAdv();}
+}
+//检查弹出层广告是否当日关闭或更新
+function checkCookie(){
+	var currentDate = new Date().toLocaleDateString();
+	var currentPath = jQuery("#hot_deal_layer .lazyload").attr("original") ? jQuery("#hot_deal_layer .lazyload").attr("original") : "defPath";
+	historyCookie = jQuery.cookie("hotDeal_Adv");
+	if(historyCookie){var parts = historyCookie.split("^");if(parts.length>1){if(parts[0] == currentDate && parts[1] == currentPath){sameBanner = true;}}}
+	if(!sameBanner){jQuery.cookie("hotDeal_Adv",currentDate+"^"+currentPath,{expires:24,path:'/'});}
+	return historyCookie;
+}
+//显示
+function showAdv(){
+	jQuery("#hot_deal_layer,#hot_deal_close,#hot_deal_dovt,#hot_deal_cur").fadeIn(400);
+	var hdiObj = jQuery("#hot_deal_img"), isFirst = hdiObj.attr("data-first");
+	if(isFirst == "y"){hdiObj.find(".lazyload").attr("src",hdiObj.find(".lazyload").attr("original"));hdiObj.attr("data-first","n");}
+}
+/*tab页签数组*/
+var _oztime= new Date().getTime();
+var tab_prefix = tab_prefix || [];
+//拉幕广告
+function initBannerAdvBefore(){
+	var oldCookie = jQuery.cookie("advCookie");
+	var now = new Date().toLocaleDateString();
+	var newPath = jQuery("#advNewPath").length > 0 ? jQuery("#advNewPath").val() : "";
+	if(oldCookie){
+		var parts = oldCookie.split("^");
+		if(parts[0]==now&&parts[1]==newPath){
+			sameBannerAdv = true;
+		}
+	}
+	var smallBannerAdvImgEle = jQuery("#adSmall").find("img");
+	smallBannerAdvImgEle.attr("src",smallBannerAdvImgEle.attr("original"));
+	if(!oldCookie || !sameBannerAdv){
+		jQuery.cookie("advCookie",now+"^"+newPath,{expires:24,path:'/'});
+		var bigBannerAdvImgEle = jQuery("#adBig").find("img");
+		bigBannerAdvImgEle.attr("src",bigBannerAdvImgEle.attr("original"));
+	}else{
+		jQuery("#adSmall").show();
+		jQuery("#adBig").hide();
+	}
+}
+function initBannerAdvAfter(){
+	if(!sameBannerAdv){
+		setTimeout(function(){
+			jQuery("#adBig").slideUp(1000,function(){jQuery("#adSmall").slideDown(1000);});
+		},5000);
+	}
+}
+var commend_buyPrice = "commend_buyPrice";
+var commend_market = "commend_market";
+
+function loadCommendPrice(id,mid,comendid,isShowMarketPrice){
+	getPrice(id,mid,function(data){
+		if(data.buyPrice != null && data.buyPrice.priceValue !=  ""){
+			jQuery("#"+commend_buyPrice+"_"+comendid+"_"+id).html("￥"+data.buyPrice.priceValue);
+		}
+		if(isShowMarketPrice == 0){return}
+		if(data.marketPrice != null && data.marketPrice.priceValue !=  0 && data.buyPrice != null && data.buyPrice.priceValue != ""){
+			jQuery("#"+commend_market+"_"+comendid+"_"+id).html("￥"+data.marketPrice.priceValue);
+		}
+		if(data && data.specialPrice && data.specialPrice.priceLogo){
+			var obj = jQuery("#commend_special_"+comendid+"_"+id);
+			if(obj.length > 0){
+				obj.show();
+			}
+			if(obj.siblings(".productScore").length > 0){
+				obj.hide();
+			}
+		}
+	});
+}
+function loadThemePrice(id,mid,comendid,tabcount){
+	getPrice(id,mid,function(data){
+		var buyPrice = 0;
+		var marketPrice = 0;
+		if(data.buyPrice != null && data.buyPrice.priceValue != ""){
+			buyPrice = parseFloat(data.buyPrice.priceValue);
+			jQuery("#" + commend_buyPrice + "_" + comendid + "_" + id).html("￥"+buyPrice);
+		}
+		if(data.marketPrice != null && data.marketPrice.priceValue !=  ""){
+			marketPrice = parseFloat(data.marketPrice.priceValue);
+			jQuery("#" + commend_market + "_" + comendid + "_" + id).html("￥"+marketPrice);
+		}
+		if(tabcount == 3 ){
+			if(marketPrice > buyPrice && buyPrice != 0){
+				var downprice = (marketPrice - buyPrice).toFixed(1);
+				var discount = (buyPrice/marketPrice*10).toFixed(1);
+				if(buyPrice > 100){
+					jQuery("#downprice_" + comendid + "_" + id + "_" + tabcount).html(downprice);
+				}else if(buyPrice <= 100){
+					jQuery("#downpriceText_" + comendid + "_" + id + "_" + tabcount).html(discount);
+					jQuery("#downprice_" + comendid + "_" + id + "_" + tabcount).html("折");
+				}
+			}else{
+				jQuery("#downpricespan_" + comendid + "_" + id + "_" + tabcount).css("display","none");
+			}
+		}
+		if(tabcount == 2){
+			//if(data.specialPrice != null && data.specialPrice.priceValue != 0 ){
+				jQuery("#special_" + comendid + "_" + id + "_" + tabcount).css("display","block");
+			//}
+		}
+		
+	});
+}
+function loadIntegralProPrice(id,prefix){
+	uri = getAttrValueById(prefix + id) + "?mid=" + mid + "&id=" + id;
+	jQuery.post(uri,function(data){
+		if(data && data.length > 4){
+			jQuery("#" + prefix + id).html(data.substring(5,data.length));
+		}
+	});
+}
+var lastInfoShowId = "1";
+/*var showlist_t = -1;var lastMenuShowId = "default";定义见base.js*/
+function initSwitchTools(){
+	jQuery(".main_menu h3").mouseover(function (){
+		var showpage = jQuery(this).attr("showpage");
+		if(!showpage){
+			return;
+		}
+		/*lazyloadintab中的img begin*/
+		var isFirstLoad = jQuery(this).attr("data-first");
+		if (isFirstLoad == "y"){
+			jQuery("#main_adv_" + showpage).find("img").each(function(){
+				jQuery(this).attr("src",jQuery(this).attr("original")).removeClass("lazyloadintab");
+			});
+		}
+		jQuery(this).attr("data-first","n");
+		/*lazyloadintab中的img end*/
+		clearTimeout(showlist_t);
+		showlist_t = setTimeout("mainMenuMouseOver(" + showpage + ")",120);
+	});
+	
+	jQuery(".main_menu h3").mouseout(function (){
+		var showpage = jQuery(this).attr("showpage");
+		if(!showpage){
+			return;
+		}
+		clearTimeout(showlist_t);
+		showlist_t = setTimeout("mainMenuMouseOut(" + showpage + ")",120);
+	});
+
+	jQuery(".main_adv_item").mouseover(function (){
+		var showpage = jQuery(this).attr("showpage");
+		if(!showpage){
+			return;
+		}
+		clearTimeout(showlist_t);
+		showlist_t = setTimeout("mainMenuMouseOver(" + showpage + ")",120);
+	});
+	
+	jQuery(".main_adv_item").mouseout(function (){
+		var showpage = jQuery(this).attr("showpage");
+		if(!showpage){
+			return;
+		}
+		clearTimeout(showlist_t);
+		showlist_t = setTimeout("mainMenuMouseOut(" + showpage + ")",120);
+	});
+	
+	jQuery(".info_title li").mouseover(function (){
+		var value = jQuery(this).attr("showpage");
+		if(!value){
+			return;
+		}
+		jQuery("#info_title_focus").addClass("info_title_default");
+		jQuery("#info_title_focus").attr("id",null);
+        jQuery(this).removeClass("info_title_default");
+		jQuery(this).attr("id","info_title_focus");
+		jQuery("#info_list_"+lastInfoShowId).hide();
+		jQuery("#info_list_" + value).show();
+		lastInfoShowId = value;
+	});
+}
+
+//首页主轮换广告begin 重写首页主广告轮换20130820_zhaogangqiang
+
+function initMainRotation(){
+	var lastMainRotatioShowId = 1,//当前显示的小方块的序号
+		mainRotatioTimer,//图片轮换定时器
+		mainRotatioBigAndSmallImgTimer,//此定时器为了给延迟加载的图片争取加载时间
+		timeWaiter = 3000,//图片轮换间隔时间
+		mainRotatioRunFlag = 1,//值为1时表示？？
+		img_arr_len = 0,//主图个数
+		img_arr = null,//存放主图播放顺的数组
+		$rotation_big_tools = null,//jQuery对象，存放顺序列表元素
+		data_showpage = 1,//当前显示的顺序列表的序号
+		switchMainRotation = null,//开关整个轮换效果
+		autoSwitchMainRotation = null,//自动轮换
+		img_rotate = null,//实现图片的切换效果
+		load_pics = null,//加载图片（完成图片的延迟加载）
+		isContaining = null,//判断数组中是否包含某值（完全匹配）
+		rearrangementForImg = null;//本方法旨在将轮换的主图进行随机排序 
+		
+	//初始化数据
+	initData = function(){
+		var child_size = $(".modify_tools").find("div").size();
+		if(parseInt(child_size)>8){
+			child_size=8;
+		}
+		var child_width = $(".rotation_big_disabled").width();
+		var tools_width = (child_width+10)*child_size;
+		var tools_left = 560-tools_width;
+		$(".modify_tools").css({"left":tools_left,"width":tools_width});
+	
+		$rotation_big_tools = jQuery(".rotation_big_tools div");
+		img_arr = rearrangementForImg($rotation_big_tools);
+		img_arr_len = img_arr.length;
+		//初始显示第一张广告图片
+		if(img_arr != null){
+			jQuery("#main_rotation_img_"+img_arr[0]).show();
+			jQuery("#rotation_small_"+img_arr[0]).show();
+			load_pics(data_showpage);
+		}
+		$rotation_big_tools.mouseover(switchMainRotation);
+		jQuery(".main_rotation").mouseover(function (){mainRotatioRunFlag = 2;});
+		jQuery(".main_rotation").mouseout(function (){mainRotatioRunFlag = 1;});
+		mainRotatioTimer = setTimeout(autoSwitchMainRotation,timeWaiter);
+	}
+	
+	switchMainRotation = function(index){
+		clearTimeout(mainRotatioTimer);
+		if(mainRotatioRunFlag==2){
+			mainRotatioTimer = setTimeout(autoSwitchMainRotation,timeWaiter);
+			return;
+		}
+		var foucsElm;
+		if(!isNaN(parseInt(index))){
+			foucsElm = document.getElementById("rotation_big_tools_btn_"+index);
+		} else{
+			foucsElm = this;
+		}
+		var $foucsElmObj = jQuery(foucsElm);
+		//小方块的实际播放序号
+		data_showpage = $foucsElmObj.attr("data-showpage");
+		if(!data_showpage){
+			mainRotatioTimer = setTimeout(autoSwitchMainRotation,timeWaiter);
+			return;
+		}
+		if(data_showpage==lastMainRotatioShowId){
+			mainRotatioTimer = setTimeout(autoSwitchMainRotation,timeWaiter);
+			return;
+		}
+		jQuery("#rotation_big_tools_btn_"+lastMainRotatioShowId).attr("className","rotation_big_disabled");	
+		$foucsElmObj.attr("className","rotation_big_focus");
+		
+		clearTimeout(mainRotatioBigAndSmallImgTimer);
+		
+		/*lazyloadintab中的img begin*/
+		//加载当前小方块所对应的广告图片
+		if ($foucsElmObj.attr("data-first") == "y"){
+			load_pics(data_showpage);
+			$foucsElmObj.attr("data-first","n");
+		}
+		/*lazyloadintab中的img end*/
+		
+		//切换图片
+		img_rotate(data_showpage);
+		
+		lastMainRotatioShowId = data_showpage;
+		mainRotatioTimer = setTimeout(autoSwitchMainRotation,timeWaiter);
+	};
+	
+	autoSwitchMainRotation = function(){
+		var nextId;
+		if(lastMainRotatioShowId == img_arr_len){
+			nextId = 1;
+		} else{
+			nextId = parseInt(lastMainRotatioShowId)+1;
+		}
+		switchMainRotation(nextId);
+	};
+	
+	img_rotate = function(index){
+		var temp_index = index;
+		jQuery("#rotation_small_"+img_arr[lastMainRotatioShowId - 1]).hide();
+		jQuery("#main_rotation_img_"+img_arr[lastMainRotatioShowId - 1]).hide();
+		mainRotatioBigAndSmallImgTimer = setTimeout(function(){
+			jQuery("#main_rotation_img_"+img_arr[index - 1]).fadeIn(300);
+			jQuery("#rotation_small_"+img_arr[index - 1]).fadeIn(300);},100);
+	};
+	
+	load_pics = function(index){
+		jQuery("#main_rotation_img_" + img_arr[index - 1]).find("img").each(function(){
+			jQuery(this).attr("src",jQuery(this).attr("original")).removeClass("lazyloadintab");
+		});
+		jQuery("#rotation_small_" + img_arr[index - 1]).find("img").each(function(){
+			jQuery(this).attr("src",jQuery(this).attr("original")).removeClass("lazyloadintab");
+		});
+	};
+	
+	rearrangementForImg = function(jqueryObj){
+		var arr = [],//最终Array
+		arrTemp=[],//临时Array
+		arrNum=[],//记录随机排序广告位的号码
+		arrRomTemp=[],//随机排序权重计算后临时Array 
+		arrRom=[],//随机排序权重计算后Array
+		len = 8,//jqueryObj.length,(固定八个广告位)
+		position = 0,
+		j = 0,
+		num,
+		k=0,
+		m=0;
+		if(jqueryObj.length<8){
+			len=jqueryObj.length;
+		}
+		//按position的数值做为图片播放顺序，如果position相同则取第一个，其它的按随机排序
+		jqueryObj.each(function(i,item){
+			position = item.getAttribute("data-position");
+			var showpage=item.getAttribute("data-showpage");
+			if(showpage>len){
+				$(item).hide();
+			}
+			position=parseInt(position);
+			
+			var tempItem = arr[position - 1];
+			if(position <= len && !tempItem && position > 0 ){
+				arr[position -1] = i + 1;
+				j++;
+			}else{
+				arrRom[m]= parseInt(position);
+				arrTemp[m]=parseInt(showpage);
+				m++;
+			}
+		});
+		if(j < len){
+			for(var i = 0; i < len; i++){
+				if(!arr[i]){
+					arrNum[k]=i;
+					k++;
+				}
+			}
+			//随机广告位 随机并计算权重 根据权重排序
+			if( arrRom.length != 0){
+				for(var i = 0; i < arrRom.length; i++ ){
+					num = Math.random().toFixed(2);
+					arrRomTemp[i] = arrRom[i] * num;
+				}
+				for(var out = arrRomTemp.length;out>1;out--){
+					for(var inner =0;inner<out;inner++){
+						if(arrRomTemp[inner]<arrRomTemp[inner+1]){
+							var tempRom=arrRomTemp[inner];
+							arrRomTemp[inner]=arrRomTemp[inner+1];
+							arrRomTemp[inner+1]=tempRom;
+							var temp=arrTemp[inner];
+							arrTemp[inner]=arrTemp[inner+1];
+							arrTemp[inner+1]=temp;
+						}
+					}
+				}
+				var le;
+				if(arrNum.length>arrTemp.length){
+					le=arrTemp.length;
+				}else{
+					le=arrNum.length;
+				}
+				for(var i=0;i<le;i++){
+					arr[arrNum[i]]=arrTemp[i];
+				}
+			}
+			
+		}
+			return arr;
+	};
+	//本方法旨在兼容ie9、Firefox2、Safari3、Opera9.5之前的版本
+	isContaining = function(array,item){
+		if(array && item){
+			try{
+				if(array.indexOf(item) > -1){
+					return true;
+				}
+				return false;
+			}catch(e){
+
+				for(var i = 0, len = array.length; i < len; i++){
+					if(array[i] === item){
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+	};
+	
+	initData();
+}
+
+/*首页主轮换广告end*/
+
+function tuanCurrentTimer(){
+	var id, time, d, h, m ,s;
+	for(var i=0;i<pidArr.length;i++){
+		id = "group_l_c_timer" + i + "_" + pidArr[i];
+		block = document.getElementById(id);
+		if(endTimeArr[i] > 0){
+            endtime = endTimeArr[i];
+            d = Math.floor(endtime/(1000*60*60*24));
+			h = Math.floor(endtime/(1000*60*60)%24);
+		    m = Math.floor(endtime/(1000*60))%60;
+		    s = Math.floor(endtime/(1000))%60;
+		    if(d > 2){
+		    	block.innerHTML = "剩余时间3天以上";
+		    }else{
+			    block.innerHTML = "剩余" + d + "天" + h+"小时 "+m+"分 "+s+"秒";
+			    endTimeArr[i]-=1000;
+		    }
+		}else{
+		    block.innerHTML = "团购已结束";
+		}
+	}
+}
+function initTuanCurrentTimer(){
+	if(typeof pidArr != 'undefined'){setInterval("tuanCurrentTimer()", 1000);}
+}
+function initToggleTab(){
+	tab("hot_l_");
+	//楼层区排行榜
+	if(typeof tab_prefix != 'undefined'){
+		for(var i=0; i<tab_prefix.length; i++){
+			tab(tab_prefix[i]);
+		}
+	}
+}
+/*floor 左侧sort信息*/
+function initFloorSortsListDisplay(){
+	jQuery(".f_sort").hover(function(){
+		jQuery(this).css({"height":"auto","z-index":"4"});//430px
+		jQuery(this).find("li").removeClass("dn");
+	},function(){
+		var i = 0 ;
+		jQuery(this).css({"height":"140px","z-index":"1"});
+		jQuery(this).find("li").each(function(){
+			if(i > 9){
+				jQuery(this).addClass("dn");
+			}
+			i++;
+		})
+	});
+}
+function switchInfoHeadAdv(mid){
+	var uri = getAttrValueById("info_head_user");
+	var params_L = [];
+	params_L["random_L"] = Math.random();
+	params_L["mid"] = mid;
+	jQuery.getJSON(getAttrValueById("info_head_user")+"?callback=?",params_L,function(data){
+		if(data && data.nickname){
+			jQuery("#info_head_default").hide();
+			jQuery("#info_head_user").show();
+		}
+	});
+}
+function initRedirectUrl(){
+	if(getQueryStringRegExp("redirect") == "false") return;			//若此链接带此参数则不走此逻辑
+	//if(jQuery.cookie("noTipAgain") == "y") return;				//若之前选中过不再提示复选框则不走此逻辑
+	var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0,
+	isIphone = navigator.userAgent.toLowerCase().indexOf('iphone') >= 0,
+	isIpad = navigator.userAgent.toLowerCase().indexOf('ipad') >= 0,
+	isUCiphone = navigator.userAgent.toLowerCase().indexOf('ios') >= 0;
+	var isRedirect = false;if(isAndroid){isRedirect = true;}else if(isIphone){isRedirect = true;}else if(isIpad){isRedirect = true;}else if(isUCiphone){isRedirect = true;}
+	if(isRedirect){
+		var strlocation = location.toString(), returnLocation, _index = strlocation.indexOf("?"), isHasMid = strlocation.indexOf("mid");
+		if(_index != -1){returnLocation = strlocation.substring(0,_index);
+	 	}else{returnLocation = strlocation;}
+	 	if(isHasMid != -1)returnLocation = returnLocation+"?mid=" + mid;//若原地址栏参数中带有mid则拼接mid参数
+		var url = staticPrefix + "/zhongliang/htm/shouji/?mid=" + mid + "&returnLocation=" + encodeURIComponent(returnLocation);
+		window.location = url;
+	}
+}
+// 根据是否有登录记录判断显示哪个广告: 有登陆记录显示第一个，无登陆记录显示第二个
+var initBottomRightbarAdv = function(){
+	var divs = $("#hot_deal_img").children("div");
+	if(!$.cookie('userinfo')){
+		divs.eq(0).hide();
+		divs.eq(1).show();
+	}
+};
+
+//今日我买团特效
+function initTuanImgShowScroll(){
+	
+	var nowPage=0;
+	var imgNum=$(".group_l_c .s").length;
+
+	//获取当前滚动的总页数
+	var pages=Math.ceil(imgNum/2);
+	var pageW=732;
+
+	//获取当前滚动可点击按钮
+	var keyL=$(".group .go_left");
+	var keyR=$(".group .go_right");
+	
+	$(".group .go_left").hover(function(){
+		$(this).addClass("go_left_hover");
+	},function(){
+		$(this).removeClass("go_left_hover");
+	});
+	
+	$(".group .go_right").hover(function(){
+		$(this).addClass("go_right_hover");
+	},function(){
+		$(this).removeClass("go_right_hover");
+	});
+
+	$(".group .go_left").bind('click',function(){
+		RightScroll();
+		return false;	
+	});
+
+	$(".group .go_right").bind('click',function(){
+		AutoScroll();
+		return false;	
+	});
+
+
+	//向下页滚动
+	function AutoScroll() {
+		$(".group_l_c").stop().animate({
+			"margin-left": - pageW },300,
+			function(){
+				for(var m = 0;m<2;m++){
+					$(".group_l_c").children("li:first").appendTo($(".group_l_c")); 
+				};
+				$(".group_l_c").css("margin-left", 0); 
+				var float = $("#scrollLi").attr("data-first");
+				if(float == "y"){
+					$(".group_l_c img").each(function(){
+						$(this).attr("src",$(this).attr("original"));
+					})
+					$("#scrollLi").attr("data-first","n");
+				}
+			}
+		);
+	};
+
+	//向上页滚动
+	function RightScroll() {
+		for(var m = 0;m<2;m++){	
+			$(".group_l_c").children("li:last").prependTo($(".group_l_c")); 			
+		};
+		var float = $("#scrollLi").attr("data-first");
+		if(float == "y"){
+			$(".group_l_c img").each(function(){
+				$(this).attr("src",$(this).attr("original"));
+			})
+			$("#scrollLi").attr("data-first","n");
+		}
+		$(".group_l_c").css("margin-left", -pageW);
+		$(".group_l_c").stop().animate({ "margin-left": -0 }, 300);	
+	}			
+};
+
+//new start首页两侧的浮动的滚动条
+function intSidesFloat(){
+	var a;
+	var $pawidth=($(document).width());//浏览器时下窗口文档对象宽度
+	var $pbwidth=($(document.body).width());//浏览器时下窗口文档body的宽度
+	var $pwidth=($(window).width()); //浏览器当前窗口可视区域宽度
+		if($pawidth<=$pbwidth){
+			a=$pawidth;			
+		}else{
+			a=$pbwidth;  
+		}
+	var pdwidth = (a< $pwidth) ? a : $pwidth;
+		if(pdwidth>=1250){
+			$(".index_ad_l").show();
+			$(".index_ad_r").show();
+			$("#index_2DPic").show()
+		}else{
+			$(".index_ad_l").hide();
+			$(".index_ad_r").hide();
+			$("#index_2DPic").hide();
+		}		
+}
+
+//左侧二维码fixed
+function twoDFixed(){
+	if(navigator.userAgent.indexOf("MSIE 6.0")>0){document.getElementById("index_2DPic").style.top=document.documentElement.clientHeight+document.documentElement.scrollTop-document.getElementById("index_2DPic").clientHeight-44+"px";document.getElementById("index_2DPic").style.position="absolute";}
+}
+
+//设置二维码的left值
+function setTwoDLeft(){
+	var a;
+	var $pawidth=($(document).width());//浏览器时下窗口文档对象宽度
+	var $pbwidth=($(document.body).width());//浏览器时下窗口文档body的宽度
+	var $pwidth=($(window).width()); //浏览器当前窗口可视区域宽度
+	
+	if($pawidth<=$pbwidth){
+		a=$pawidth;			
+	}else{
+		a=$pbwidth;  
+	}
+	
+	var pdwidth = (a< $pwidth) ? a : $pwidth;
+	var TwoDLeft = (pdwidth-1000)/2-125;
+	$("#index_2DPic").css({"left":(TwoDLeft+"px")});
+
+};
+$(window).resize(function() {
+	intSidesFloat();
+	twoDFixed();
+	setTwoDLeft();
+});
+$(window).scroll(function(){
+	twoDFixed();
+});
+
+jQuery(function (){
+	intSidesFloat();
+	initRedirectUrl();
+	initBannerAdvAfter();
+	initSwitchTools();
+	initToggleTab();
+	initFloorSortsListDisplay();
+	initBottomRightbarAdv();
+	twoDFixed();
+	setTwoDLeft();
+});
+
+
+
+
+
+
+
+
+
+
+
+

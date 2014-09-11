@@ -1,0 +1,25 @@
+package com.o2oweb.action;
+
+//import com.o2oweb.util.BaseAction;
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.BaseAction;
+import com.o2oweb.service.UserService;
+
+@Scope("session")
+@Service("userAction")
+public class UserAction extends BaseAction {
+	private UserService userService;
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	@Resource
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+}

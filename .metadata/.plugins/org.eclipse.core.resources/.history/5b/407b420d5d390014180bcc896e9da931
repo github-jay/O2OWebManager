@@ -1,0 +1,24 @@
+package com.o2oweb.action;
+
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.BaseAction;
+import com.o2oweb.service.Pageitemlist1fService;
+
+@Scope("page")
+@Service("pageitemlist1fAction")
+public class Pageitemlist1fAction extends BaseAction {
+	private Pageitemlist1fService pageitemlist1fService;
+
+	public Pageitemlist1fService getPageitemlist1fService() {
+		return pageitemlist1fService;
+	}
+
+	@Resource
+	public void setPageitemlist1fService(Pageitemlist1fService pageitemlist1fService) {
+		this.pageitemlist1fService = pageitemlist1fService;
+	}
+}
