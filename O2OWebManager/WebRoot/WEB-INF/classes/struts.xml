@@ -23,7 +23,14 @@
 	<package name="user" extends="json-default" namespace="/user">
 		
 	</package>
-	
+	<package name="image" extends="json-default" namespace="/image">
+		<action name="getImage" class="getImage">
+			<result type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+	</package>
 	
 	<!-- <include file="com/all58/video/modules/user/login.xml"></include> -->
 </struts>
