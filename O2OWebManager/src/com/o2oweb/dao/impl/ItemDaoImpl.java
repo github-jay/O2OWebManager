@@ -1,6 +1,5 @@
 package com.o2oweb.dao.impl;
 
-import org.aspectj.lang.annotation.Pointcut;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.stereotype.Component;
 

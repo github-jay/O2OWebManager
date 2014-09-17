@@ -1,0 +1,29 @@
+package com.o2oweb.action;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.BaseAction;
+import com.o2oweb.service.ItemattributeService;
+
+@Scope("request")
+@Service("itemAttributeAction")
+public class ItemattributeAction extends BaseAction {
+	private ItemattributeService itemAttributeService;
+	private Integer itemAttributeId;
+	private String attributeDetail;
+	private Integer itemId;
+	private Integer fatherId=0;
+
+	public void save() {
+		
+	}
+}

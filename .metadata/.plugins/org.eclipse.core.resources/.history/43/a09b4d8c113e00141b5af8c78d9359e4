@@ -1,0 +1,49 @@
+package com.o2oweb.service;
+
+import javax.annotation.Resource;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.stereotype.Component;
+
+import com.o2oweb.bo.RequestParamBean;
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.dao.SailerDao;
+import com.o2oweb.entity.Sailer;
+
+@Component("sailerService")
+public class SailerService {
+
+	private SailerDao sailerDao;
+
+	public void save(Sailer sailer) {
+		this.sailerDao.save(sailer);
+	}
+
+	public void remove(Sailer sailer) {
+		this.sailerDao.remove(sailer);
+	}
+	
+
+	public void update(Sailer sailer) {
+		this.sailerDao.update(sailer);
+	}
+
+	public Sailer getsailer(int sailerId) {
+		return sailerDao.getSailer(sailerId);
+	}
+
+	public Page findPageBean(RequestParamBean paramBean) {
+		DetachedCriteria detachedCriteria = DetachedCriteria
+				.forClass(Sailer.class);
+		if (paramBean == null) {
+			return null;
+		}
+		return this.sailerDao.pagedQuery(detachedCriteria, paramBean.getStart(),
+				paramBean.getLimit());
+	}
+
+	@Resource
+	public void setsailerDao(SailerDao sailerDao) {
+		this.sailerDao = sailerDao;
+	}
+}
