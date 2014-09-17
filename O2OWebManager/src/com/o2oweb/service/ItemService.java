@@ -1,5 +1,7 @@
 package com.o2oweb.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -48,5 +50,14 @@ public class ItemService {
 	@Resource
 	public void setItemDao(ItemDao itemDao) {
 		this.itemDao = itemDao;
+	}
+
+	public List<Item> getAttributes(Integer itemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public Page itemquery(DetachedCriteria dc,int rows,int page){
+		Page p = itemDao.pagedQuery(dc, rows * page, rows);
+		return p;
 	}
 }

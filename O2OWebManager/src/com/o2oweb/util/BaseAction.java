@@ -39,8 +39,8 @@ public class BaseAction extends com.o2oweb.common.BaseAction
 
 	public void writeResponse(JSONObject obj)
 	{
-		obj.put("success", Boolean.valueOf(this.success));
-		obj.put("message", this.message);
+//		obj.put("success", Boolean.valueOf(this.success));
+//		obj.put("message", this.message);
 		writeResponse(obj.toString());
 	}
 

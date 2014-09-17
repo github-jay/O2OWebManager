@@ -31,6 +31,12 @@
 			</result>
 		</action>
 	</package>
-	
+	<package name="item" extends="json-default" namespace="/item">
+		<action name="itemAction" class="itemAction">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
+	</package>
 	<!-- <include file="com/all58/video/modules/user/login.xml"></include> -->
 </struts>
