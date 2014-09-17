@@ -1,0 +1,117 @@
+package com.o2oweb.action;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.entity.item;
+import com.o2oweb.service.itemService;
+import com.o2oweb.util.BaseAction;
+
+@Scope("request")
+@Service("itemAction")
+public class ItemAction extends BaseAction {
+
+	private itemService itemService;
+	private Integer itemId;
+	private String attributeDetail;
+	private Integer itemId;
+	private Integer fatherId = 0;
+
+	public void save() {
+		item item = new item();
+		item.setAttributeDetail(attributeDetail);
+		item.setFatherId(fatherId);
+		item.setItemId(itemId);
+
+		this.itemService.save(item);
+
+		writeResponse("true");
+	}
+
+	public void remove() {
+		item item = new item();
+		item.setitemId(itemId);
+
+		this.itemService.remove(item);
+
+		writeResponse("true");
+	}
+
+	public void update() {
+		item item = new item();
+		item.setitemId(itemId);
+		item.setAttributeDetail(attributeDetail);
+		item.setFatherId(fatherId);
+		item.setItemId(itemId);
+
+		this.itemService.update(item);
+
+		writeResponse("true");
+	}
+
+	public void getitem() {
+		item item = this.itemService
+				.getitem(itemId);
+
+		JSONObject obj = JSONObject.fromObject(item);
+		writeResponse(obj.toString());
+	}
+
+	public void getAttributesByItemId() {
+		List<item> attributes = this.itemService
+				.getAttributes(itemId);
+
+		JSONArray array = JSONArray.fromObject(attributes);
+		writeResponse(array.toString());
+	}
+
+	public itemService getitemService() {
+		return itemService;
+	}
+
+	@Resource
+	public void setitemService(
+			itemService itemService) {
+		this.itemService = itemService;
+	}
+
+	public Integer getitemId() {
+		return itemId;
+	}
+
+	public void setitemId(Integer itemId) {
+		this.itemId = itemId;
+	}
+
+	public String getAttributeDetail() {
+		return attributeDetail;
+	}
+
+	public void setAttributeDetail(String attributeDetail) {
+		this.attributeDetail = attributeDetail;
+	}
+
+	public Integer getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
+	}
+
+	public Integer getFatherId() {
+		return fatherId;
+	}
+
+	public void setFatherId(Integer fatherId) {
+		this.fatherId = fatherId;
+	}
+
+}
