@@ -1,0 +1,20 @@
+package test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.junit.Test;
+
+import com.o2oweb.entity.Item;
+
+public class TestCode {
+	@Test
+	public void testName() {
+		System.out.println(String.format("%s%04d%04d%02d%s",
+				new Object[] { "test", Integer.valueOf(0), Integer.valueOf(0),
+						Integer.valueOf(0), "99" }));
+	}
+}

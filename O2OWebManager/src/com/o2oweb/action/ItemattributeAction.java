@@ -32,7 +32,7 @@ public class ItemattributeAction extends BaseAction {
 
 		this.itemAttributeService.save(itemAttribute);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void remove() {
@@ -41,7 +41,7 @@ public class ItemattributeAction extends BaseAction {
 
 		this.itemAttributeService.remove(itemAttribute);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void update() {
@@ -53,7 +53,7 @@ public class ItemattributeAction extends BaseAction {
 
 		this.itemAttributeService.update(itemAttribute);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void getItemAttribute() {

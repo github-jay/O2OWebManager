@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Items.html</title>
+	
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../js/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../css/items_css.css">
+    <script language="javascript" src="../js/jquery.min.js"></script>
+    <script language="javascript" src="../js/jquery.easyui.min.js"></script>
+   <script>
+   	$(window).ready(function() {
+		
+		//创建表格
+			$('#dg').datagrid({   
+    url:'/O2OWebManager/item/itemAction',
+	pagination:true,
+	rownumbers:true,
+	queryParams:{orderby:'itemId'},
+    columns:[[   
+        {field:'itemId',title:'商品编号',width:100},   
+        {field:'itemName',title:'商品名称',width:300},
+		{field:'levelId',title:'商品种类',width:100},
+		{field:'barCode',title:'条码信息',width:100},
+		{field:'inPrice',title:'进货价格',width:100,align:'right'},
+		{field:'discount',title:'折扣',width:100,align:'right'},
+		{field:'sailerId',title:'供应商编号',width:100,align:'right'},
+		{field:'stockNum',title:'库存数量',width:100,align:'right'},
+        {field:'price',title:'商品价格',width:100,align:'right'}   
+    ]]   
+});
+	var queryParm = $('#dg').datagrid('options').queryParams;
+
+	//表格右击显示菜单
+	$('#dg').datagrid({
+	onRowContextMenu: function(e,rowIndex,rowData){
+		$('#mm').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+	}
+});
+
+	
+	$(document).bind('contextmenu',function(e){
+				e.preventDefault();
+				/*
+				$('#mm').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+				*/
+			});
+	
+	//过滤条件
+	
+	
+	
+	$('#filter_type').combobox({
+						onSelect:function (record){
+							var selectedvalue = $('#filter_type').combobox('getValue');
+							var qp = $('#dg').datagrid('options').queryParams;
+							qp.orderby = selectedvalue;
+							$('#dg').datagrid('reload');
+						}
+				});
+	$('#filter_type').combobox('select','date');
+	
+		});
+  </script>
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+  <div class="menus">
+  <h2 align="center">库存明细</h2>
+
+  </div>
+    <select id="filter_type" class="easyui-combobox" name="state" style="width:200px;">
+		<option value="date">按入库日期</option>
+      <option value="sailerId">供应商</option>
+      <option value="price">价格递增</option>
+      <option value="price_desc">价格递减</option>
+      <option value="stockNum">库存数量</option>
+	</select>
+
+  <table id="dg"></table>
+
+  
+  <div id="mm" class="easyui-menu" style="width:120px;">  
+    <div>查看详情</div>  
+    <div>移除</div>  
+    <div class="menu-sep"></div>  
+    <div>Exit</div>  
+</div> 
+  </body>
+
+</html>

@@ -42,7 +42,7 @@ public class OrderAction extends BaseAction {
 
 		this.orderService.save(order);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void remove() {
@@ -51,7 +51,7 @@ public class OrderAction extends BaseAction {
 
 		this.orderService.remove(order);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void update() {
@@ -61,7 +61,7 @@ public class OrderAction extends BaseAction {
 
 		this.orderService.update(order);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void getOrder() {
