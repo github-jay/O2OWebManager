@@ -1,0 +1,14 @@
+#Thu Sep 18 10:06:21 CST 2014
+myeclipseTomcatServer.O2OWebManager.isExploded=true
+myeclipseTomcatServer.O2OWebManager.shouldBackup=false
+myeclipseTomcatServer.O2OWebManager.deployIsOverProject=false
+myeclipseTomcatServer.O2OWebManager.type=WebDeployment
+myeclipseTomcatServer.O2OWebManager.isUptoDate=true
+myeclipseTomcatServer.O2OWebManager.shouldOverwrite=false
+myeclipseTomcatServer.O2OWebManager.IEARProjectName=
+myeclipseTomcatServer.O2OWebManager.altContextRoot=
+myeclipseTomcatServer.O2OWebManager.contextRoot=/O2OWebManager
+myeclipseTomcatServer.O2OWebManager.deploymentPath=D\:\\GitHub\\O2OWebManager\\.metadata\\.me_tcat\\webapps\\O2OWebManager
+myeclipseTomcatServer.O2OWebManager.isDeployed=true
+eclipse.preferences.version=1
+myeclipseTomcatServer.O2OWebManager.noFileCopy=false

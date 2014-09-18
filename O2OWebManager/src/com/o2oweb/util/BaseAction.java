@@ -6,8 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 
-public class BaseAction extends com.o2oweb.common.BaseAction
-{
+public class BaseAction extends com.o2oweb.common.BaseAction {
 	private static final long serialVersionUID = 1L;
 
 	public final int pageSize = 24;
@@ -37,39 +36,40 @@ public class BaseAction extends com.o2oweb.common.BaseAction
 	public boolean timeout = false;
 	public String message;
 
-	public void writeResponse(JSONObject obj)
-	{
-//		obj.put("success", Boolean.valueOf(this.success));
-//		obj.put("message", this.message);
+	public void writeResponse(JSONObject obj) {
+		// obj.put("success", Boolean.valueOf(this.success));
+		// obj.put("message", this.message);
 		writeResponse(obj.toString());
 	}
 
-	public void writeTimeOutResponse()
-	{
+	public void writeTimeOutResponse() {
 		this.timeout = true;
 		JSONObject result = new JSONObject();
 		result.put("timeout", Boolean.valueOf(this.timeout));
 		writeResponse(result.toString());
 	}
 
-	public void writeResponse()
-	{
+	public void writeResponse() {
 		JSONObject result = new JSONObject();
 		result.put("message", this.message);
 		result.put("success", Boolean.valueOf(this.success));
 		writeResponse(result);
 	}
 
-	public void writeResponse(Boolean flag, String message)
-	{
+	public void writeResponse(boolean flag) {
+		JSONObject result = new JSONObject();
+		result.put("success", flag);
+		writeResponse(result.toString());
+	}
+
+	public void writeResponse(Boolean flag, String message) {
 		JSONObject result = new JSONObject();
 		result.put("message", message);
 		result.put("success", flag);
 		writeResponse(result.toString());
 	}
-	
-	public void writeResponse(Boolean flag, String message,int id)
-	{
+
+	public void writeResponse(Boolean flag, String message, int id) {
 		JSONObject result = new JSONObject();
 		result.put("message", message);
 		result.put("success", flag);
@@ -77,11 +77,9 @@ public class BaseAction extends com.o2oweb.common.BaseAction
 		writeResponse(result.toString());
 	}
 
-	public boolean writeResponse(String str)
-	{
+	public boolean writeResponse(String str) {
 		boolean ret = true;
-		try
-		{
+		try {
 			str = str.replace("\\r", "");
 			str = str.replace("null", "\"\"");
 			HttpServletResponse response = ServletActionContext.getResponse();
@@ -89,81 +87,66 @@ public class BaseAction extends com.o2oweb.common.BaseAction
 			PrintWriter pw = response.getWriter();
 			pw.print(str);
 			pw.close();
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			ret = false;
 			e.printStackTrace();
 		}
 		return ret;
 	}
 
-	public String spacePage()
-	{
+	public String spacePage() {
 		return "spacePage";
 	}
 
-	public String getFailedReason()
-	{
+	public String getFailedReason() {
 		return this.failedReason;
 	}
 
-	public void setFailedReason(String failedReason)
-	{
+	public void setFailedReason(String failedReason) {
 		this.failedReason = failedReason;
 	}
 
-	public String execute() throws Exception
-	{
+	public String execute() throws Exception {
 		return "success";
 	}
-	
-	public Integer getObjectIdForCheck()
-	{
+
+	public Integer getObjectIdForCheck() {
 		return this.objectIdForCheck;
 	}
 
-	public void setObjectIdForCheck(Integer objectIdForCheck)
-	{
+	public void setObjectIdForCheck(Integer objectIdForCheck) {
 		this.objectIdForCheck = objectIdForCheck;
 	}
 
-	public Integer getObjectTypeForCheck()
-	{
+	public Integer getObjectTypeForCheck() {
 		return this.objectTypeForCheck;
 	}
 
-	public void setObjectTypeForCheck(Integer objectTypeForCheck)
-	{
+	public void setObjectTypeForCheck(Integer objectTypeForCheck) {
 		this.objectTypeForCheck = objectTypeForCheck;
 	}
 
-	public Integer getPrivilegeCodeForCheck()
-	{
+	public Integer getPrivilegeCodeForCheck() {
 		return this.privilegeCodeForCheck;
 	}
 
-	public void setPrivilegeCodeForCheck(Integer privilegeCodeForCheck)
-	{
+	public void setPrivilegeCodeForCheck(Integer privilegeCodeForCheck) {
 		this.privilegeCodeForCheck = privilegeCodeForCheck;
 	}
 
-	public void setControlClientForCheck(Integer controlClientForCheck)
-	{
+	public void setControlClientForCheck(Integer controlClientForCheck) {
 		this.clientTypeForCheck = controlClientForCheck;
 	}
 
-	public Integer getControlClientForCheck()
-	{
+	public Integer getControlClientForCheck() {
 		return this.clientTypeForCheck;
 	}
 
-	public String getReturnUrl()
-	{
+	public String getReturnUrl() {
 		return this.returnUrl;
 	}
 
-	public void setReturnUrl(String returnUrl)
-	{
+	public void setReturnUrl(String returnUrl) {
 		this.returnUrl = returnUrl;
 	}
 }

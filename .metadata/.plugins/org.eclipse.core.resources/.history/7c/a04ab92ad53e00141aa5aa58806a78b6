@@ -1,0 +1,260 @@
+package com.o2oweb.action;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.util.BaseAction;
+
+@Scope("request")
+@Service("fileAction")
+public class FileAction extends BaseAction {
+	private String fileName;
+	private String excelName;
+	
+	public void importExcel() {
+
+		try {
+			log.debug("fileName: " + this.fileName);
+			log.debug("excelName: " + this.excelName);
+
+			// 若上传文件不为excel，返回错误信息
+			if (!this.excelName.endsWith(".xls")) {
+				writeResponse(false, "上传失败，文件格式错误！");
+				return;
+			}
+			File excelFile = new File(this.fileName);
+			String strKeys = "deviceName,version,cameraCount,ip,port,loginName,loginPassword,responsiblePerson,responsiblePhone,dutyNum";
+			// 如果该路径下文件不存在
+			if (!FileUtil.findFile(this.fileName)) {
+				writeResponse(false, "导入异常，导入文件不存在！");
+				log.error("导入异常,导入文件不存在");
+				return;
+			}
+
+			List<Map<String, String>> maps = POIUtil.importExcelToMap(
+					excelFile, strKeys);
+
+			List<Map<String, String>> errorMaps = new ArrayList<Map<String, String>>();
+
+			// 获取“其他”类型的 型号信息
+			DeviceVersion O_Version = this.deviceVersionService
+					.findByVersion("其他");
+			for (Map<String, String> map : maps) {
+				if (map.size() < 10) {
+					map.put("error", "缺少有效列");
+					errorMaps.add(map);
+					continue;
+				}
+				DeviceInfo deviceInfo = new DeviceInfo();
+
+				/** *****************信息验证*********************** */
+				// 如果设备名为空
+				if (StringUtil.isNullOrEmpty(map.get("deviceName"))) {
+					map.put("error", "设备名不可以为空");
+					errorMaps.add(map);
+					continue;
+				}
+				// 如果设备名含有特殊字符
+				if (!StringUtil.isConSpeCharacters(map.get("deviceName"))) {
+					map.put("error", "设备名不可以含有特殊字符");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setName(map.get("deviceName"));
+
+				// 设备型号判断
+				DeviceVersion deviceVersion = this.deviceVersionService
+						.findByVersion(map.get("version"));
+				if (deviceVersion != null
+						&& deviceVersion.getDeviceTypeCode() == this.typeCode) {
+					deviceInfo.setVersionId(deviceVersion.getDeviceTypeCode());
+				} else {
+					if (O_Version != null)
+						deviceInfo.setVersionId(O_Version.getDeviceTypeCode());
+					else
+						deviceInfo.setVersionId(3);
+				}
+
+				if (StringUtil.isNullOrEmpty(map.get("cameraCount"))
+						|| !NumberFormatUtil.isNum(map.get("cameraCount"))) {
+					map.put("error", "通道数量必须为数字");
+					errorMaps.add(map);
+					continue;
+				}
+				if (Integer.parseInt(map.get("cameraCount")) <= 32
+						&& Integer.parseInt(map.get("cameraCount")) > 0) {
+					cameraCount = Integer.parseInt(map.get("cameraCount"));
+					deviceInfo.setCameraCount(Integer.parseInt(map
+							.get("cameraCount")));
+				} else {
+					map.put("error", "通道数量要小于等于32,并且大于0");
+					errorMaps.add(map);
+					continue;
+				}
+				// 如果端口号 或 IP为空
+				if (StringUtil.isNullOrEmpty(map.get("ip"))) {
+					map.put("error", "ip不允许为空");
+					errorMaps.add(map);
+					continue;
+				}
+				if (IpUtil.isNotIp(map.get("ip"))) {
+					map.put("error", "IP格式错误");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setIp(map.get("ip"));
+
+				// 端口验证
+				if (StringUtil.isNullOrEmpty(map.get("port"))) {
+					map.put("error", "设备端口不可以为空");
+					errorMaps.add(map);
+					continue;
+				}
+
+				if (!NumberFormatUtil.isNum(map.get("port"))) {
+					map.put("error", "设备端口号必须为数字");
+					errorMaps.add(map);
+					continue;
+				}
+				if (Integer.parseInt(map.get("port")) > 65535
+						|| Integer.parseInt(map.get("port")) < 0) {
+					map.put("error", "设备端口号在0-65535之间");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setPort(Integer.parseInt(map.get("port")));
+				// 如果该端口 与 IP已被占用，则加入到错误列表，并跳出循环
+				if (this.deviceInfoService.checkIsHasByIpPort(deviceInfo
+						.getIp(), deviceInfo.getPort())) {
+					map.put("error", "设备IP与端口已被占用");
+					errorMaps.add(map);
+					continue;
+				}
+				// 如果登录名
+				if (StringUtil.isNullOrEmpty(map.get("loginName"))
+						&& map.get("loginName").length() > 32) {
+					map.put("error", "设备登录名不可以为空，并且小于等于32个字符");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setLoginName(map.get("loginName"));
+
+				// 登录密码为空
+				if (StringUtil.isNullOrEmpty(map.get("loginPassword"))
+						&& map.get("loginPassword").length() > 50) {
+					map.put("error", "设备登录名与密码不可以为空，并且小于等于50个字符");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setLoginPassword(map.get("loginPassword"));
+
+				// 负责人
+				if (StringUtil.isNotNullOrEmpty(map.get("responsiblePerson"))
+						&& !StringUtil.isChinese(map.get("responsiblePerson"))) {
+					map.put("error", "负责人姓名不可以含有非中文字符");
+					errorMaps.add(map);
+					continue;
+				}
+				if (map.get("responsiblePerson").length() > 64) {
+					map.put("error", "负责人姓名小于等于64个字符");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setResponsiblePerson(map.get("responsiblePerson"));
+				// 电话
+				if (StringUtil.isNotNullOrEmpty(map.get("responsbilePhone"))
+						&& !StringUtil.isMobile(map.get("responsbilePhone"))) {
+					map.put("error", "电话格式错误");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setResponsiblePhone(map.get("responsbilePhone"));
+
+				if (StringUtil.isNotNullOrEmpty(map.get("dutyNum"))
+						&& !StringUtil.isMobile(map.get("dutyNum"))) {
+					map.put("error", "电话格式错误");
+					errorMaps.add(map);
+					continue;
+				}
+				deviceInfo.setDutyNum(map.get("dutyNum"));
+				/** ******************验证结束********************** */
+
+				DeviceType deviceType = this.deviceTypeService.findUniqueBy(
+						"typeCode", this.typeCode);
+
+				DeviceBrand deviceBrand = this.deviceBrandService
+						.findByCode(this.brandCode);
+
+				AreaInfo areaInfo = this.areaInfoService.findById(this.areaId);
+
+				UserInfo userInfo = getCurrentUser();
+
+				deviceInfo.setDeviceType(deviceType);
+				deviceInfo.setDeviceBrand(deviceBrand);
+				deviceInfo.setAreaId(areaInfo.getId());
+				deviceInfo.setCode(CodeUtil.generateIndexCode(areaInfo
+						.getCode(), "111"));
+				deviceInfo.setOperatorId(userInfo.getId());
+				deviceInfo.setStatus(0);
+				deviceInfo.setIsVoice(0);
+				deviceInfo.setIsNormal(1);
+				deviceInfo.setPagServerId(this.pagServerId);
+				deviceInfo.setDiskInfo("-1");
+				deviceInfo.setIpserverId(-1);
+
+				// 如果设备为网络摄像头，则不添加通道
+				if (!"网络摄像机".equals(deviceType.getTypeStr())) {
+					if (cameraCount < 0) {
+						cameraCount = 8;
+					}
+
+					Set<CameraInfo> cameras = new HashSet<CameraInfo>();
+					for (int i = 1; i < cameraCount + 1; i++) {
+						CameraInfo camera = new CameraInfo();
+						camera.setDeviceCode(deviceInfo.getCode());
+						camera.setChnNum(i);
+						camera.setName("通道" + i);
+						String cameraCode = CodeUtil.generateIndexCode(areaInfo
+								.getCode(), "131");
+						camera.setCode(cameraCode);
+						camera.setCreateTime(DateTimeUtil.getDateTime(System
+								.currentTimeMillis()));
+						camera.setChnType(1);
+						camera.setIsVoice(1);
+						camera.setDeviceInfo(deviceInfo);
+						cameras.add(camera);
+					}
+
+					deviceInfo.setCameraInfos(cameras);
+				} else {
+					deviceInfo.setCameraCount(0);
+				}
+				this.deviceInfoService.saveDeviceInfo(deviceInfo);
+			}
+			String title = "deviceImportErrors";
+			String strTitle = "设备名称,设备型号,通道数量,IP地址,端口号,设备登录名,登录密码,负责人,负责人电话,值班室电话,错误信息";
+			String outputPath = POIUtil.getOutputPath(getRealPath(), title);
+			POIUtil.exportExcelByMap(errorMaps, title, strTitle, strKeys
+					+ ",error", outputPath);
+
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("total", maps.size());
+			System.out.println(maps.size() - errorMaps.size());
+			map.put("ok", maps.size() - errorMaps.size());
+			map.put("error", errorMaps.size());
+			map.put("fileName", outputPath.replace(getRealPath(), ""));
+
+			JSONObject obj = JSONObject.fromObject(map);
+
+			// 如果存在错误信息
+			if (errorMaps.size() >= 0) {
+				writeResponse(false, obj.toString());
+			} else {
+				writeResponse(true, obj.toString());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

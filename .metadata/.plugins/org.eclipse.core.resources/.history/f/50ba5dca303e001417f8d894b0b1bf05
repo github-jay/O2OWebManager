@@ -1,0 +1,14 @@
+package test;
+
+import net.sf.json.JSONArray;
+
+import org.junit.Test;
+
+public class TestCode {
+	@Test
+	public void testJson() {
+		List<String> list = new ArrayList<String>();
+		JSONArray array = JSONArray.fromObject(attributes);
+		writeResponse(array.toString());
+	}
+}

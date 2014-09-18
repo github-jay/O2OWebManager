@@ -1,0 +1,8 @@
+package com.o2oweb.dto;
+
+import java.util.List;
+
+public class PackageBean {
+	private int total;
+	private List list;
+}
