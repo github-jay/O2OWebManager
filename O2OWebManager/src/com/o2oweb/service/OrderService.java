@@ -31,14 +31,9 @@ public class OrderService {
 		return orderDao.getOrder(OrderNum);
 	}
 
-	public Page findPageBean(RequestParamBean paramBean) {
-		DetachedCriteria detachedCriteria = DetachedCriteria
-				.forClass(Order.class);
-		if (paramBean == null) {
-			return null;
-		}
-		return this.orderDao.pagedQuery(detachedCriteria, paramBean.getStart(),
-				paramBean.getLimit());
+	public Page pagedQuery(DetachedCriteria dc,int rows,int page){
+		Page p = this.orderDao.pagedQuery(dc, rows * page, rows);
+		return p;
 	}
 
 	@Resource

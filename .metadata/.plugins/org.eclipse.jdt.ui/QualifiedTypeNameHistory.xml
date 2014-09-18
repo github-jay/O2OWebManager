@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.o2oweb.dao.ImageDao"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.Image"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.Itemlevel"/>
+<fullyQualifiedTypeName name="com.o2oweb.service.ImageService"/>
+<fullyQualifiedTypeName name="com.o2oweb.service.ItemattributeService"/>
+<fullyQualifiedTypeName name="javax.annotation.Resource"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.Itemattribute"/>
+<fullyQualifiedTypeName name="com.o2oweb.util.BaseAction"/>
+<fullyQualifiedTypeName name="net.sf.json.JSONArray"/>
+<fullyQualifiedTypeName name="org.junit.Test"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.Item"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.o2oweb.dto.PackageBean"/>
+<fullyQualifiedTypeName name="net.sf.json.JSONObject"/>
+</qualifiedTypeNameHistroy>

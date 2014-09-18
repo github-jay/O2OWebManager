@@ -1,0 +1,8 @@
+package test;
+
+public class TestCode {
+	@Test
+	public void testJson() {
+		
+	}
+}
