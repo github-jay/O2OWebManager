@@ -10,6 +10,9 @@
     <script language="javascript" src="../js/jquery.min.js"></script>
     <script language="javascript" src="../js/jquery.easyui.min.js"></script>
    <script>
+   var selectrow;		//记录选中的行号
+   var selectrowdata;	//记录选中的行数据
+   var selectitemid;	//记录选中的商品id
    	$(window).ready(function() {
 		
 		//创建表格
@@ -35,6 +38,9 @@
 	//表格右击显示菜单
 	$('#dg').datagrid({
 	onRowContextMenu: function(e,rowIndex,rowData){
+		
+		selectrow = rowIndex;
+		selectrowdata = rowData;
 		$('#mm').menu('show', {
 					left: e.pageX,
 					top: e.pageY
@@ -67,6 +73,20 @@
 				});
 	$('#filter_type').combobox('select','date');
 	
+	//窗口设置
+	$('#item_detial').window({onOpen:function(){
+			$('#item_property').propertygrid('load',{
+					itemId:selectitemid
+				});
+		}});
+	
+	//菜单操作
+	$('#show_detial').click(function (){
+			selectitemid = selectrowdata.itemId;
+			$('#item_detial').window('open');
+		});
+	
+	
 		});
   </script>
     
@@ -89,12 +109,24 @@
 
   <table id="dg"></table>
 
-  
+  <!-- 菜单-->
   <div id="mm" class="easyui-menu" style="width:120px;">  
-    <div>查看详情</div>  
+    <div id="show_detial">查看详情</div>
+    <div>编辑图片</div>  
     <div>移除</div>  
     <div class="menu-sep"></div>  
-    <div>Exit</div>  
+    <div>Exit</div>
+    
+  <!-- 详情窗口-->
+  <div	id="item_detial" class="easyui-window" title="商品详情" style="width:600px; height:500px; text-align:center" 
+  	data-options="closed:true,modal:true ">
+  	<table id="item_property" class="easyui-propertygrid" style="width:500px;"  
+        data-options="url:'/O2OWebManager/item/itemAction!itemDetial',showGroup:true,scrollbarSize:0,columns:[[
+        		{ field: 'name', title: '属性名称', width: 100, resizable: true },
+                { field: 'value', title: '属性值', width: 100, resizable: false }]]"></table>
+    <a id="btn_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+  </div>
+    
 </div> 
   </body>
 

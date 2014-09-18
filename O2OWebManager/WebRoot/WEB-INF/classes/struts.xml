@@ -36,6 +36,9 @@
 			<result type="json">
 				<param name="root">obj</param>
 			</result>
+			<result name="itemdetial" type="json">
+				<param name="root">obj</param>
+			</result>
 		</action>
 	</package>
 	<!-- <include file="com/all58/video/modules/user/login.xml"></include> -->
