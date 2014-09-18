@@ -24,6 +24,8 @@ import com.o2oweb.util.MyJson;
 @Service("itemAction")
 public class ItemAction extends BaseAction {
 
+	private final String DETIAL = "itemdetial";
+	
 	private ItemService itemService;
 	private Integer itemId;
 	private String itemName;
@@ -86,6 +88,58 @@ public class ItemAction extends BaseAction {
 		
 		writeResponse(obj);
 		return super.execute();
+	}
+	
+	public String itemDetial(){
+		JSONObject obj = null;
+		if(itemId != null){
+			Item item = itemService.getItem(itemId);
+			obj = entiy2json(item);
+			
+		}else {
+			obj = new JSONObject();
+			obj.accumulate("info", "error");
+		}
+		
+		writeResponse(obj);
+		return DETIAL;
+	}
+	
+	/**
+	 * 将实体类转换成前端商品详细信息json数据
+	 * @param item
+	 * @return
+	 */
+	private JSONObject entiy2json(Item item) {
+		JSONObject obj = new JSONObject();
+		JSONArray jsa = new JSONArray();
+		obj.accumulate("total", 9);
+		
+		//生成属性数据
+		jsa.add(cloum2json("商品编号", item.getItemId()+"", ""));
+		jsa.add(cloum2json("商品名称", item.getItemName(), "text"));
+		jsa.add(cloum2json("类别编号", item.getLevelId()+"", "text"));
+		jsa.add(cloum2json("销售价格", item.getPrice()+"", "text"));
+		jsa.add(cloum2json("进货价格", item.getInPrice()+"", "text"));
+		jsa.add(cloum2json("折扣", item.getDiscount()+"", "text"));
+		jsa.add(cloum2json("供应商编号", item.getSailerId()+"", "text"));
+		jsa.add(cloum2json("库存数量", item.getStockNum()+"", "text"));
+		jsa.add(cloum2json("条码信息", item.getBarCode(), "text"));
+		
+		
+		obj.accumulate("rows", jsa);
+		
+		return obj;
+	}
+
+	private JSONObject cloum2json(String name,String value,String editor){
+		JSONObject obj = new JSONObject();
+		
+		obj.accumulate("name", name);
+		obj.accumulate("value", value);
+		obj.accumulate("editor", editor);
+		
+		return obj;
 	}
 	
 	public void getItem() {
