@@ -48,7 +48,7 @@ public class ItemAction extends BaseAction {
 
 		this.itemService.save(item);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void remove() {
@@ -57,7 +57,7 @@ public class ItemAction extends BaseAction {
 
 		this.itemService.remove(item);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void update() {
@@ -66,7 +66,7 @@ public class ItemAction extends BaseAction {
 
 		this.itemService.update(item);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 	
 	@Override
