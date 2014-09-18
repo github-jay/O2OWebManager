@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.stereotype.Component;
 
-import com.o2oweb.bo.RequestParamBean;
 import com.o2oweb.common.dao.support.Page;
 import com.o2oweb.dao.OrderDao;
 import com.o2oweb.entity.Order;
