@@ -1,0 +1,11 @@
+﻿{"total":9,"rows":[   
+    {"name":"商品编号","value":"123","editor":""},   
+    {"name":"商品名称","value":"雅阁","editor":"text"},   
+    {"name":"类别编号","value":"0","editor":"text"},
+    {"name":"销售价格","value":"10","editor":"text"},
+    {"name":"进货价格","value":"9","editor":"text"},
+    {"name":"折扣","value":"1","editor":"text"},
+	{"name":"供应商编号","value":"0","editor":"text"},
+	{"name":"库存数量","value":"100","editor":"text"},
+	{"name":"条码信息","value":"1020901823","editor":"text"}
+]}

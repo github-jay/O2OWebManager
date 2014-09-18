@@ -29,7 +29,7 @@ public class ItemLevelAction extends BaseAction {
 
 		this.itemLevelService.save(itemLevel);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void remove() {
@@ -38,7 +38,7 @@ public class ItemLevelAction extends BaseAction {
 
 		this.itemLevelService.remove(itemLevel);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void update() {
@@ -47,7 +47,7 @@ public class ItemLevelAction extends BaseAction {
 
 		this.itemLevelService.update(itemLevel);
 
-		writeResponse("true");
+		writeResponse(true);
 	}
 
 	public void getItemLevel() {
