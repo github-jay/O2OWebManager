@@ -1,0 +1,16 @@
+#Fri Sep 19 13:06:27 CST 2014
+eclipse.preferences.version=1
+encoding//WebRoot/upload_file.jsp=UTF-8
+encoding//src/com/o2oweb/action/FileAction.java=UTF-8
+encoding//src/com/o2oweb/action/ImageAction.java=UTF-8
+encoding//src/com/o2oweb/action/ItemAction.java=UTF-8
+encoding//src/com/o2oweb/action/OrderAction.java=UTF-8
+encoding//src/com/o2oweb/action/RollbarAction.java=UTF-8
+encoding//src/com/o2oweb/action/SailerAction.java=UTF-8
+encoding//src/com/o2oweb/action/UserAction.java=UTF-8
+encoding//src/com/o2oweb/action/UseraddressAction.java=UTF-8
+encoding//src/com/o2oweb/dao/Page3Dao.java=UTF-8
+encoding//src/com/o2oweb/dao/RollbarDao.java=UTF-8
+encoding//src/com/o2oweb/dao/impl/Page3DaoImpl.java=UTF-8
+encoding//src/com/o2oweb/dao/impl/RollbarDaoImpl.java=UTF-8
+encoding//src/com/o2oweb/util/ValidateCodeUtil.java=UTF-8

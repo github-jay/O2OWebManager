@@ -1,0 +1,79 @@
+package com.o2oweb.action;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.entity.OrderItem;
+import com.o2oweb.service.OrderItemService;
+import com.o2oweb.util.BaseAction;
+import com.o2oweb.util.MyJson;
+
+@Scope("request")
+@Service("orderItemAction")
+public class OrderItemAction extends BaseAction {
+
+	private OrderItemService orderItemService;
+
+	private Integer idOrderItem;
+	private Integer itemId;
+	private String orderNum;
+	private Integer itemNum;
+	private float itemPrice;
+
+	public void save() {
+		Date lastuse = new Date();
+
+		orderItem orderItem = new orderItem(address, username, tel, userId,
+				lastuse);
+
+		this.orderItemService.save(orderItem);
+
+		writeResponse(true);
+	}
+
+	public void remove() {
+		orderItem orderItem = new orderItem();
+		orderItem.setIdorderItem(idorderItem);
+
+		this.orderItemService.remove(orderItem);
+
+		writeResponse(true);
+	}
+
+	public void update() {
+		Date lastuse = new Date();
+
+		orderItem orderItem = new orderItem(address, username, tel, userId,
+				lastuse);
+		orderItem.setIdorderItem(idorderItem);
+
+		this.orderItemService.update(orderItem);
+
+		writeResponse(true);
+	}
+
+	public void getorderItemByAddId() {
+		orderItem orderItem = this.orderItemService.getorderItem(idorderItem);
+
+		JSONObject obj = JSONObject.fromObject(orderItem);
+		writeResponse(obj.toString());
+	}
+
+	public void getorderItemByUserId() {
+		List<orderItem> list = this.orderItemService.getAddrs(userId);
+
+		JSONArray array = JSONArray.fromObject(list);
+		writeResponse(array.toString());
+	}
+
+}

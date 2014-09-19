@@ -2,12 +2,12 @@ package com.o2oweb.dao;
 
 import java.util.List;
 
-import com.o2oweb.entity.Orderitem;
+import com.o2oweb.entity.OrderItem;
 
 public interface OrderItemDao {
-	public void save(Orderitem orderItem);
-	public void update(Orderitem orderItem);
-	public void remove(Orderitem orderItem);
-	public Orderitem getOrderItem(int orderItemID);
-	public List<Orderitem> getItems(String orderNum);
+	public void save(OrderItem orderItem);
+	public void update(OrderItem orderItem);
+	public void remove(OrderItem orderItem);
+	public OrderItem getOrderItem(int orderItemID);
+	public List<OrderItem> getItems(String orderNum);
 }
