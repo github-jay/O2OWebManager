@@ -1,0 +1,54 @@
+package com.o2oweb.service;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.stereotype.Component;
+
+import com.o2oweb.bo.RequestParamBean;
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.dao.UseraddressDao;
+import com.o2oweb.entity.Useraddress;
+
+@Component("useraddressService")
+public class UseraddressService {
+
+	private UseraddressDao useraddressDao;
+
+	public void save(Useraddress useraddress) {
+		this.useraddressDao.save(useraddress);
+	}
+
+	public void remove(Useraddress useraddress) {
+		this.useraddressDao.removeAddr(useraddress);
+	}
+
+	public void update(Useraddress useraddress) {
+		this.useraddressDao.update(useraddress);
+	}
+
+	public Useraddress getuseraddress(int userId) {
+		return useraddressDao.getAddr(userId);
+	}
+
+	public Page findPageBean(RequestParamBean paramBean) {
+		DetachedCriteria detachedCriteria = DetachedCriteria
+				.forClass(Useraddress.class);
+		if (paramBean == null) {
+			return null;
+		}
+		return this.useraddressDao.pagedQuery(detachedCriteria,
+				paramBean.getStart(), paramBean.getLimit());
+	}
+
+	public List<Useraddress> getAddrs(int addrId) {
+		return this.useraddressDao.getAddrs(addrId);
+	}
+
+	@Resource
+	public void setuseraddressDao(UseraddressDao useraddressDao) {
+		this.useraddressDao = useraddressDao;
+	}
+}

@@ -29,22 +29,17 @@ public class UseraddressService {
 		this.useraddressDao.update(useraddress);
 	}
 
-	public Useraddress getuseraddress(int userId) {
-		return useraddressDao.getAddr(userId);
+	public Useraddress getUseraddress(int addId) {
+		return useraddressDao.getAddr(addId);
 	}
 
-	public Page findPageBean(RequestParamBean paramBean) {
-		DetachedCriteria detachedCriteria = DetachedCriteria
-				.forClass(Useraddress.class);
-		if (paramBean == null) {
-			return null;
-		}
-		return this.useraddressDao.pagedQuery(detachedCriteria,
-				paramBean.getStart(), paramBean.getLimit());
+	public Page pagedQuery(DetachedCriteria dc, int rows, int page) {
+		Page p = this.useraddressDao.pagedQuery(dc, rows * page, rows);
+		return p;
 	}
 
-	public List<Useraddress> getAddrs(int addrId) {
-		return this.useraddressDao.getAddrs(addrId);
+	public List<Useraddress> getAddrs(int userId) {
+		return this.useraddressDao.getAddrs(userId);
 	}
 
 	@Resource

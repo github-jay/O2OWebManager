@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "orderitem", catalog = "o2owebsit")
-public class Orderitem implements java.io.Serializable {
+public class OrderItem implements java.io.Serializable {
 
 	// Fields
 
@@ -24,11 +24,11 @@ public class Orderitem implements java.io.Serializable {
 	// Constructors
 
 	/** default constructor */
-	public Orderitem() {
+	public OrderItem() {
 	}
 
 	/** full constructor */
-	public Orderitem(Integer itemId, String orderNum, Integer itemNum,
+	public OrderItem(Integer itemId, String orderNum, Integer itemNum,
 			float itemPrice) {
 		this.itemId = itemId;
 		this.orderNum = orderNum;

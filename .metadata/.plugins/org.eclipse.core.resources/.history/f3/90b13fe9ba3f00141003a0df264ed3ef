@@ -1,0 +1,86 @@
+package com.o2oweb.action;
+
+import java.util.Date;
+
+import javax.annotation.Resource;
+
+import net.sf.json.JSONObject;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.entity.Useraddress;
+import com.o2oweb.service.UseraddressService;
+import com.o2oweb.util.BaseAction;
+import com.o2oweb.util.MyJson;
+
+@Scope("request")
+@Service("useraddressAction")
+public class UseraddressAction extends BaseAction {
+
+	private UseraddressService useraddressService;
+	
+	private Integer idUserAddress;
+	private String address;
+	private String username;
+	private String tel;
+	private Integer userId;
+	private Date lastuse;
+
+	// 分页参数
+	private String rows; // 每页多少行
+	private String page; // 当前页码
+	private String orderby; // 过滤条件
+
+	// 查询用户
+	private String loginMes;
+	private char type;
+
+	public void save() {
+		useraddress useraddress = new useraddress(useraddressName, password, email, tel, useraddressQq, nickName,
+				useraddressLevel, score, iconAddr, power, addrId);
+
+		this.useraddressService.save(useraddress);
+
+		writeResponse(true);
+	}
+
+	public void remove() {
+		useraddress useraddress = new useraddress();
+		useraddress.setuseraddressId(useraddressId);
+
+		this.useraddressService.remove(useraddress);
+
+		writeResponse(true);
+	}
+
+	public void update() {
+		useraddress useraddress = new useraddress(useraddressName, password, email, tel, useraddressQq, nickName,
+				useraddressLevel, score, iconAddr, power, addrId);
+		useraddress.setuseraddressId(useraddressId);
+
+		this.useraddressService.update(useraddress);
+
+		writeResponse(true);
+	}
+
+	public void getuseraddress() {
+		useraddress useraddress = this.useraddressService.getuseraddress(loginMes, type);
+
+		JSONObject obj = JSONObject.fromObject(useraddress);
+		writeResponse(obj.toString());
+	}
+
+	public void pageQuery() {
+		DetachedCriteria dc = DetachedCriteria.forClass(useraddress.class);
+		Page p = this.useraddressService.pagedQuery(dc, Integer.valueOf(rows),
+				Integer.valueOf(page));
+
+		JSONObject obj = MyJson.page2Jsobj(p);
+
+		writeResponse(obj);
+	}
+
+}

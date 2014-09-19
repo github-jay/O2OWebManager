@@ -10,7 +10,7 @@ import com.o2oweb.common.dao.HibernateEntityDao;
 import com.o2oweb.common.dao.support.Page;
 import com.o2oweb.dao.OrderDao;
 import com.o2oweb.entity.Order;
-import com.o2oweb.entity.Orderitem;
+import com.o2oweb.entity.OrderItem;
 @Component("OrderDao")
 public class OrderDaoImpl extends HibernateEntityDao<Order> implements OrderDao{
 
@@ -22,7 +22,7 @@ public class OrderDaoImpl extends HibernateEntityDao<Order> implements OrderDao{
 
 	public void remove(Order order) {
 		// TODO Auto-generated method stub
-		List<Orderitem> items = super.find("from Orderitem o where o.orderNum=?", new Object[]{order.getOrderNum()});
+		List<OrderItem> items = super.find("from Orderitem o where o.orderNum=?", new Object[]{order.getOrderNum()});
 		super.removeAll(items);
 		super.remove(order);
 	}

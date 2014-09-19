@@ -1,0 +1,224 @@
+package com.o2oweb.action;
+
+import java.util.Date;
+
+import javax.annotation.Resource;
+
+import net.sf.json.JSONObject;
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.entity.Useraddress;
+import com.o2oweb.service.UseraddressService;
+import com.o2oweb.util.BaseAction;
+import com.o2oweb.util.MyJson;
+
+@Scope("request")
+@Service("useraddressAction")
+public class UseraddressAction extends BaseAction {
+
+	private UseraddressService useraddressService;
+
+	// 分页参数
+	private String rows; // 每页多少行
+	private String page; // 当前页码
+	private String orderby; // 过滤条件
+
+	// 查询用户
+	private String loginMes;
+	private char type;
+
+	public void save() {
+		useraddress useraddress = new useraddress(useraddressName, password, email, tel, useraddressQq, nickName,
+				useraddressLevel, score, iconAddr, power, addrId);
+
+		this.useraddressService.save(useraddress);
+
+		writeResponse(true);
+	}
+
+	public void remove() {
+		useraddress useraddress = new useraddress();
+		useraddress.setuseraddressId(useraddressId);
+
+		this.useraddressService.remove(useraddress);
+
+		writeResponse(true);
+	}
+
+	public void update() {
+		useraddress useraddress = new useraddress(useraddressName, password, email, tel, useraddressQq, nickName,
+				useraddressLevel, score, iconAddr, power, addrId);
+		useraddress.setuseraddressId(useraddressId);
+
+		this.useraddressService.update(useraddress);
+
+		writeResponse(true);
+	}
+
+	public void getuseraddress() {
+		useraddress useraddress = this.useraddressService.getuseraddress(loginMes, type);
+
+		JSONObject obj = JSONObject.fromObject(useraddress);
+		writeResponse(obj.toString());
+	}
+
+	public void pageQuery() {
+		DetachedCriteria dc = DetachedCriteria.forClass(useraddress.class);
+		Page p = this.useraddressService.pagedQuery(dc, Integer.valueOf(rows),
+				Integer.valueOf(page));
+
+		JSONObject obj = MyJson.page2Jsobj(p);
+
+		writeResponse(obj);
+	}
+
+	public useraddressService getuseraddressService() {
+		return useraddressService;
+	}
+
+	@Resource
+	public void setuseraddressService(useraddressService useraddressService) {
+		this.useraddressService = useraddressService;
+	}
+
+	public Integer getuseraddressId() {
+		return useraddressId;
+	}
+
+	public void setuseraddressId(Integer useraddressId) {
+		this.useraddressId = useraddressId;
+	}
+
+	public String getuseraddressName() {
+		return useraddressName;
+	}
+
+	public void setuseraddressName(String useraddressName) {
+		this.useraddressName = useraddressName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getuseraddressQq() {
+		return useraddressQq;
+	}
+
+	public void setuseraddressQq(String useraddressQq) {
+		this.useraddressQq = useraddressQq;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public String getuseraddressLevel() {
+		return useraddressLevel;
+	}
+
+	public void setuseraddressLevel(String useraddressLevel) {
+		this.useraddressLevel = useraddressLevel;
+	}
+
+	public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
+
+	public String getIconAddr() {
+		return iconAddr;
+	}
+
+	public void setIconAddr(String iconAddr) {
+		this.iconAddr = iconAddr;
+	}
+
+	public Integer getPower() {
+		return power;
+	}
+
+	public void setPower(Integer power) {
+		this.power = power;
+	}
+
+	public Integer getAddrId() {
+		return addrId;
+	}
+
+	public void setAddrId(Integer addrId) {
+		this.addrId = addrId;
+	}
+
+	public String getRows() {
+		return rows;
+	}
+
+	public void setRows(String rows) {
+		this.rows = rows;
+	}
+
+	public String getPage() {
+		return page;
+	}
+
+	public void setPage(String page) {
+		this.page = page;
+	}
+
+	public String getOrderby() {
+		return orderby;
+	}
+
+	public void setOrderby(String orderby) {
+		this.orderby = orderby;
+	}
+
+	public String getLoginMes() {
+		return loginMes;
+	}
+
+	public void setLoginMes(String loginMes) {
+		this.loginMes = loginMes;
+	}
+
+	public char getType() {
+		return type;
+	}
+
+	public void setType(char type) {
+		this.type = type;
+	}
+
+}

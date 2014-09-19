@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.stereotype.Component;
 
-import com.o2oweb.bo.RequestParamBean;
 import com.o2oweb.common.dao.support.Page;
 import com.o2oweb.dao.UserDao;
 import com.o2oweb.entity.User;
@@ -32,14 +31,9 @@ public class UserService {
 		return userDao.getUser(loginMes, type);
 	}
 
-	public Page findPageBean(RequestParamBean paramBean) {
-		DetachedCriteria detachedCriteria = DetachedCriteria
-				.forClass(User.class);
-		if (paramBean == null) {
-			return null;
-		}
-		return this.userDao.pagedQuery(detachedCriteria, paramBean.getStart(),
-				paramBean.getLimit());
+	public Page pagedQuery(DetachedCriteria dc,int rows,int page){
+		Page p = this.userDao.pagedQuery(dc, rows * page, rows);
+		return p;
 	}
 
 	@Resource
