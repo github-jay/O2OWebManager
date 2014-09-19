@@ -26,39 +26,7 @@ public class ItemService {
 	}
 
 	public void update(Item item) {
-		Item oldItem = this.itemDao.getItem(item.getItemId());
-		
-		if(item.getItemName() != null){
-			oldItem.setItemName(item.getItemName());
-		}
-		if(item.getLevelId() != null){
-			oldItem.setLevelId(item.getLevelId());
-		}
-		if(item.getPrice() != 0){
-			oldItem.setPrice(item.getPrice());
-		}
-		if(item.getInPrice() != 0){
-			oldItem.setInPrice(item.getInPrice());
-		}
-		if(item.getDiscount() != null){
-			oldItem.setDiscount(item.getDiscount());
-		}
-		if(item.getSailerId() != null){
-			oldItem.setSailerId(item.getSailerId());
-		}
-		if(item.getImageId() != null){
-			oldItem.setImageId(item.getImageId());
-		}
-		if(item.getItemDetail() != null){
-			oldItem.setItemDetail(item.getItemDetail());
-		}
-		if(item.getStockNum() != null){
-			oldItem.setStockNum(item.getStockNum());
-		}
-		if(item.getBarCode() != null){
-			oldItem.setBarCode(item.getBarCode());
-		}
-		this.itemDao.update(oldItem);
+		this.itemDao.update(item);
 	}
 
 	public Item getItem(int itemId) {
@@ -89,7 +57,7 @@ public class ItemService {
 		return null;
 	}
 	public Page itemquery(DetachedCriteria dc,int rows,int page){
-		Page p = itemDao.pagedQuery(dc, rows * (page-1), rows);
+		Page p = itemDao.pagedQuery(dc, rows * page, rows);
 		return p;
 	}
 }
