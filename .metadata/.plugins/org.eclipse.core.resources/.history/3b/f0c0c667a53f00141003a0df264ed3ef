@@ -98,6 +98,9 @@ public class FileAction extends BaseAction {
 				is.close();
 				os.close();
 
+				System.out.println("imageURL" + destFile.getAbsolutePath());
+				System.out.println("imageURL" + destFile.getAbsolutePath());
+				
 				Image image = new Image();
 				image.setImageUrl(destFile.getAbsolutePath());
 				image.setImageName(fileFileName.get(i));

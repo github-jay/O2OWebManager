@@ -11,12 +11,16 @@ public class PropertiesUtil {
 		Properties prop = new Properties();
 		String url = this.getClass().getClassLoader()
 				.getResource("server.properties").toString().substring(6);
+		System.out.println("url" + url);
 		String empUrl = url.replace("%20", " ");// 如果你的文件路径中包含空格，是必定会报错的
+		System.out.println("empurl" + empUrl);
 		InputStream in = null;
 		try {
 			in = new BufferedInputStream(new FileInputStream(empUrl));
+			System.out.println("****************in:" + in);
 			prop.load(in);
 			String value = prop.getProperty(key).trim();
+			System.out.println("*****************value:" + value);
 			in.close();
 			return value;
 		} catch (IOException e) {

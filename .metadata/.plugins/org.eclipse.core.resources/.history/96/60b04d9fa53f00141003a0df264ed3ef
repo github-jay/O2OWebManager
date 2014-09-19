@@ -30,13 +30,20 @@ public class TestCode {
 				new Object[] { code, df.format(new Date()),
 						Integer.valueOf(r.nextInt(100000)) }));
 	}
-
+	
 	@Test
 	public void testProperties() {
 		Random r = new Random();
 		DateFormat df = new SimpleDateFormat("yyMMddhhmmss");
+		File destFile = new File(PropertiesUtil.getValue("imageURL"),
+				String.format(
+						"%s%s%06d",
+						new Object[] { "test", df.format(new Date()),
+								Integer.valueOf(r.nextInt(100000)) }));
+		System.out.println(destFile.getPath());
+		System.out.println(PropertiesUtil.getValue("imageURL"));
 	}
-
+	
 	@Test
 	public void getValue() {
 		Properties prop = new Properties();
@@ -53,11 +60,5 @@ public class TestCode {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Test
-	public void getPath() {
-		System.out.println(this.getClass().getClassLoader()
-				.getResource("server.properties").toString());
 	}
 }

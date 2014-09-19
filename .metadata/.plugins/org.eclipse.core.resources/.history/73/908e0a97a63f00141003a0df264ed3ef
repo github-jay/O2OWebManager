@@ -30,13 +30,13 @@ public class TestCode {
 				new Object[] { code, df.format(new Date()),
 						Integer.valueOf(r.nextInt(100000)) }));
 	}
-
+	
 	@Test
 	public void testProperties() {
 		Random r = new Random();
 		DateFormat df = new SimpleDateFormat("yyMMddhhmmss");
 	}
-
+	
 	@Test
 	public void getValue() {
 		Properties prop = new Properties();
@@ -53,11 +53,5 @@ public class TestCode {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Test
-	public void getPath() {
-		System.out.println(this.getClass().getClassLoader()
-				.getResource("server.properties").toString());
 	}
 }

@@ -62,8 +62,10 @@ public class FileAction extends BaseAction {
 					item.setPrice(Float.valueOf(row.get("销售价（必填）").trim()));
 					item.setStockNum(Integer.valueOf(row.get("库存量（必填）").trim()));
 					item.setBarCode(row.get("条码（必填）").trim());
+					System.out.println("进货价输入："+row.get("进货价（必填）").trim());
+					System.out.println("进货价转换："+Float.valueOf(row.get("进货价（必填）").trim()));
 					item.setInPrice(Float.valueOf(row.get("进货价（必填）").trim()));
-					itemService.save(item);
+//					itemService.save(item);
 				}
 			}
 
