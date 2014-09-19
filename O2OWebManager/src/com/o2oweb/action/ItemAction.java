@@ -45,7 +45,7 @@ public class ItemAction extends BaseAction {
 	public void save() {
 		Item item = new Item(itemName, levelId, price, inPrice, discount,
 				sailerId, imageId, itemDetail, stockNum, barCode);
-
+		
 		this.itemService.save(item);
 
 		writeResponse("true");
@@ -63,10 +63,24 @@ public class ItemAction extends BaseAction {
 	public void update() {
 		Item item = new Item(itemName, levelId, price, inPrice, discount,
 				sailerId, imageId, itemDetail, stockNum, barCode);
-
+		item.setItemId(itemId);
 		this.itemService.update(item);
 
-		writeResponse("true");
+		JSONObject obj = new JSONObject();
+
+		writeResponse(true);
+	}
+	/**
+	 * 获取详细介绍
+	 */
+	public void getdet(){
+		Item item = itemService.getItem(itemId);
+		String det = item.getItemDetail();
+		if(det != null){
+			writeResponse(det);
+		}else{
+			writeResponse("");
+		}
 	}
 	
 	@Override
