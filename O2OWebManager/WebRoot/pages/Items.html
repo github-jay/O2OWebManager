@@ -9,10 +9,15 @@
     <link rel="stylesheet" type="text/css" href="../css/items_css.css">
     <script language="javascript" src="../js/jquery.min.js"></script>
     <script language="javascript" src="../js/jquery.easyui.min.js"></script>
+    <script language="javascript" src="../js/ckeditor/ckeditor.js"></script>
+    <script language="javascript" src="../js/ckeditor/config.js"></script>
    <script>
    var selectrow;		//记录选中的行号
    var selectrowdata;	//记录选中的行数据
    var selectitemid;	//记录选中的商品id
+   
+   var updateurl = '/O2OWebManager/item/itemAction!update';	//保存按钮数据发送URL
+   var getdeturl = '/O2OWebManager/item/itemAction!getdet';	//获取详细内容URL
    	$(window).ready(function() {
 		
 		//创建表格
@@ -41,6 +46,7 @@
 		
 		selectrow = rowIndex;
 		selectrowdata = rowData;
+		selectitemid = rowData.itemId;
 		$('#mm').menu('show', {
 					left: e.pageX,
 					top: e.pageY
@@ -79,15 +85,67 @@
 					itemId:selectitemid
 				});
 		}});
+	$('#item_detial').window({onClose:function(){
+			$('#dg').datagrid('reload');
+		}});
+	//窗口保存按钮
+	$('#btn_save').click(function (){
+			var itemdata = $('#item_property').propertygrid('getData');
+			var datarows = itemdata.rows;
+			var itemobj = {};
+			//组拼数据
+			itemobj.itemId = datarows[0].value;
+			itemobj.itemName = datarows[1].value;
+			itemobj.levelId = datarows[2].value;
+			itemobj.price = datarows[3].value;
+			itemobj.inPrice = datarows[4].value;
+			itemobj.discount = datarows[5].value;
+			itemobj.sailerId = datarows[6].value;
+			itemobj.stockNum = datarows[7].value;
+			itemobj.barCode = datarows[8].value;
+			
+			$.post(updateurl,itemobj,function(result){
+					if(result){
+						$.messager.alert('Warning','保存成功'); 
+						$('#item_detial').window('close');
+					}
+				});
+		});
+	//细节输入窗口设置
+	
+	$('#detial_input').window({onOpen:function(){
+		var senddata = {};
+		senddata.itemId = selectitemid;
+			$.post(getdeturl,senddata,function(result){
+					CKEDITOR.instances.detial_context.setData(result);
+				});
+		}});
 	
 	//菜单操作
 	$('#show_detial').click(function (){
 			selectitemid = selectrowdata.itemId;
 			$('#item_detial').window('open');
 		});
-	
-	
+	$('#editdetial').click(function (){
+			$('#detial_input').window('open');
 		});
+	
+	
+	//细节菜单按钮
+	$('#det_save').click(function(){
+			var det_content= CKEDITOR.instances.detial_context.getData();
+			var senddata = {};
+			senddata.itemId = selectitemid;
+			senddata.itemDetail = det_content;
+			$.post(updateurl,senddata,function(result){
+					if(result){
+						$.messager.alert('Warning','保存成功'); 
+						$('#item_detial').window('close');
+					}
+				});
+		});
+		
+});
   </script>
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
@@ -112,6 +170,7 @@
   <!-- 菜单-->
   <div id="mm" class="easyui-menu" style="width:120px;">  
     <div id="show_detial">查看详情</div>
+    <div id="editdetial">编辑详细介绍</div>
     <div>编辑图片</div>  
     <div>移除</div>  
     <div class="menu-sep"></div>  
@@ -126,7 +185,13 @@
                 { field: 'value', title: '属性值', width: 100, resizable: false }]]"></table>
     <a id="btn_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
   </div>
-    
+ <!-- 详细信息输入窗口-->
+ <div id="detial_input" class="easyui-window" title="商品详细介绍" style="width:800px; height:500px; text-align:center" 
+ 	data-options="modal:true,closed:true">
+    	<textarea id="detial_context" class="ckeditor" name="detial_context"></textarea>
+        <a id="det_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+    </div>
+ 
 </div> 
   </body>
 
