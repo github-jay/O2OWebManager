@@ -1,6 +1,5 @@
 package com.o2oweb.util;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import com.o2oweb.common.dao.support.Page;

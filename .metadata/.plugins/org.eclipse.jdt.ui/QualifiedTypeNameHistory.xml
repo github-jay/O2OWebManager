@@ -16,9 +16,7 @@
 <fullyQualifiedTypeName name="com.o2oweb.util.POIUtil"/>
 <fullyQualifiedTypeName name="net.sf.json.JSONObject"/>
 <fullyQualifiedTypeName name="com.o2oweb.util.StringUtil"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
-<fullyQualifiedTypeName name="com.o2oweb.entity.Item"/>
 <fullyQualifiedTypeName name="com.o2oweb.service.ItemService"/>
 <fullyQualifiedTypeName name="javax.annotation.Resource"/>
 <fullyQualifiedTypeName name="org.apache.struts2.ServletActionContext"/>
@@ -30,4 +28,15 @@
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="java.text.DateFormat"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.Order"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.User"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.OrderItem"/>
+<fullyQualifiedTypeName name="com.o2oweb.entity.Item"/>
+<fullyQualifiedTypeName name="com.o2oweb.service.OrderItemService"/>
+<fullyQualifiedTypeName name="com.o2oweb.service.UserService"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="com.o2oweb.dto.OrderBean"/>
+<fullyQualifiedTypeName name="com.o2oweb.util.DateTimeUtil"/>
+<fullyQualifiedTypeName name="com.o2oweb.util.DateTimeUtils"/>
 </qualifiedTypeNameHistroy>

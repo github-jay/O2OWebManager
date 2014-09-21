@@ -1,6 +1,8 @@
 package com.o2oweb.action;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -11,8 +13,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.o2oweb.common.dao.support.Page;
+import com.o2oweb.dto.OrderBean;
 import com.o2oweb.entity.Order;
+import com.o2oweb.service.OrderItemService;
 import com.o2oweb.service.OrderService;
+import com.o2oweb.service.UserService;
 import com.o2oweb.util.BaseAction;
 import com.o2oweb.util.MyJson;
 
@@ -21,6 +26,8 @@ import com.o2oweb.util.MyJson;
 public class OrderAction extends BaseAction {
 
 	private OrderService orderService;
+	private OrderItemService orderItemService;
+	private UserService userService;
 	private Integer orderId;
 	private String orderNum;
 	private Integer userId;
@@ -73,9 +80,26 @@ public class OrderAction extends BaseAction {
 
 	public void pageQuery() {
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
-		Page p = this.orderService.pagedQuery(dc, Integer.valueOf(rows),
-				Integer.valueOf(page));
+		if (orderby != null) {
+			dc.addOrder(org.hibernate.criterion.Order.asc(orderby));
+		}
 
+		Page p = this.orderService.pagedQuery(dc, Integer.valueOf(rows),
+				Integer.valueOf(page) - 1);
+
+		List<OrderBean> obs = new LinkedList<OrderBean>();
+		List<Order> os = (List<Order>) p.getData();
+		for (Order o : os) {
+			OrderBean ob = new OrderBean();
+			ob.setOrder(o);
+			ob.setTotalPrice(this.orderItemService.getTotalPriceByOrderNum(o
+					.getOrderNum()));
+			ob.setUser(this.userService.getUser(o.getUserId()));
+
+			obs.add(ob);
+		}
+
+		p.setData(obs);
 		JSONObject obj = MyJson.page2Jsobj(p);
 
 		writeResponse(obj);
@@ -184,6 +208,24 @@ public class OrderAction extends BaseAction {
 
 	public void setOrderby(String orderby) {
 		this.orderby = orderby;
+	}
+
+	public OrderItemService getOrderItemService() {
+		return orderItemService;
+	}
+
+	@Resource
+	public void setOrderItemService(OrderItemService orderItemService) {
+		this.orderItemService = orderItemService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	@Resource
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 }

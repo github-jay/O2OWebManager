@@ -85,9 +85,6 @@ public class ItemAction extends BaseAction {
 	
 	@Override
 	public String execute() throws Exception {
-		System.out.println(rows);
-		System.out.println(page);
-		
 		DetachedCriteria dc = DetachedCriteria.forClass(Item.class);
 		if("price_desc".endsWith(orderby)){
 			dc.addOrder(Order.desc("price"));

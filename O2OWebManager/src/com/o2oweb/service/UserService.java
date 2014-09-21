@@ -26,6 +26,10 @@ public class UserService {
 	public void update(User user) {
 		this.userDao.update(user);
 	}
+	
+	public User getUser(Integer id) {
+		return userDao.getUser(id);
+	}
 
 	public User getUser(String loginMes, char type) {
 		return userDao.getUser(loginMes, type);
