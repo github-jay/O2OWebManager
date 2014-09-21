@@ -30,7 +30,7 @@ public class OrderItemDaoImpl extends HibernateEntityDao<OrderItem> implements
 
 	public List<OrderItem> getItems(String orderNum) {
 		List<OrderItem> result = super.find(
-				"from Orderitem o where o.orderNum=?",
+				"from OrderItem o where o.orderNum=?",
 				new Object[] { orderNum });
 		return result;
 	}
