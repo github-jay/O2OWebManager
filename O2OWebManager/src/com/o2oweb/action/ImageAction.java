@@ -96,4 +96,10 @@ public class ImageAction extends BaseAction {
 		JSONObject obj = this.imageService.setmainImage(itemId,Integer.valueOf(imageID));
 		writeResponse(obj);
 	}
+	
+	//移除图片
+	public void removeItemimage(){
+		JSONObject obj = this.imageService.removeImage(itemId,Integer.valueOf(imageID));
+		writeResponse(obj);
+	}
 }

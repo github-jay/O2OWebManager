@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -57,8 +59,12 @@ public class Ajaxfileaction extends BaseAction {
 		image.setImageUrl(destFile.getAbsolutePath());
 		image.setItemId(Integer.parseInt(itemId));
 		imageService.save(image);
-
-		writeResponse("aaaa");
+		
+		JSONObject obj = new JSONObject();
+		obj.accumulate("status", true);
+		obj.accumulate("info", "上传成功");
+		
+		writeResponse(obj);
 		return super.execute();
 	}
 	
