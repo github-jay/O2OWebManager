@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!--自动热部署 -->
+	<constant name="struts.devMode" value="true" />
+	<!-- 默认上传文件大小 -->
+	<constant name="struts.multipart.maxSize" value="100000000" />
+	<constant name="struts.objectFactory" value="spring"></constant>
+	<!-- 默认执行用户信息查询 并跳转到展示界面 -->
+	<!-- 这里有一个bug 可以跳转到相应的页面，但是无法进入action 慎用 -->
+	<!-- <package name="loginIndex" namespace="/" extends="struts-default"> 
+		<default-action-ref name="index" /> <action name="loginIndex" class="com.all58.video.modules.user.action.LoginAction" 
+		method="index"> <result name="login">/loginTest.jsp</result> </action> </package> -->
+	<package name="jump" extends="struts-default" namespace="/jump">
+		
+	</package>
+	<!-- <package name="user" extends="struts-default" namespace="/user"> <action 
+		name="userAction" class="userAction"> <result>/pages/Index.jsp</result> <result 
+		name="toSelect">/pages/Index2.jsp</result> <result name="toShop" type="redirectAction">page3/page3Action.action</result> 
+		</action> </package> -->
+	<package name="user" extends="json-default" namespace="/user">
+		
+	</package>
+	<package name="image" extends="json-default" namespace="/image">
+		<action name="getImage" class="getImage">
+			<result type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+	</package>
+	<package name="item" extends="json-default" namespace="/item">
+		<action name="itemAction" class="itemAction">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+			<result name="itemdetial" type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
+	</package>
+	<package name="file" extends="json-default" namespace="/file">
+		<action name="fileAction" class="fileAction">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
+	</package>
+	<package name="order" extends="json-default" namespace="/order">
+		<action name="fileAction" class="fileAction">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
+	</package>
+	<!-- <include file="com/all58/video/modules/user/login.xml"></include> -->
+</struts>

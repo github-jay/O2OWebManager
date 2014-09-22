@@ -54,5 +54,12 @@
 			</result>
 		</action>
 	</package>
+	<package name="order" extends="json-default" namespace="/order">
+		<action name="orderAction" class="orderAction">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
+	</package>
 	<!-- <include file="com/all58/video/modules/user/login.xml"></include> -->
 </struts>

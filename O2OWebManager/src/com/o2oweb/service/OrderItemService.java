@@ -34,6 +34,21 @@ public class OrderItemService {
 		return orderItemDao.getItems(orderNum);
 	}
 
+	public float getTotalPriceByOrderNum(String orderNum) {
+		List<OrderItem> list = this.orderItemDao.getItems(orderNum);
+		float total = 0;
+		for (OrderItem oi : list) {
+			total += oi.getItemPrice() * oi.getItemNum();
+		}
+
+		// 不足100加5元快递费
+		if (total < 100) {
+			total += 5;
+		}
+
+		return total;
+	}
+
 	@Resource
 	public void setOrderItemDao(OrderItemDao orderItemDao) {
 		this.orderItemDao = orderItemDao;

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Orders.html</title>
+	
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../js/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../css/items_css.css">
+    <script language="javascript" src="../js/jquery.min.js"></script>
+    <script language="javascript" src="../js/jquery.easyui.min.js"></script>
+    <script language="javascript" src="../js/ckeditor/ckeditor.js"></script>
+    <script language="javascript" src="../js/ckeditor/config.js"></script>
+   <script>
+   var selectrow;		//记录选中的行号
+   var selectrowdata;	//记录选中的行数据
+   var selectitemid;	//记录选中的商品id
+   
+   var updateurl = '/O2OWebManager/item/itemAction!update';	//保存按钮数据发送URL
+   var getdeturl = '/O2OWebManager/item/itemAction!getdet';	//获取详细内容URL
+   	$(window).ready(function() {
+		
+		//创建表格
+			$('#dg').datagrid({   
+    url:'/O2OWebManager/order/orderAction!pageQuery',
+	pagination:true,
+	rownumbers:true,
+	queryParams:{orderby:'orderId'},
+	// order
+	private String orderNum;
+	private Date startTime;
+	private Date finishTime;
+	private String orderName;
+	private String address;
+	private boolean isPaied;
+	private boolean chekOut;
+
+	private float totalPrice;
+
+	// user
+	private Integer userId;
+	private String userName;
+	private String email;
+	private String tel;
+    columns:[[   
+        {field:'orderNum',title:'订单编号',width:100},   
+        {field:'itemName',title:'商品名称',width:300},
+		{field:'levelId',title:'商品种类',width:100},
+		{field:'barCode',title:'条码信息',width:100},
+		{field:'inPrice',title:'进货价格',width:100,align:'right'},
+		{field:'discount',title:'折扣',width:100,align:'right'},
+		{field:'sailerId',title:'供应商编号',width:100,align:'right'},
+		{field:'stockNum',title:'库存数量',width:100,align:'right'},
+        {field:'price',title:'商品价格',width:100,align:'right'}   
+    ]]   
+});
+	var queryParm = $('#dg').datagrid('options').queryParams;
+
+	//表格右击显示菜单
+	$('#dg').datagrid({
+	onRowContextMenu: function(e,rowIndex,rowData){
+		
+		selectrow = rowIndex;
+		selectrowdata = rowData;
+		selectitemid = rowData.itemId;
+		$('#mm').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+	}
+});
+
+	
+	$(document).bind('contextmenu',function(e){
+				e.preventDefault();
+				/*
+				$('#mm').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+				*/
+			});
+	
+	//过滤条件
+	
+	
+	
+	$('#filter_type').combobox({
+						onSelect:function (record){
+							var selectedvalue = $('#filter_type').combobox('getValue');
+							var qp = $('#dg').datagrid('options').queryParams;
+							qp.orderby = selectedvalue;
+							$('#dg').datagrid('reload');
+						}
+				});
+	$('#filter_type').combobox('select','date');
+	
+	//窗口设置
+	$('#item_detial').window({onOpen:function(){
+			$('#item_property').propertygrid('load',{
+					itemId:selectitemid
+				});
+		}});
+	$('#item_detial').window({onClose:function(){
+			$('#dg').datagrid('reload');
+		}});
+	//窗口保存按钮
+	$('#btn_save').click(function (){
+			var itemdata = $('#item_property').propertygrid('getData');
+			var datarows = itemdata.rows;
+			var itemobj = {};
+			//组拼数据
+			itemobj.itemId = datarows[0].value;
+			itemobj.itemName = datarows[1].value;
+			itemobj.levelId = datarows[2].value;
+			itemobj.price = datarows[3].value;
+			itemobj.inPrice = datarows[4].value;
+			itemobj.discount = datarows[5].value;
+			itemobj.sailerId = datarows[6].value;
+			itemobj.stockNum = datarows[7].value;
+			itemobj.barCode = datarows[8].value;
+			
+			$.post(updateurl,itemobj,function(result){
+					if(result){
+						$.messager.alert('Warning','保存成功'); 
+						$('#item_detial').window('close');
+					}
+				});
+		});
+	//细节输入窗口设置
+	
+	$('#detial_input').window({onOpen:function(){
+		var senddata = {};
+		senddata.itemId = selectitemid;
+			$.post(getdeturl,senddata,function(result){
+					CKEDITOR.instances.detial_context.setData(result);
+				});
+		}});
+	
+	//菜单操作
+	$('#show_detial').click(function (){
+			selectitemid = selectrowdata.itemId;
+			$('#item_detial').window('open');
+		});
+	$('#editdetial').click(function (){
+			$('#detial_input').window('open');
+		});
+	
+	
+	//细节菜单按钮
+	$('#det_save').click(function(){
+			var det_content= CKEDITOR.instances.detial_context.getData();
+			var senddata = {};
+			senddata.itemId = selectitemid;
+			senddata.itemDetail = det_content;
+			$.post(updateurl,senddata,function(result){
+					if(result){
+						$.messager.alert('Warning','保存成功'); 
+						$('#item_detial').window('close');
+					}
+				});
+		});
+		
+});
+  </script>
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+  <div class="menus">
+  <h2 align="center">库存明细</h2>
+
+  </div>
+    <select id="filter_type" class="easyui-combobox" name="state" style="width:200px;">
+		<option value="date">按入库日期</option>
+      <option value="sailerId">供应商</option>
+      <option value="price">价格递增</option>
+      <option value="price_desc">价格递减</option>
+      <option value="stockNum">库存数量</option>
+	</select>
+
+  <table id="dg"></table>
+
+  <!-- 菜单-->
+  <div id="mm" class="easyui-menu" style="width:120px;">  
+    <div id="show_detial">查看详情</div>
+    <div id="editdetial">编辑详细介绍</div>
+    <div>编辑图片</div>  
+    <div>移除</div>  
+    <div class="menu-sep"></div>  
+    <div>Exit</div>
+    
+  <!-- 详情窗口-->
+  <div	id="item_detial" class="easyui-window" title="商品详情" style="width:600px; height:500px; text-align:center" 
+  	data-options="closed:true,modal:true ">
+  	<table id="item_property" class="easyui-propertygrid" style="width:500px;"  
+        data-options="url:'/O2OWebManager/item/itemAction!itemDetial',showGroup:true,scrollbarSize:0,columns:[[
+        		{ field: 'name', title: '属性名称', width: 100, resizable: true },
+                { field: 'value', title: '属性值', width: 100, resizable: false }]]"></table>
+    <a id="btn_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+  </div>
+ <!-- 详细信息输入窗口-->
+ <div id="detial_input" class="easyui-window" title="商品详细介绍" style="width:800px; height:500px; text-align:center" 
+ 	data-options="modal:true,closed:true">
+    	<textarea id="detial_context" class="ckeditor" name="detial_context"></textarea>
+        <a id="det_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+    </div>
+ <!-- 图片编辑窗口-->
+ <div id="image_editor" class="easyui-window" title="图片编辑窗口" style="width:1000px; height:600px; text-align:center"
+ 	data-options="modal:true">
+    
+    </div>
+ 
+</div> 
+  </body>
+
+</html>

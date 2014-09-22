@@ -34,6 +34,10 @@ public class UserDaoImpl extends HibernateEntityDao<User> implements UserDao {
 	public void remove(User user) {
 		super.remove(user);
 	}
+	
+	public User getUser(Integer id) {
+		return super.get(id);
+	}
 
 	public User getUser(String loginMes, char type) {
 		switch (type) {
