@@ -3,7 +3,6 @@ package com.o2oweb.dao.impl;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
 import com.o2oweb.common.dao.HibernateEntityDao;

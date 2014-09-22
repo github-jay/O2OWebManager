@@ -44,7 +44,6 @@ public class ItemAttributeDaoImpl extends HibernateEntityDao<Itemattribute>
 	}
 
 	public List<Itemattribute> getAttributes(int itemId) {
-		// TODO Auto-generated method stub
 		// List result=
 		// super.find("from Itemattribute where Itemattribute.itemId =?", new
 		// Object[]{itemId});

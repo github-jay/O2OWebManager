@@ -33,7 +33,6 @@ public class OrderBean {
 		this.orderName = order.getOrderName();
 		this.address = order.getAddress();
 
-		System.out.println("************ispaied:"+order.getIsPaied());
 		if (order.getIsPaied())
 			this.isPaied = "YES";
 		if (order.getChekOut())

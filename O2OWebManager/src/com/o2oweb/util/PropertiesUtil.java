@@ -10,8 +10,8 @@ public class PropertiesUtil {
 	public String getValue(String key) {
 		Properties prop = new Properties();
 		String url = this.getClass().getClassLoader()
-				.getResource("server.properties").toString().substring(6);
-		String empUrl = url.replace("%20", " ");// Èç¹ûÄãµÄÎÄ¼þÂ·¾¶ÖÐ°üº¬¿Õ¸ñ£¬ÊÇ±Ø¶¨»á±¨´íµÄ
+				.getResource("config.properties").toString().substring(6);
+		String empUrl = url.replace("%20", " ");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â·ï¿½ï¿½ï¿½Ð°ï¿½Õ¸ï¿½ï¿½Ç±Ø¶ï¿½ï¿½á±¨ï¿½ï¿½ï¿½
 		InputStream in = null;
 		try {
 			in = new BufferedInputStream(new FileInputStream(empUrl));

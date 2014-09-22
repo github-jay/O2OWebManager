@@ -142,7 +142,6 @@ public class OrderAction extends BaseAction {
 
 	public void dealPaied() {
 		Order order = this.orderService.getOrder(orderNum);
-		System.out.println("-------------"+ this.paied);
 		order.setIsPaied(this.paied);
 
 		this.orderService.update(order);
