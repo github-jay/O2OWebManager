@@ -28,6 +28,7 @@
    var preimgurl = '/O2OWebManager/image/getImage?imageID=';	//图片URL前缀
    var c2mainimgurl = '/O2OWebManager/image/getImage!setmainItemimage';	//设置主图片url		
    var fileuploadurl = '/O2OWebManager/file/ajaxfileAction';	//上传图片url	
+   var imageremoveurl = '/O2OWebManager/image/getImage!removeItemimage';	//移除图片url
    	$(window).ready(function() {
 		
 		//创建表格
@@ -184,6 +185,17 @@
 	$('#btn_upload').click(function(){
 			ajaxupload();
 		});
+	//移除图片按钮
+	$('#img_remove').click(function(){
+			var senddata = {};
+			senddata.itemId = selectitemid;
+			senddata.imageID = selectimgid;
+			$.post(imageremoveurl,senddata,function(result){
+					var backinfo = eval('('+result+')');
+					alert(backinfo.status);
+					reloadimage();
+				});
+		});
 		
 });
 
@@ -193,42 +205,45 @@ function addimg2win(imginfo){
 	divobj.attr('id','imgcontainer');
 	if(imginfo.mainImage=='N/A'){
 		var h2obj = $('<h2/>');
-		h2obj.html('ssssssss');
+		h2obj.html('未设置主图片');
 		divobj.append(h2obj);
 		$('#image_editor').prepend(divobj);
-	}else{
+	}else if(imginfo.mainImage!='N/A'){
 		//添加主图片
 		var imgobj = $('<img>');
 		var imgurl = preimgurl+imginfo.mainImage;
 		imgobj.attr('src',imgurl);
 		imgobj.attr('imgid',imginfo.mainImage);
 		imgobj.attr('class','itemimage');
-		
 		//添加右键点击菜单
 		bindrightclick(imgobj);
 		
 		
 		divobj.append(imgobj);
-		
-		//添加次要图片
-		var imgids = eval(imginfo.subImages);
-		
-		
-		for(var i = 0;i < imgids.length;i++){
-			var imgid = imgids[i];
-			var subimgurl = preimgurl+imgid.imageId;
-			var subimgobj = $('<img>');
-			subimgobj.attr('src',subimgurl);
-			subimgobj.attr('imgid',imgid.imageId);
-			subimgobj.attr('class','itemimage');
-			
-			bindrightclick(subimgobj);
-			
-			divobj.append(subimgobj);
-		}
-		
-		$('#image_editor').prepend(divobj);
 	}
+	//添加次要图片
+		var imgids = imginfo.subImages;
+		if(imgids=="N/A"){
+			var h2obj = $('<h2/>');
+			h2obj.html('未上传任何次级图片');
+			divobj.append(h2obj);
+		}else{
+			imgids = eval(imginfo.subImages);
+			
+			for(var i = 0;i < imgids.length;i++){
+				var imgid = imgids[i];
+				var subimgurl = preimgurl+imgid.imageId;
+				var subimgobj = $('<img>');
+				subimgobj.attr('src',subimgurl);
+				subimgobj.attr('imgid',imgid.imageId);
+				subimgobj.attr('class','itemimage');
+			
+				bindrightclick(subimgobj);
+			
+				divobj.append(subimgobj);
+			}
+		}
+	$('#image_editor').prepend(divobj);
 }
 function getimginfo(itemId){
 	var imageinfo;
@@ -271,23 +286,15 @@ function ajaxupload()
 				secureuri:true,
 				fileElementId:'file2upload',
 				dataType: 'json',
-				data:{itemId:'1'},
+				data:{itemId:selectitemid},
 				success: function (data, status)
 				{
-					if(typeof(data.error) != 'undefined')
-					{
-						if(data.error != '')
-						{
-							alert(data.error);
-						}else
-						{
-							alert(data.msg);
-						}
-					}
+					$.messager.alert('Warning',data.info);
+					reloadimage();
 				},
 				error: function (data, status, e)
 				{
-					alert(e);
+					alert(data.info);
 				}
 			}
 		)
@@ -327,7 +334,7 @@ function ajaxupload()
    <!-- 图片编辑菜单 -->
     <div id="image_menu" class="easyui-menu" style="width:120px;">  
     <div id="c2main">设置为主图片</div>
-    <div id="remove">移除</div>
+    <div id="img_remove">移除</div>
     <div class="menu-sep"></div>  
     <div>Exit</div>
    </div> 

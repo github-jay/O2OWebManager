@@ -1,5 +1,6 @@
 package com.o2oweb.service;
 
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -83,16 +84,19 @@ public class ImageService {
 		Item item = itemDao.getItem(itemId);
 		Image image = imageDao.getImage(imageId);
 		//获取原先的主图片对象
-		Image oldmainimage = imageDao.getImage(item.getImageId());
-		if(oldmainimage != null){	//如果不为空则维护次要图片关系
-			oldmainimage.setItemId(itemId);
+		if(item.getImageId() != null){
+			Image oldmainimage = imageDao.getImage(item.getImageId());
+			if(oldmainimage != null){	//如果不为空则维护次要图片关系
+				oldmainimage.setItemId(itemId);
+				imageDao.update(oldmainimage);
+			}
 		}
 		item.setImageId(imageId);
 		image.setItemId(null);
 		try {
 			itemDao.update(item);
 			imageDao.update(image);
-			imageDao.update(oldmainimage);
+			
 		} catch (Exception e) {
 			obj.accumulate("status", false);
 			obj.accumulate("info", "设置主图片失败");
@@ -100,6 +104,25 @@ public class ImageService {
 		}
 		obj.accumulate("status", true);
 		obj.accumulate("info", "设置成功");
+		return obj;
+	}
+
+	public JSONObject removeImage(Integer itemId, Integer imageId) {
+		JSONObject obj = new JSONObject();
+		
+		Item item = itemDao.getItem(itemId);
+		Image image = imageDao.getImage(imageId);
+		if(imageId.equals(item.getImageId())){
+			obj.accumulate("status", false);
+			obj.accumulate("info", "主图片不能移除");
+		}else{
+			File imageFile = new File(image.getImageUrl());
+			imageFile.delete();
+			imageDao.remove(image);
+			obj.accumulate("status", true);
+			obj.accumulate("info", "图片删除成功");
+		}
+		
 		return obj;
 	}
 	
