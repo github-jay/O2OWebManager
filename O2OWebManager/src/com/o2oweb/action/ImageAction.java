@@ -7,13 +7,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import com.o2oweb.common.BaseAction;
+
 import com.o2oweb.entity.Image;
 import com.o2oweb.service.ImageService;
+import com.o2oweb.service.ItemService;
+import com.o2oweb.util.BaseAction;
 
 @Scope("request")
 @Service("getImage")
@@ -25,6 +29,8 @@ public class ImageAction extends BaseAction {
 
 	private String imageID;
 
+	private Integer itemId;
+	
 	public ByteArrayInputStream getInputStream() {
 		return inputStream;
 	}
@@ -39,6 +45,16 @@ public class ImageAction extends BaseAction {
 
 	public void setImageID(String imageID) {
 		this.imageID = imageID;
+	}
+
+	
+	
+	public Integer getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
 	}
 
 	@Override
@@ -68,5 +84,16 @@ public class ImageAction extends BaseAction {
 	private String getImagePath(String ID) {
 		Image image = imageService.getImage(Integer.valueOf(imageID));
 		return image.getImageUrl();
+	}
+	
+	//获取所有商品图片信息
+	public void getImageinfo(){
+		JSONObject obj = this.imageService.getimageInfo(itemId);
+		writeResponse(obj);
+	}
+	//设置商品主图片
+	public void setmainItemimage(){
+		JSONObject obj = this.imageService.setmainImage(itemId,Integer.valueOf(imageID));
+		writeResponse(obj);
 	}
 }

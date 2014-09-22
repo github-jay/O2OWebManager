@@ -47,6 +47,12 @@
 				<param name="root">obj</param>
 			</result>
 		</action>
+		<action name="ajaxfileAction" class="ajaxfileAction">
+		
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
 	</package>
 	<!-- <include file="com/all58/video/modules/user/login.xml"></include> -->
 </struts>

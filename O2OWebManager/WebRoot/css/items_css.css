@@ -1,7 +1,18 @@
+li{
+	float:left;
+}
+
 .menus {
 	background-color:#C00;
 	height:100px;
 	text-align:right;
 }
 #filter_type{
+}
+.itemimage{
+	max-width:150px; width:expression(this.width > 600 ? "600px" : this.width); height:auto;
+	margin-left:10px;
+}
+.imgdiv{
+	clear:both;
 }
