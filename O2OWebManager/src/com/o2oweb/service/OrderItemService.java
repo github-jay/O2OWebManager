@@ -41,6 +41,11 @@ public class OrderItemService {
 			total += oi.getItemPrice() * oi.getItemNum();
 		}
 
+		// 不足100加5元快递费
+		if (total < 100) {
+			total += 5;
+		}
+
 		return total;
 	}
 

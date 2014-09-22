@@ -17,12 +17,16 @@ public class OrderItemBean {
 	private String barCode;
 
 	public void setOrderItem(OrderItem orderItem) {
+		if (orderItem == null)
+			return;
 		this.idOrderItem = orderItem.getIdOrderItem();
 		this.itemNum = orderItem.getItemNum();
 		this.itemPrice = orderItem.getItemPrice();
 	}
 
 	public void setItem(Item item) {
+		if (item == null)
+			return;
 		this.itemId = item.getItemId();
 		this.itemName = item.getItemName();
 		this.levelId = item.getLevelId();

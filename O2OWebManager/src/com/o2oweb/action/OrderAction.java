@@ -4,17 +4,19 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import net.sf.json.JSONObject;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.o2oweb.common.dao.support.Page;
 import com.o2oweb.dto.OrderBean;
+import com.o2oweb.dto.OrderItemBean;
 import com.o2oweb.entity.Order;
+import com.o2oweb.entity.OrderItem;
+import com.o2oweb.service.ItemService;
 import com.o2oweb.service.OrderItemService;
 import com.o2oweb.service.OrderService;
 import com.o2oweb.service.UserService;
@@ -24,10 +26,15 @@ import com.o2oweb.util.MyJson;
 @Scope("request")
 @Service("orderAction")
 public class OrderAction extends BaseAction {
-
+	@Autowired
 	private OrderService orderService;
+	@Autowired
 	private OrderItemService orderItemService;
+	@Autowired
 	private UserService userService;
+	@Autowired
+	private ItemService itemService;
+
 	private Integer orderId;
 	private String orderNum;
 	private Integer userId;
@@ -35,7 +42,7 @@ public class OrderAction extends BaseAction {
 	private Date finishTime;
 	private String orderName;
 	private String address;
-	private boolean isPaied;
+	private boolean paied;
 	private boolean chekOut;
 
 	// 分页参数
@@ -45,7 +52,7 @@ public class OrderAction extends BaseAction {
 
 	public void save() {
 		Order order = new Order(orderNum, userId, startTime, finishTime,
-				orderName, address, isPaied, chekOut);
+				orderName, address, paied, chekOut);
 
 		this.orderService.save(order);
 
@@ -63,7 +70,7 @@ public class OrderAction extends BaseAction {
 
 	public void update() {
 		Order order = new Order(orderNum, userId, startTime, finishTime,
-				orderName, address, isPaied, chekOut);
+				orderName, address, paied, chekOut);
 		order.setOrderId(orderId);
 
 		this.orderService.update(order);
@@ -105,13 +112,42 @@ public class OrderAction extends BaseAction {
 		writeResponse(obj);
 	}
 
-	public OrderService getOrderService() {
-		return orderService;
+	public void getOrderItem() {
+		List<OrderItemBean> oibs = new LinkedList<OrderItemBean>();
+		List<OrderItem> ois = this.orderItemService.getItems(orderNum);
+		for (OrderItem oi : ois) {
+			OrderItemBean oib = new OrderItemBean();
+			oib.setOrderItem(oi);
+			oib.setItem(this.itemService.getItem(oi.getItemId()));
+
+			oibs.add(oib);
+		}
+
+		Page page = new Page();
+		page.setTotalCount(oibs.size());
+		page.setData(oibs);
+		JSONObject obj = MyJson.page2Jsobj(page);
+
+		writeResponse(obj);
 	}
 
-	@Resource
-	public void setOrderService(OrderService orderService) {
-		this.orderService = orderService;
+	public void dealOrder() {
+		Order order = this.orderService.getOrder(orderNum);
+		order.setChekOut(this.chekOut);
+
+		this.orderService.update(order);
+
+		writeResponse("true");
+	}
+
+	public void dealPaied() {
+		Order order = this.orderService.getOrder(orderNum);
+		System.out.println("-------------"+ this.paied);
+		order.setIsPaied(this.paied);
+
+		this.orderService.update(order);
+
+		writeResponse("true");
 	}
 
 	public Integer getOrderId() {
@@ -171,11 +207,11 @@ public class OrderAction extends BaseAction {
 	}
 
 	public boolean isPaied() {
-		return isPaied;
+		return paied;
 	}
 
-	public void setPaied(boolean isPaied) {
-		this.isPaied = isPaied;
+	public void setPaied(boolean paied) {
+		this.paied = paied;
 	}
 
 	public boolean isChekOut() {
@@ -208,24 +244,6 @@ public class OrderAction extends BaseAction {
 
 	public void setOrderby(String orderby) {
 		this.orderby = orderby;
-	}
-
-	public OrderItemService getOrderItemService() {
-		return orderItemService;
-	}
-
-	@Resource
-	public void setOrderItemService(OrderItemService orderItemService) {
-		this.orderItemService = orderItemService;
-	}
-
-	public UserService getUserService() {
-		return userService;
-	}
-
-	@Resource
-	public void setUserService(UserService userService) {
-		this.userService = userService;
 	}
 
 }

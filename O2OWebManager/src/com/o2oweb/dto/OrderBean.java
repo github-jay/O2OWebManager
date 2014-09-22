@@ -24,12 +24,16 @@ public class OrderBean {
 	private String tel;
 
 	public void setOrder(Order order) {
+		if (order == null)
+			return;
 		this.orderId = order.getOrderId();
 		this.orderNum = order.getOrderNum();
 		this.startTime = DateTimeUtil.getDateTime(order.getStartTime());
 		this.finishTime = DateTimeUtil.getDateTime(order.getFinishTime());
 		this.orderName = order.getOrderName();
 		this.address = order.getAddress();
+
+		System.out.println("************ispaied:"+order.getIsPaied());
 		if (order.getIsPaied())
 			this.isPaied = "YES";
 		if (order.getChekOut())
@@ -37,6 +41,8 @@ public class OrderBean {
 	}
 
 	public void setUser(User user) {
+		if (user == null)
+			return;
 		this.userId = user.getUserId();
 		this.userName = user.getUserName();
 		this.email = user.getEmail();
@@ -145,6 +151,18 @@ public class OrderBean {
 
 	public void setTel(String tel) {
 		this.tel = tel;
+	}
+
+	public String getIsPaied() {
+		return isPaied;
+	}
+
+	public void setIsPaied(String isPaied) {
+		this.isPaied = isPaied;
+	}
+
+	public String getChekOut() {
+		return chekOut;
 	}
 
 }
