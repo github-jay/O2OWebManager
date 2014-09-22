@@ -33,8 +33,9 @@ public class TestCode {
 
 	@Test
 	public void testProperties() {
-		Random r = new Random();
-		DateFormat df = new SimpleDateFormat("yyMMddhhmmss");
+		PropertiesUtil pu = new PropertiesUtil();
+		String root = pu.getValue("imageURL");
+		System.out.println(root);
 	}
 
 	@Test
