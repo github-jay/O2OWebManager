@@ -7,17 +7,27 @@
     <link rel="stylesheet" type="text/css" href="../js/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="../css/items_css.css">
-    <script language="javascript" src="../js/jquery.min.js"></script>
+    
+    <script language="javascript" src="../js/jquery-2.1.0.min.js"></script>
+    
     <script language="javascript" src="../js/jquery.easyui.min.js"></script>
     <script language="javascript" src="../js/ckeditor/ckeditor.js"></script>
     <script language="javascript" src="../js/ckeditor/config.js"></script>
+    <script language="javascript" src="../js/fileupload/ajaxfileupload.js"></script>
+    
    <script>
    var selectrow;		//记录选中的行号
    var selectrowdata;	//记录选中的行数据
    var selectitemid;	//记录选中的商品id
    
+   var selectimgid;		//记录选中的图片ID
+   
    var updateurl = '/O2OWebManager/item/itemAction!update';	//保存按钮数据发送URL
    var getdeturl = '/O2OWebManager/item/itemAction!getdet';	//获取详细内容URL
+   var getimageinfourl = '/O2OWebManager/image/getImage!getImageinfo';	//获取商品图片相关信息
+   var preimgurl = '/O2OWebManager/image/getImage?imageID=';	//图片URL前缀
+   var c2mainimgurl = '/O2OWebManager/image/getImage!setmainItemimage';	//设置主图片url		
+   var fileuploadurl = '/O2OWebManager/file/ajaxfileAction';	//上传图片url	
    	$(window).ready(function() {
 		
 		//创建表格
@@ -88,6 +98,12 @@
 	$('#item_detial').window({onClose:function(){
 			$('#dg').datagrid('reload');
 		}});
+		
+	//图片编辑窗口设置
+	$('#image_editor').window({onClose:function(){
+			$('#imgcontainer').remove();
+		}});
+	
 	//窗口保存按钮
 	$('#btn_save').click(function (){
 			var itemdata = $('#item_property').propertygrid('getData');
@@ -145,7 +161,138 @@
 				});
 		});
 		
+	//图片编辑按钮
+	$('#editimage').click(function(){
+			getimginfo(selectitemid);
+			$('#image_editor').window('open');
+		});
+	
+	//设置主图片按钮
+	$('#c2main').click(function(){
+			var senddata = {};
+			senddata.itemId = selectitemid;
+			senddata.imageID = selectimgid;
+			$.post(c2mainimgurl,senddata,function(result){
+					var backinfo = eval('('+result+')');
+					if(backinfo.status){
+						//重新载入
+						reloadimage();
+					}
+				});
+		});
+	//图片上传按钮
+	$('#btn_upload').click(function(){
+			ajaxupload();
+		});
+		
 });
+
+//通用函数
+function addimg2win(imginfo){
+	var divobj = $('<div/>');
+	divobj.attr('id','imgcontainer');
+	if(imginfo.mainImage=='N/A'){
+		var h2obj = $('<h2/>');
+		h2obj.html('ssssssss');
+		divobj.append(h2obj);
+		$('#image_editor').prepend(divobj);
+	}else{
+		//添加主图片
+		var imgobj = $('<img>');
+		var imgurl = preimgurl+imginfo.mainImage;
+		imgobj.attr('src',imgurl);
+		imgobj.attr('imgid',imginfo.mainImage);
+		imgobj.attr('class','itemimage');
+		
+		//添加右键点击菜单
+		bindrightclick(imgobj);
+		
+		
+		divobj.append(imgobj);
+		
+		//添加次要图片
+		var imgids = eval(imginfo.subImages);
+		
+		
+		for(var i = 0;i < imgids.length;i++){
+			var imgid = imgids[i];
+			var subimgurl = preimgurl+imgid.imageId;
+			var subimgobj = $('<img>');
+			subimgobj.attr('src',subimgurl);
+			subimgobj.attr('imgid',imgid.imageId);
+			subimgobj.attr('class','itemimage');
+			
+			bindrightclick(subimgobj);
+			
+			divobj.append(subimgobj);
+		}
+		
+		$('#image_editor').prepend(divobj);
+	}
+}
+function getimginfo(itemId){
+	var imageinfo;
+	$.post(getimageinfourl,{'itemId':itemId},function (result){
+			var resultjson = eval('('+result+')');
+			addimg2win(resultjson);
+		});
+}
+function bindrightclick(eleobj){
+	
+	eleobj.mousedown(function(e){
+				if(3==e.which){
+					selectimgid = eleobj.attr('imgid');
+					$('#image_menu').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+					});
+				}
+				return false;
+		});
+}
+function reloadimage()
+{
+	$('#imgcontainer').remove();
+	getimginfo(selectitemid);
+	$.messager.alert('Warning','设置成功');
+}
+
+function ajaxupload()
+{
+	$("#loading").ajaxStart(function(){
+			$(this).show();
+		}).ajaxComplete(function(){
+			$(this).hide();
+		});
+		$.ajaxFileUpload
+		(
+			{
+				url:fileuploadurl,
+				secureuri:true,
+				fileElementId:'file2upload',
+				dataType: 'json',
+				data:{itemId:'1'},
+				success: function (data, status)
+				{
+					if(typeof(data.error) != 'undefined')
+					{
+						if(data.error != '')
+						{
+							alert(data.error);
+						}else
+						{
+							alert(data.msg);
+						}
+					}
+				},
+				error: function (data, status, e)
+				{
+					alert(e);
+				}
+			}
+		)
+		//return false;
+}
   </script>
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
@@ -171,11 +318,19 @@
   <div id="mm" class="easyui-menu" style="width:120px;">  
     <div id="show_detial">查看详情</div>
     <div id="editdetial">编辑详细介绍</div>
-    <div>编辑图片</div>  
+    <div id="editimage">编辑图片</div>  
     <div>移除</div>  
     <div class="menu-sep"></div>  
     <div>Exit</div>
-    
+   </div> 
+   
+   <!-- 图片编辑菜单 -->
+    <div id="image_menu" class="easyui-menu" style="width:120px;">  
+    <div id="c2main">设置为主图片</div>
+    <div id="remove">移除</div>
+    <div class="menu-sep"></div>  
+    <div>Exit</div>
+   </div> 
   <!-- 详情窗口-->
   <div	id="item_detial" class="easyui-window" title="商品详情" style="width:600px; height:500px; text-align:center" 
   	data-options="closed:true,modal:true ">
@@ -191,12 +346,14 @@
     	<textarea id="detial_context" class="ckeditor" name="detial_context"></textarea>
         <a id="det_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
     </div>
- <!-- 图片编辑窗口-->
- <div id="image_editor" class="easyui-window" title="图片编辑窗口" style="width:1000px; height:600px; text-align:center"
- 	data-options="modal:true">
     
-    </div>
- 
+    
+ <!-- 图片编辑窗口-->
+ <div id="image_editor" class="easyui-window" title="图片编辑窗口" style="width:1000px; height:600px;"
+ 	data-options="modal:true,closed:true">
+    <img id="loading" src="../js/fileupload/loading.gif" style="display:none;">
+ 		<input id="file2upload" name="file2upload" type="file" style="width:300px">
+        <a id="btn_upload" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
 </div> 
   </body>
 

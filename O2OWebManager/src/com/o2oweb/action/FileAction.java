@@ -78,7 +78,8 @@ public class FileAction extends BaseAction {
 		try {
 			// 得到工程保存图片的路径
 			PropertiesUtil pu = new PropertiesUtil();
-			String root = pu.getValue("imageURL");
+//			String root = pu.getValue("imageURL");
+			String root = "D://ItemImages";
 
 			// 循环上传的文件
 			for (int i = 0; i < file.size(); i++) {

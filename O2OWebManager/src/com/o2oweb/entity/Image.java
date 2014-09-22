@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "image", catalog = "o2owebsit")
 public class Image implements java.io.Serializable {
 
-	// Fields
+	// Fieldsaa
 
 	private Integer idimage;
 	private String imageUrl;
