@@ -123,6 +123,12 @@ public class OrderAction extends BaseAction {
 			oibs.add(oib);
 		}
 
+		OrderItemBean oib = new OrderItemBean();
+		oib.setItemName("总价格");
+		oib.setItemPrice(this.orderItemService
+				.getTotalPriceByOrderNum(orderNum));
+		oibs.add(oib);
+
 		Page page = new Page();
 		page.setTotalCount(oibs.size());
 		page.setData(oibs);
@@ -143,6 +149,7 @@ public class OrderAction extends BaseAction {
 	public void dealPaied() {
 		Order order = this.orderService.getOrder(orderNum);
 		order.setIsPaied(this.paied);
+		order.setFinishTime(new Date());
 
 		this.orderService.update(order);
 

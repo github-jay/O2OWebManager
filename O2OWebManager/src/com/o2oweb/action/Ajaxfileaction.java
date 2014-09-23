@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import net.sf.json.JSONObject;
@@ -17,9 +19,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.o2oweb.entity.Image;
+import com.o2oweb.entity.Item;
 import com.o2oweb.service.ImageService;
 import com.o2oweb.service.ItemService;
 import com.o2oweb.util.BaseAction;
+import com.o2oweb.util.POIUtil;
 import com.o2oweb.util.PropertiesUtil;
 
 @Scope("request")
@@ -33,6 +37,8 @@ public class Ajaxfileaction extends BaseAction {
 
 	private File file2upload;
 	private String itemId;
+	private String fileName;
+	private String fileExt;
 
 	@Override
 	public String execute() throws Exception {
@@ -59,15 +65,47 @@ public class Ajaxfileaction extends BaseAction {
 		image.setImageUrl(destFile.getAbsolutePath());
 		image.setItemId(Integer.parseInt(itemId));
 		imageService.save(image);
-		
+
 		JSONObject obj = new JSONObject();
 		obj.accumulate("status", true);
 		obj.accumulate("info", "上传成功");
-		
+
 		writeResponse(obj);
 		return super.execute();
 	}
-	
+
+	public void importExcel() {
+
+		try {
+			// 若上传文件不为excel，返回错误信息
+			if (!fileExt.equals("xls") && !fileExt.equals("xlsx")) {
+				writeResponse(false, "上传失败，文件格式错误！");
+				return;
+			}
+			String keys = "名称（必填）,分类（必填）,条码（必填）,库存量（必填）,进货价（必填）,销售价（必填）";
+
+			List<Map<String, String>> list = POIUtil.importExcelToMap(
+					file2upload, keys);
+
+			for (Map<String, String> row : list) {
+				Item item = new Item();
+				item.setDiscount(1);
+				item.setLevelId(0);
+				item.setItemName(row.get("名称（必填）").trim());
+				item.setPrice(Float.valueOf(row.get("销售价（必填）").trim()));
+				item.setStockNum(Integer.valueOf(row.get("库存量（必填）").trim()));
+				item.setBarCode(row.get("条码（必填）").trim());
+				item.setInPrice(Float.valueOf(row.get("进货价（必填）").trim()));
+				itemService.save(item);
+			}
+
+			writeResponse("true");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private String createFileName() {
 		Random r = new Random();
 		DateFormat df = new SimpleDateFormat("yyMMddhhmmss");
@@ -89,6 +127,22 @@ public class Ajaxfileaction extends BaseAction {
 
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFileExt() {
+		return fileExt;
+	}
+
+	public void setFileExt(String fileExt) {
+		this.fileExt = fileExt;
 	}
 
 }

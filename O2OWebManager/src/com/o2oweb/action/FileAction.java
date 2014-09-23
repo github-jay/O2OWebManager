@@ -44,7 +44,7 @@ public class FileAction extends BaseAction {
 				String fileName = fileFileName.get(i);
 
 				// 若上传文件不为excel，返回错误信息
-				if (!fileName.endsWith(".xls")) {
+				if (!fileName.endsWith(".xls") || !fileName.endsWith(".xlsx")) {
 					writeResponse(false, "上传失败，文件格式错误！");
 					return;
 				}
@@ -78,7 +78,7 @@ public class FileAction extends BaseAction {
 		try {
 			// 得到工程保存图片的路径
 			PropertiesUtil pu = new PropertiesUtil();
-//			String root = pu.getValue("imageURL");
+			// String root = pu.getValue("imageURL");
 			String root = "D://ItemImages";
 
 			// 循环上传的文件

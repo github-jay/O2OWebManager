@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
@@ -17,6 +18,7 @@ import net.sf.json.JSONObject;
 import org.junit.Test;
 
 import com.o2oweb.entity.Item;
+import com.o2oweb.util.POIUtil;
 import com.o2oweb.util.PropertiesUtil;
 
 public class TestCode {
@@ -60,5 +62,16 @@ public class TestCode {
 	public void getPath() {
 		System.out.println(this.getClass().getClassLoader()
 				.getResource("server.properties").toString());
+	}
+	
+	@Test
+	public void testPOI() {
+		File excelFile = new File("D://学生基本信息 学生证.xlsx");
+		String keys = "学号";
+		List<Map<String, String>> list = POIUtil.importExcelToMap(
+				excelFile, keys);
+		for (Map<String, String> row : list) {
+			System.out.println(row.get("学号"));
+		}
 	}
 }
