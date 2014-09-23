@@ -7,6 +7,7 @@ import java.util.List;
 import net.sf.json.JSONObject;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -90,6 +91,9 @@ public class OrderAction extends BaseAction {
 		if (orderby != null) {
 			dc.addOrder(org.hibernate.criterion.Order.asc(orderby));
 		}
+		if (orderNum != null) {
+			dc.add(Restrictions.eq("orderNum", orderNum));
+		}
 
 		Page p = this.orderService.pagedQuery(dc, Integer.valueOf(rows),
 				Integer.valueOf(page) - 1);
@@ -139,15 +143,28 @@ public class OrderAction extends BaseAction {
 
 	public void dealOrder() {
 		Order order = this.orderService.getOrder(orderNum);
-		order.setChekOut(this.chekOut);
+		if (order.getChekOut()) {
+			writeResponse("该订单已处理！");
+			return;
+		}
+		if (order.getIsPaied()) {
+			order.setChekOut(this.chekOut);
 
-		this.orderService.update(order);
+			this.orderService.update(order);
 
-		writeResponse("true");
+			writeResponse("true");
+		} else {
+			writeResponse("请先确认支付！");
+		}
 	}
 
 	public void dealPaied() {
 		Order order = this.orderService.getOrder(orderNum);
+		if (order.getIsPaied()) {
+			writeResponse("该订单已支付！");
+			return;
+		}
+
 		order.setIsPaied(this.paied);
 		order.setFinishTime(new Date());
 

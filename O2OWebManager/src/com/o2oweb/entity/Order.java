@@ -92,8 +92,8 @@ public class Order implements java.io.Serializable {
 		this.userId = userId;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "startTime", nullable = false, length = 10)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "startTime", nullable = false, length = 30)
 	public Date getStartTime() {
 		return this.startTime;
 	}
@@ -102,8 +102,8 @@ public class Order implements java.io.Serializable {
 		this.startTime = startTime;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name = "finishTime", length = 10)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "finishTime", length = 30)
 	public Date getFinishTime() {
 		return this.finishTime;
 	}
