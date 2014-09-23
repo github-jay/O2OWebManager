@@ -91,7 +91,7 @@ public class OrderAction extends BaseAction {
 		if (orderby != null) {
 			dc.addOrder(org.hibernate.criterion.Order.asc(orderby));
 		}
-		if (orderNum != null) {
+		if (orderNum != null && !orderNum.trim().equals("")) {
 			dc.add(Restrictions.eq("orderNum", orderNum));
 		}
 
