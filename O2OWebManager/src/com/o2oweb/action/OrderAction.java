@@ -7,6 +7,7 @@ import java.util.List;
 import net.sf.json.JSONObject;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,9 @@ public class OrderAction extends BaseAction {
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
 		if (orderby != null) {
 			dc.addOrder(org.hibernate.criterion.Order.asc(orderby));
+		}
+		if (orderNum != null) {
+			dc.add(Restrictions.eq("orderNum", orderNum));
 		}
 
 		Page p = this.orderService.pagedQuery(dc, Integer.valueOf(rows),
