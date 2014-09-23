@@ -18,7 +18,7 @@
 
 	var dealorderurl = '/O2OWebManager/order/orderAction!dealOrder'; //处理订单URL
 	var dealpaiedurl = '/O2OWebManager/order/orderAction!dealPaied'; //处理订单URL
-	var searchorderurl = 'O2OWebManager/order/orderAction!searchOrder';	//搜索订单URL
+	var searchorderurl = 'O2OWebManager/order/orderAction!searchOrder'; //搜索订单URL
 	$(window).ready(function() {
 
 		//创建表格
@@ -139,7 +139,6 @@
 				$('#dg').datagrid('reload');
 			}
 		});
-		
 
 		//菜单操作
 		$('#show_detial').click(function() {
@@ -163,10 +162,13 @@
 						senddata.orderNum = selectitemid;
 						senddata.paied = true;
 						$.post(dealpaiedurl, senddata, function(result) {
-							if (result) {
+							if (result == 'true') {
 								$.messager.alert('Warning', '处理成功');
 								$('#dp_dialog').dialog('close');
 								$('#dg').datagrid('reload');
+							} else {
+								$.messager.alert('Warning', result);
+								$('#dp_dialog').dialog('close');
 							}
 						});
 					}
@@ -193,10 +195,13 @@
 						senddata.orderNum = selectitemid;
 						senddata.chekOut = true;
 						$.post(dealorderurl, senddata, function(result) {
-							if (result) {
+							if (result == 'true') {
 								$.messager.alert('Warning', '处理成功');
 								$('#do_dialog').dialog('close');
 								$('#dg').datagrid('reload');
+							} else {
+								$.messager.alert('Warning', result);
+								$('#do_dialog').dialog('close');
 							}
 						});
 					}
@@ -209,18 +214,20 @@
 
 			});
 		});
-	//打印按钮
-	$('#btn_print').click(function(){
+		//打印按钮
+		$('#btn_print').click(function() {
 			$('#item_detial').jqprint();
-		
-		});
-	//搜索按钮
-	$('#btn_search').click(function(){
-		var orderId = $('#search_input').val();
-		$('#dg').datagrid('load',{'orderNum':orderId});
-	});
 
-});
+		});
+		//搜索按钮
+		$('#btn_search').click(function() {
+			var orderId = $('#search_input').val();
+			$('#dg').datagrid('load', {
+				'orderNum' : orderId
+			});
+		});
+
+	});
 </script>
 
 <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
@@ -240,8 +247,10 @@
 		<option value="isPaied">按是否支付</option>
 		<option value="chekOut">按是否处理</option>
 	</select>
-	  <br/>  输入订单号查询指定订单<input id="search_input" class="easyui-textbox">
-	  <a id="btn_search" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>
+	<br /> 输入订单号查询指定订单
+	<input id="search_input" class="easyui-textbox">
+	<a id="btn_search" href="#" class="easyui-linkbutton"
+		data-options="iconCls:'icon-search'">查询</a>
 	<table id="dg"></table>
 
 	<!-- 菜单-->
@@ -253,13 +262,13 @@
 		<div class="menu-sep"></div>
 		<div>Exit</div>
 	</div>
-		<!-- 详情窗口-->
-		<div id="item_detial" class="easyui-window" title="订单详情"
-			style="width:600px; height:500px; text-align:center"
-			data-options="closed:true,modal:true ">
-			<table id="item_property" class="easyui-propertygrid"
-				style="width:500px;"
-				data-options="url:'/O2OWebManager/order/orderAction!getOrderItem',showGroup:true,scrollbarSize:0,columns:[[
+	<!-- 详情窗口-->
+	<div id="item_detial" class="easyui-window" title="订单详情"
+		style="width:600px; height:500px; text-align:center"
+		data-options="closed:true,modal:true ">
+		<table id="item_property" class="easyui-propertygrid"
+			style="width:500px;"
+			data-options="url:'/O2OWebManager/order/orderAction!getOrderItem',showGroup:true,scrollbarSize:0,columns:[[
         		{ field: 'itemId', title: '商品ID', width: 100, resizable: true,hidden:true },
         		{ field: 'itemName', title: '商品名称', width: 100, resizable: true },
                 { field: 'imageId', title: '图片', width: 100, resizable: false },
@@ -267,17 +276,17 @@
                 { field: 'idOrderItem', title: '订单ID', width: 100, resizable: true,hidden:true },
                 { field: 'itemNum', title: '购买数量', width: 100, resizable: true },
                 { field: 'itemPrice', title: '购买价格', width: 100, resizable: true }]]"></table>
-                
-             <div id="address_div"></div>
-			<a id="btn_print" href="#" class="easyui-linkbutton"
-				data-options="iconCls:'icon-save'">打印</a>
-		</div>
-		<!-- 处理订单对话框 -->
-		<div id="dp_dialog" class="easyui-dialog"
-			data-options="modal:true,closed:true" title="确认支付">请确认该订单是否已支付！</div>
-		<!-- 处理订单对话框 -->
-		<div id="do_dialog" class="easyui-dialog"
-			data-options="modal:true,closed:true" title="处理订单">请确认该订单是否已处理！</div>
+
+		<div id="address_div"></div>
+		<a id="btn_print" href="#" class="easyui-linkbutton"
+			data-options="iconCls:'icon-save'">打印</a>
+	</div>
+	<!-- 处理订单对话框 -->
+	<div id="dp_dialog" class="easyui-dialog"
+		data-options="modal:true,closed:true" title="确认支付">请确认该订单是否已支付！</div>
+	<!-- 处理订单对话框 -->
+	<div id="do_dialog" class="easyui-dialog"
+		data-options="modal:true,closed:true" title="处理订单">请确认该订单是否已处理！</div>
 	</div>
 </body>
 
