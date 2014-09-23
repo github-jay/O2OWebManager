@@ -29,6 +29,8 @@
    var c2mainimgurl = '/O2OWebManager/image/getImage!setmainItemimage';	//设置主图片url		
    var fileuploadurl = '/O2OWebManager/file/ajaxfileAction';	//上传图片url	
    var imageremoveurl = '/O2OWebManager/image/getImage!removeItemimage';	//移除图片url
+   var exceluploadurl = '/O2OWebManager/file/ajaxfileAction!excelHander';	//上传excel的URL
+   
    	$(window).ready(function() {
 		
 		//创建表格
@@ -196,7 +198,17 @@
 					reloadimage();
 				});
 		});
-		
+	//批量上传按钮
+	$('#mult_updatebase').click(function(){
+			$('#excel_uploader').window('open');
+		});
+	//上传excel按钮
+	$('#exl_upload').click(function(){
+			var filevaule = $('#excel2upload').val();
+			var filename = filevaule.replace(/.*(\/|\\)/, "");
+			var fileExt=(/[.]/.exec(filename)) ? /[^.]+$/.exec(filename.toLowerCase()) : '';
+			excelupload(filename,fileExt);
+		});
 });
 
 //通用函数
@@ -300,6 +312,36 @@ function ajaxupload()
 		)
 		//return false;
 }
+
+function excelupload(excelFilename,excelFileExt)
+{
+	$("#loading1").ajaxStart(function(){
+			$(this).show();
+		}).ajaxComplete(function(){
+			$(this).hide();
+		});
+		$.ajaxFileUpload
+		(
+			{
+				url:exceluploadurl,
+				secureuri:true,
+				fileElementId:'excel2upload',
+				dataType: 'json',
+				data:{fileName:excelFilename,fileExt:excelFileExt},
+				success: function (data, status)
+				{
+					$.messager.alert('Warning',data.info);
+					reloadimage();
+				},
+				error: function (data, status, e)
+				{
+					alert(data.info);
+				}
+			}
+		)
+		//return false;
+}
+
   </script>
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
@@ -318,7 +360,7 @@ function ajaxupload()
       <option value="price_desc">价格递减</option>
       <option value="stockNum">库存数量</option>
 	</select>
-
+<a id="mult_updatebase" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">批量导入库存</a>
   <table id="dg"></table>
 
   <!-- 菜单-->
@@ -362,6 +404,15 @@ function ajaxupload()
  		<input id="file2upload" name="file2upload" type="file" style="width:300px">
         <a id="btn_upload" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
 </div> 
+
+<!--上传excel窗口-->
+<div id="excel_uploader" class="easyui-window" title="批量库存导入" style="width:400; height:300px;"
+ 	data-options="modal:true,closed:true">
+    <img id="loading1" src="../js/fileupload/loading.gif" style="display:none;">
+ 		<input id="excel2upload" name="excel2upload" type="file" style="width:300px">
+        <a id="exl_upload" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+</div> 
+
   </body>
 
 </html>

@@ -8,10 +8,9 @@
 	href="../js/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="../css/items_css.css">
-<script language="javascript" src="../js/jquery.min.js"></script>
+<script language="javascript" src="../js/jquery-1.4.4.min.js"></script>
 <script language="javascript" src="../js/jquery.easyui.min.js"></script>
-<script language="javascript" src="../js/ckeditor/ckeditor.js"></script>
-<script language="javascript" src="../js/ckeditor/config.js"></script>
+<script language="javascript" src="../js/jquery.jqprint-0.3.js"></script>
 <script>
 	var selectrow; //记录选中的行号
 	var selectrowdata; //记录选中的行数据
@@ -135,6 +134,7 @@
 		});
 		$('#item_detial').window({
 			onClose : function() {
+				$('#address_div').empty();
 				$('#dg').datagrid('reload');
 			}
 		});
@@ -143,6 +143,9 @@
 		//菜单操作
 		$('#show_detial').click(function() {
 			selectitemid = selectrowdata.orderNum;
+			var h2obj = $('<h2/>');
+			h2obj.html(selectrowdata.address);
+			$('#address_div').append(h2obj);
 			$('#item_detial').window('open');
 		});
 		$('#deal_paied').click(function() {
@@ -205,6 +208,11 @@
 
 			});
 		});
+	//打印按钮
+	$('#btn_print').click(function(){
+			$('#item_detial').jqprint();
+		
+		});
 
 	});
 </script>
@@ -237,7 +245,7 @@
 		<div>移除</div>
 		<div class="menu-sep"></div>
 		<div>Exit</div>
-
+	</div>
 		<!-- 详情窗口-->
 		<div id="item_detial" class="easyui-window" title="订单详情"
 			style="width:600px; height:500px; text-align:center"
@@ -252,8 +260,10 @@
                 { field: 'idOrderItem', title: '订单ID', width: 100, resizable: true,hidden:true },
                 { field: 'itemNum', title: '购买数量', width: 100, resizable: true },
                 { field: 'itemPrice', title: '购买价格', width: 100, resizable: true }]]"></table>
-			<a id="btn_save" href="#" class="easyui-linkbutton"
-				data-options="iconCls:'icon-save'">保存</a>
+                
+             <div id="address_div"></div>
+			<a id="btn_print" href="#" class="easyui-linkbutton"
+				data-options="iconCls:'icon-save'">打印</a>
 		</div>
 		<!-- 处理订单对话框 -->
 		<div id="dp_dialog" class="easyui-dialog"
