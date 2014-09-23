@@ -29,7 +29,7 @@
    var c2mainimgurl = '/O2OWebManager/image/getImage!setmainItemimage';	//设置主图片url		
    var fileuploadurl = '/O2OWebManager/file/ajaxfileAction';	//上传图片url	
    var imageremoveurl = '/O2OWebManager/image/getImage!removeItemimage';	//移除图片url
-   var exceluploadurl = '/O2OWebManager/file/ajaxfileAction!excelHander';	//上传excel的URL
+   var exceluploadurl = '/O2OWebManager/file/ajaxfileAction!importExcel';	//上传excel的URL
    
    	$(window).ready(function() {
 		
@@ -331,7 +331,6 @@ function excelupload(excelFilename,excelFileExt)
 				success: function (data, status)
 				{
 					$.messager.alert('Warning',data.info);
-					reloadimage();
 				},
 				error: function (data, status, e)
 				{

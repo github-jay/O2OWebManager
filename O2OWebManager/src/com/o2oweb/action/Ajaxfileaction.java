@@ -36,6 +36,9 @@ public class Ajaxfileaction extends BaseAction {
 	private ImageService imageService;
 
 	private File file2upload;
+	private File excel2upload;
+	
+
 	private String itemId;
 	private String fileName;
 	private String fileExt;
@@ -76,16 +79,19 @@ public class Ajaxfileaction extends BaseAction {
 
 	public void importExcel() {
 
+		JSONObject obj = new JSONObject();
 		try {
 			// 若上传文件不为excel，返回错误信息
 			if (!fileExt.equals("xls") && !fileExt.equals("xlsx")) {
-				writeResponse(false, "上传失败，文件格式错误！");
+				obj.accumulate("status", false);
+				obj.accumulate("info", "上传失败，文件格式错误！");
+				writeResponse(obj);
 				return;
 			}
 			String keys = "名称（必填）,分类（必填）,条码（必填）,库存量（必填）,进货价（必填）,销售价（必填）";
 
 			List<Map<String, String>> list = POIUtil.importExcelToMap(
-					file2upload, keys);
+					excel2upload, keys);
 
 			for (Map<String, String> row : list) {
 				Item item = new Item();
@@ -98,10 +104,14 @@ public class Ajaxfileaction extends BaseAction {
 				item.setInPrice(Float.valueOf(row.get("进货价（必填）").trim()));
 				itemService.save(item);
 			}
-
-			writeResponse("true");
+			obj.accumulate("status", true);
+			obj.accumulate("info", "导入成功");
+			writeResponse(obj);
 
 		} catch (Exception e) {
+			obj.accumulate("status", false);
+			obj.accumulate("info", "数据导入异常");
+			writeResponse(obj);
 			e.printStackTrace();
 		}
 	}
@@ -144,5 +154,11 @@ public class Ajaxfileaction extends BaseAction {
 	public void setFileExt(String fileExt) {
 		this.fileExt = fileExt;
 	}
+	public File getExcel2upload() {
+		return excel2upload;
+	}
 
+	public void setExcel2upload(File excel2upload) {
+		this.excel2upload = excel2upload;
+	}
 }
