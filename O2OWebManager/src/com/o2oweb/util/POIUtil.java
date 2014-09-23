@@ -1,8 +1,8 @@
 package com.o2oweb.util;
 
 /**
- * @author ×÷ÕßÐÕÃû zj
- * ÀàËµÃ÷
+ * @author ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ zj
+ * ï¿½ï¿½Ëµï¿½ï¿½
  */
 
 import java.io.BufferedInputStream;
@@ -50,16 +50,16 @@ public class POIUtil {
 		if (POIXMLDocument.hasOOXMLHeader(in)) {
 			return new XSSFWorkbook(OPCPackage.open(in));
 		}
-		throw new IllegalArgumentException("ÄãµÄexcel°æ±¾Ä¿Ç°poi½âÎö²»ÁË");
+		throw new IllegalArgumentException("ï¿½ï¿½ï¿½excelï¿½æ±¾Ä¿Ç°poiï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 	}
 
 	/**
-	 * »ñÈ¡ÎÄ¼þÊä³öÂ·¾¶
+	 * ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	 * 
 	 * @param realPath
-	 *            Ïà¶ÔÂ·¾¶
+	 *            ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	 * @param name
-	 *            ÎÄ¼þÃû
+	 *            ï¿½Ä¼ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public static String getOutputPath(String realPath, String name) {
@@ -69,24 +69,24 @@ public class POIUtil {
 	}
 
 	/**
-	 * µ¼ÈëExcelÎÄ¼þ ÄÚÈÝÒÔList<Map<String K,String V>>µÄ·½Ê½´æ·Å
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½List<Map<String K,String V>>ï¿½Ä·ï¿½Ê½ï¿½ï¿½ï¿½
 	 * 
 	 * @param excelName
-	 *            : ÎÄ¼þÂ·¾¶
+	 *            : ï¿½Ä¼ï¿½Â·ï¿½ï¿½
 	 * @param strKeys
-	 *            : MapµÄKeyÁÐ±í£¬ValueÎªÏàÓ¦µÄsheetÒ»ÐÐÖÐ¸÷ÁÐµÄÖµ
+	 *            : Mapï¿½ï¿½Keyï¿½Ð±?ValueÎªï¿½ï¿½Ó¦ï¿½ï¿½sheetÒ»ï¿½ï¿½ï¿½Ð¸ï¿½ï¿½Ðµï¿½Öµ
 	 * @return
 	 */
 	public static List<Map<String, String>> importExcelToMap(String excelName,
 			String strKeys) {
 		File excelFile = new File(excelName);
-		FileInputStream excelFileInput=null;
+		FileInputStream excelFileInput = null;
 		String[] strKey = strKeys.split(",");
 		List<Map<String, String>> listMap = new ArrayList<Map<String, String>>();
 		int i = 1;
 		Workbook workbook;
 		try {
-			excelFileInput= new FileInputStream(excelFile);
+			excelFileInput = new FileInputStream(excelFile);
 			workbook = create(excelFileInput);
 			Sheet sheet = workbook.getSheetAt(0);
 			while (true) {
@@ -99,19 +99,19 @@ public class POIUtil {
 				for (int keyIndex = 0; keyIndex < strKey.length; keyIndex++) {
 					// System.out.println(keyIndex+" "+row.getCell(keyIndex));
 					Cell cell = row.getCell(keyIndex);
-					// null ²»¿ÉÒÔ ÉèÖÃ¸ñÊ½Îªcell_type_string
+					// null ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¸ï¿½Ê½Îªcell_type_string
 					if (null != row.getCell(keyIndex))
 						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 					String cellValue = "";
 					if (cell != null) {
 						cellValue = row.getCell(keyIndex).getStringCellValue();
 					}
-					// Èç¹ûÐÐÊý¾Ý´æÔÚ²»Îª¿Õ »ò nullµÄÊý¾Ý£¬ÔòÊÓÎªÓÐÐ§Êý¾Ý
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½Ú²ï¿½Îªï¿½ï¿½ ï¿½ï¿½ nullï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ð§ï¿½ï¿½ï¿½
 					if (cellValue != null && !cellValue.isEmpty())
 						flag = true;
 					map.put(strKey[keyIndex], cellValue);
 				}
-				// Ö»Ìí¼ÓÓÐÐ§Êý¾Ý
+				// Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½
 				if (flag)
 					listMap.add(map);
 
@@ -120,8 +120,8 @@ public class POIUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			System.out.println("µ¼ÈëÖÐ¶Ï£¬´íÎóÎ»ÖÃ£ºµÚ" + i + "ÐÐÊý¾Ý£¡");
-		}finally{
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½" + i + "ï¿½ï¿½ï¿½ï¿½Ý£ï¿½");
+		} finally {
 			try {
 				excelFileInput.close();
 			} catch (IOException e) {
@@ -134,12 +134,12 @@ public class POIUtil {
 	}
 
 	/**
-	 * µ¼ÈëExcelÎÄ¼þ ÄÚÈÝÒÔList<Map<String K,String V>>µÄ·½Ê½´æ·Å
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½List<Map<String K,String V>>ï¿½Ä·ï¿½Ê½ï¿½ï¿½ï¿½
 	 * 
 	 * @param excelFile
-	 *            : ExcelÎÄ¼þ¶ÔÏó
+	 *            : Excelï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param strKeys
-	 *            : MapµÄKeyÁÐ±í£¬ValueÎªÏàÓ¦µÄsheetÒ»ÐÐÖÐ¸÷ÁÐµÄÖµ
+	 *            : Mapï¿½ï¿½Keyï¿½Ð±?ValueÎªï¿½ï¿½Ó¦ï¿½ï¿½sheetÒ»ï¿½ï¿½ï¿½Ð¸ï¿½ï¿½Ðµï¿½Öµ
 	 * @return
 	 */
 	public static List<Map<String, String>> importExcelToMap(File excelFile,
@@ -149,11 +149,10 @@ public class POIUtil {
 
 		int i = 1;
 		try {
-			HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(
-					excelFile));
-			HSSFSheet sheet = workbook.getSheetAt(0);
+			Workbook workbook = create(new FileInputStream(excelFile));
+			Sheet sheet = workbook.getSheetAt(0);
 			while (true) {
-				HSSFRow row = sheet.getRow(i);
+				Row row = sheet.getRow(i);
 				if (row == null)
 					break;
 
@@ -161,20 +160,20 @@ public class POIUtil {
 				Boolean flag = false;
 				for (int keyIndex = 0; keyIndex < strKey.length; keyIndex++) {
 					// System.out.println(keyIndex+" "+row.getCell(keyIndex));
-					HSSFCell cell = row.getCell(keyIndex);
-					// null ²»¿ÉÒÔ ÉèÖÃ¸ñÊ½Îªcell_type_string
+					Cell cell = row.getCell(keyIndex);
+					// null ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¸ï¿½Ê½Îªcell_type_string
 					if (null != row.getCell(keyIndex))
 						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 					String cellValue = "";
 					if (cell != null) {
 						cellValue = row.getCell(keyIndex).getStringCellValue();
 					}
-					// Èç¹ûÐÐÊý¾Ý´æÔÚ²»Îª¿Õ »ò nullµÄÊý¾Ý£¬ÔòÊÓÎªÓÐÐ§Êý¾Ý
+					// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý´ï¿½ï¿½Ú²ï¿½Îªï¿½ï¿½ ï¿½ï¿½ nullï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ð§ï¿½ï¿½ï¿½
 					if (cellValue != null && !cellValue.isEmpty())
 						flag = true;
 					map.put(strKey[keyIndex], cellValue);
 				}
-				// Ö»Ìí¼ÓÓÐÐ§Êý¾Ý
+				// Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½
 				if (flag)
 					listMap.add(map);
 
@@ -183,38 +182,38 @@ public class POIUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			System.out.println("µ¼ÈëÖÐ¶Ï£¬´íÎóÎ»ÖÃ£ºµÚ" + i + "ÐÐÊý¾Ý£¡");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½" + i + "ï¿½ï¿½ï¿½ï¿½Ý£ï¿½");
 		}
 
 		return listMap;
 	}
 
 	/**
-	 * µ¼³öExcelÎÄ¼þ Êý¾ÝÔ´µÄÊý¾Ý¸ñÊ½ÎªList<Map<String K,String V>>
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½ ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½Ê½ÎªList<Map<String K,String V>>
 	 * 
 	 * @param objList
-	 *            : ExcelÊý¾ÝÔ´
+	 *            : Excelï¿½ï¿½ï¿½Ô´
 	 * @param title
-	 *            : ÐÂ½¨SheetµÄÃû³Æ
+	 *            : ï¿½Â½ï¿½Sheetï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param strTitle
-	 *            : Sheet¸÷ÁÐµÄ±êÌâ£¨µÚÒ»ÐÐ¸÷ÁÐµÄÃû³Æ£©
+	 *            : Sheetï¿½ï¿½ï¿½ÐµÄ±ï¿½ï¿½â£¨ï¿½ï¿½Ò»ï¿½Ð¸ï¿½ï¿½Ðµï¿½ï¿½ï¿½Æ£ï¿½
 	 * @param strBody
-	 *            : Sheet¸÷ÁÐµÄÈ¡Öµ·½·¨Ãû£¨¸÷ÁÐµÄÖµÔÚobjClassÖÐget·½·¨Ãû³Æ£©
+	 *            : Sheetï¿½ï¿½ï¿½Ðµï¿½È¡Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Öµï¿½ï¿½objClassï¿½ï¿½getï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½
 	 * @param outputPath
-	 *            : ExcelÎÄµµ±£´æÂ·¾¶
+	 *            : Excelï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	 */
 	public static void exportExcelByMap(List<Map<String, String>> objList,
 			String title, String strTitle, String strBody, String outputPath) {
-		// ´´½¨¹¤×÷²¾£¨ExcelÎÄ¼þ£©
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½ï¿½ï¿½
 		HSSFWorkbook workbook = new HSSFWorkbook();
 
-		// ´´½¨Excel¹¤×÷²¾µÄµÚÒ»¸öSheetÒ³
+		// ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½SheetÒ³
 		HSSFSheet sheet = workbook.createSheet(title);
 
-		// ´´½¨SheetÒ³µÄÎÄ¼þÍ·£¨µÚÒ»ÐÐ£©
+		// ï¿½ï¿½ï¿½ï¿½SheetÒ³ï¿½ï¿½ï¿½Ä¼ï¿½Í·ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ð£ï¿½
 		createTitle(sheet, strTitle);
 
-		// ´´½¨SheetÒ³µÄÎÄ¼þÌå£¨ºóÐøÐÐ£©
+		// ï¿½ï¿½ï¿½ï¿½SheetÒ³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½å£¨ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½
 		String[] strArray = strBody.split(",");
 		for (int objIndex = 0; objIndex < objList.size(); objIndex++) {
 			Map map = objList.get(objIndex);
@@ -226,85 +225,86 @@ public class POIUtil {
 			}
 		}
 
-		// ±£´æExcelÎÄ¼þ
+		// ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½
 		saveExcelFile(workbook, outputPath);
 	}
 
 	/**
-	 * µ¼³öExcleÎÄµµ
+	 * ï¿½ï¿½ï¿½ï¿½Excleï¿½Äµï¿½
 	 * 
 	 * @param objList
-	 *            : ExcelÊý¾ÝÔ´
+	 *            : Excelï¿½ï¿½ï¿½Ô´
 	 * @param objClass
-	 *            : ExcelÊý¾ÝÔ´ÖÐµÄÊý¾ÝÀàÐÍ
+	 *            : Excelï¿½ï¿½ï¿½Ô´ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param title
-	 *            : ÐÂ½¨SheetµÄÃû³Æ ex: title = "Ô±¹¤±í";
+	 *            : ï¿½Â½ï¿½Sheetï¿½ï¿½ï¿½ï¿½ï¿½ ex: title = "Ô±ï¿½ï¿½ï¿½ï¿½";
 	 * @param strTitle
-	 *            : Sheet¸÷ÁÐµÄ±êÌâ£¨µÚÒ»ÐÐ¸÷ÁÐµÄÃû³Æ£© ex: strTitle =
-	 *            "Ô±¹¤´úÂë,Ô±¹¤ÐÕÃû,ÐÔ±ð,³öÉúÈÕÆÚ,¼®¹á,ËùÊô»ú¹¹,ÁªÏµµç»°,µç×ÓÓÊ¼þ,Öú¼ÇÂë";
+	 *            : Sheetï¿½ï¿½ï¿½ÐµÄ±ï¿½ï¿½â£¨ï¿½ï¿½Ò»ï¿½Ð¸ï¿½ï¿½Ðµï¿½ï¿½ï¿½Æ£ï¿½ ex: strTitle =
+	 *            "Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½Ô±ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Ïµï¿½ç»°,ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½"
+	 *            ;
 	 * @param strBody
-	 *            : Sheet¸÷ÁÐµÄÈ¡Öµ·½·¨Ãû£¨¸÷ÁÐµÄÖµÔÚobjClassÖÐget·½·¨Ãû³Æ£© ex: strBody =
+	 *            : Sheetï¿½ï¿½ï¿½Ðµï¿½È¡Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Öµï¿½ï¿½objClassï¿½ï¿½getï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ ex: strBody =
 	 *            "getCode,getName,getSex,getBirthday,getHomeplace.getName,getOrg.getShortName,getContactTel,getEmail,getZjm"
 	 *            ;
 	 * @param outputPath
-	 *            : ExcelÎÄµµ±£´æÂ·¾¶
+	 *            : Excelï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	 */
 	public static void exportExcelByObject(List objList, Class objClass,
 			String title, String strTitle, String strBody, String outputPath) {
-		// ³õÊ¼»¯¹¤×÷²¾
+		// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		HSSFWorkbook workbook = initWorkbook(objList, objClass, title,
 				strTitle, strBody);
-		// ±£´æExcelÎÄ¼þ
+		// ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½
 		saveExcelFile(workbook, outputPath);
 	}
 
 	/**
-	 * ³õÊ¼»¯¹¤×÷²¾
+	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * 
 	 * @param objList
-	 *            : ExcelÊý¾ÝÔ´
+	 *            : Excelï¿½ï¿½ï¿½Ô´
 	 * @param objClass
-	 *            : ExcelÊý¾ÝÔ´ÖÐµÄÊý¾ÝÀàÐÍ
+	 *            : Excelï¿½ï¿½ï¿½Ô´ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param title
-	 *            : ÐÂ½¨SheetµÄÃû³Æ
+	 *            : ï¿½Â½ï¿½Sheetï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param strTitle
-	 *            : Sheet¸÷ÁÐµÄ±êÌâ£¨µÚÒ»ÐÐ¸÷ÁÐµÄÃû³Æ£©
+	 *            : Sheetï¿½ï¿½ï¿½ÐµÄ±ï¿½ï¿½â£¨ï¿½ï¿½Ò»ï¿½Ð¸ï¿½ï¿½Ðµï¿½ï¿½ï¿½Æ£ï¿½
 	 * @param strBody
-	 *            : Sheet¸÷ÁÐµÄÈ¡Öµ·½·¨Ãû£¨¸÷ÁÐµÄÖµÔÚobjClassÖÐget·½·¨Ãû³Æ£©
+	 *            : Sheetï¿½ï¿½ï¿½Ðµï¿½È¡Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Öµï¿½ï¿½objClassï¿½ï¿½getï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½
 	 */
 	private static HSSFWorkbook initWorkbook(List objList, Class objClass,
 			String title, String strTitle, String strBody) {
-		// ´´½¨¹¤×÷²¾£¨ExcelÎÄ¼þ£©
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½ï¿½ï¿½
 		HSSFWorkbook workbook = new HSSFWorkbook();
 
-		// ´´½¨Excel¹¤×÷²¾µÄµÚÒ»¸öSheetÒ³
+		// ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½SheetÒ³
 		HSSFSheet sheet = workbook.createSheet(title);
 
-		// ´´½¨SheetÒ³µÄÎÄ¼þÍ·£¨µÚÒ»ÐÐ£©
+		// ï¿½ï¿½ï¿½ï¿½SheetÒ³ï¿½ï¿½ï¿½Ä¼ï¿½Í·ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ð£ï¿½
 		createTitle(sheet, strTitle);
 
-		// ´´½¨SheetÒ³µÄÎÄ¼þÌå£¨ºóÐøÐÐ£©
+		// ï¿½ï¿½ï¿½ï¿½SheetÒ³ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½å£¨ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½
 		createBody(objList, objClass, sheet, strBody);
 
 		return workbook;
 	}
 
 	/**
-	 * ´´½¨Excelµ±Ç°sheetÒ³µÄÍ·ÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½Ç°sheetÒ³ï¿½ï¿½Í·ï¿½ï¿½Ï¢
 	 * 
 	 * @param sheet
-	 *            : Excel¹¤×÷²¾µÄÒ»¸ösheet
+	 *            : Excelï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½sheet
 	 * @param strTitle
-	 *            : sheetÍ·ÐÅÏ¢ÁÐ±í(sheetµÚÒ»ÐÐ¸÷ÁÐÖµ)
+	 *            : sheetÍ·ï¿½ï¿½Ï¢ï¿½Ð±ï¿½(sheetï¿½ï¿½Ò»ï¿½Ð¸ï¿½ï¿½ï¿½Öµ)
 	 */
 	private static void createTitle(HSSFSheet sheet, String strTitle) {
-		HSSFRow row = sheet.createRow(0); // ´´½¨¸ÃÒ³µÄÒ»ÐÐ
+		HSSFRow row = sheet.createRow(0); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½Ò»ï¿½ï¿½
 		HSSFCell cell = null;
 
 		String[] strArray = strTitle.split(",");
 
 		for (int i = 0; i < strArray.length; i++) {
-			cell = row.createCell(i); // ´´½¨¸ÃÐÐµÄÒ»ÁÐ
+			cell = row.createCell(i); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ò»ï¿½ï¿½
 			cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 			cell.setCellValue(strArray[i]);
 		}
@@ -312,30 +312,30 @@ public class POIUtil {
 	}
 
 	/**
-	 * ´´½¨Excelµ±Ç°sheetÒ³µÄÌåÐÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½Ç°sheetÒ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 * 
 	 * @param objList
-	 *            : ExcelÊý¾ÝÔ´
+	 *            : Excelï¿½ï¿½ï¿½Ô´
 	 * @param objClass
-	 *            : ExcelÊý¾ÝÔ´ÖÐµÄÊý¾ÝÀàÐÍ
+	 *            : Excelï¿½ï¿½ï¿½Ô´ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param sheet
-	 *            : Excel¹¤×÷²¾µÄsheetÒ³
+	 *            : Excelï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½sheetÒ³
 	 * @param strBody
-	 *            : Sheet¸÷ÁÐµÄÈ¡Öµ·½·¨Ãû£¨¸÷ÁÐµÄÖµÔÚobjClassÖÐget·½·¨Ãû³Æ£©
+	 *            : Sheetï¿½ï¿½ï¿½Ðµï¿½È¡Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Öµï¿½ï¿½objClassï¿½ï¿½getï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½
 	 */
 	private static void createBody(List objList, Class objClass,
 			HSSFSheet sheet, String strBody) {
 		String[] targetMethod = strBody.split(",");
 		Method[] ms = objClass.getMethods();
 
-		// Ñ­»·objList¶ÔÏóÁÐ±í£¨Éú³ÉsheetµÄÐÐ£©
+		// Ñ­ï¿½ï¿½objListï¿½ï¿½ï¿½ï¿½ï¿½Ð±?ï¿½ï¿½ï¿½sheetï¿½ï¿½ï¿½Ð£ï¿½
 		for (int objIndex = 0; objIndex < objList.size(); objIndex++) {
 			Object obj = objList.get(objIndex);
 			HSSFRow row = sheet.createRow(objIndex + 1);
-			// Ñ­»·strBodyÄ¿±ê·½·¨Êý×é£¨Éú³ÉsheetµÄÁÐ£©
+			// Ñ­ï¿½ï¿½strBodyÄ¿ï¿½ê·½ï¿½ï¿½ï¿½ï¿½ï¿½é£¨ï¿½ï¿½ï¿½sheetï¿½ï¿½ï¿½Ð£ï¿½
 			for (int strIndex = 0; strIndex < targetMethod.length; strIndex++) {
 				String targetMethodName = targetMethod[strIndex];
-				// Ñ­»·ms·½·¨Êý×é£¬ÕÒµ½Ä¿±ê·½·¨£¨strBodyÖÐÖ¸¶¨µÄ·½·¨£©²¢µ÷ÓÃ
+				// Ñ­ï¿½ï¿½msï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é£¬ï¿½Òµï¿½Ä¿ï¿½ê·½ï¿½ï¿½ï¿½ï¿½strBodyï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				for (int i = 0; i < ms.length; i++) {
 					Method srcMethod = ms[i];
 					int len = targetMethodName.indexOf(".") < 0 ? targetMethodName
@@ -345,14 +345,14 @@ public class POIUtil {
 						HSSFCell cell = row.createCell(strIndex);
 						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
 						try {
-							// Èç¹û·½·¨·µ»ØÒ»¸öÒýÓÃÀàÐÍµÄÖµ
+							// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½Öµ
 							if (targetMethodName.contains(".")) {
 								cell.setCellValue(referenceInvoke(
 										targetMethodName, obj));
-								// Èç¹û·½·¨·µ»ØÒ»¸öÆÕÍ¨ÊôÐÔ
+								// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½
 							} else {
 								Object result = srcMethod.invoke(obj);
-								// ¶Ô·µ»ØÎª¿ÕµÄ·½·¨½øÐÐ¹ýÂË
+								// ï¿½Ô·ï¿½ï¿½ï¿½Îªï¿½ÕµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½
 								if (result != null)
 									cell.setCellValue((result).toString());
 								else
@@ -369,34 +369,35 @@ public class POIUtil {
 	}
 
 	/**
-	 * ·½·¨·µ»ØµÄÊÇÒ»¸ö¶ÔÏóµÄÒýÓÃ£¨Èç£ºgetHomeplace.getNameÀàÐÍµÄ·½·¨ÐòÁÐ£© °´·½·¨ÐòÁÐÖð²ãµ÷ÓÃÖ±µ½×îºó·Å»Ø»ù±¾ÀàÐÍµÄÖµ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ç£ºgetHomeplace.getNameï¿½ï¿½ï¿½ÍµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½Å»Ø»ï¿½ï¿½ï¿½ï¿½Íµï¿½Öµ
 	 * 
 	 * @param targetMethod
-	 *            : obj¶ÔÏóËù°üº¬µÄ·½·¨ÁÐ
+	 *            : objï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param obj
-	 *            : ´ý´¦ÀíµÄ¶ÔÏó
+	 *            : ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	// getHomeplace.getName emp(obj)
 	private static String referenceInvoke(String targetMethod, Object obj) {
-		// ½ØÈ¡·½·¨ÐòÁÐµÄµÚÒ»¸ö·½·¨(¼´½ØÈ¡ÊôÓÚobj¶ÔÏóµÄ·½·¨£ºgetHomeplace())
+		// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÐµÄµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½objï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½getHomeplace())
 		String refMethod = targetMethod.substring(0, targetMethod.indexOf("."));
-		// »ñµÃºóÐø·½·¨ÐòÁÐ(getName())
+		// ï¿½ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(getName())
 		targetMethod = targetMethod.substring(targetMethod.indexOf(".") + 1);
 		try {
-			// »ñµÃµÚÒ»¸ö·½·¨µÄÖ´ÐÐ½á¹û(¼´obj·½·¨Ö´ÐÐµÄ½á¹û£ºobj.getHomeplace())
+			// ï¿½ï¿½Ãµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð½ï¿½ï¿½(ï¿½ï¿½objï¿½ï¿½ï¿½ï¿½Ö´ï¿½ÐµÄ½ï¿½ï¿½obj.getHomeplace())
 			obj = obj.getClass().getMethod(refMethod).invoke(obj);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// Èç¹û·½·¨ÐòÁÐÃ»µ½×îºóÒ»½Ú
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 		if (targetMethod.contains(".")) {
 			return referenceInvoke(targetMethod, obj);
-			// Èç¹û·½·¨ÐòÁÐµ½´ï×îºóÒ»½Ú
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 		} else {
 			try {
-				// Í¨¹ýobj¶ÔÏó»ñµÃ¸Ã·½·¨Á´µÄ×îºóÒ»¸ö·½·¨²¢µ÷ÓÃ
+				// Í¨ï¿½ï¿½objï¿½ï¿½ï¿½ï¿½ï¿½Ã¸Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				Method tarMethod = obj.getClass().getMethod(targetMethod);
 				return tarMethod.invoke(obj).toString();
 			} catch (Exception e) {
@@ -408,12 +409,12 @@ public class POIUtil {
 	}
 
 	/**
-	 * ±£´æExcelÎÄ¼þ
+	 * ï¿½ï¿½ï¿½ï¿½Excelï¿½Ä¼ï¿½
 	 * 
 	 * @param workbook
-	 *            : Excel¹¤×÷²¾
+	 *            : Excelï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param outputPath
-	 *            : ExcelÎÄ¼þ±£´æÂ·¾¶
+	 *            : Excelï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
 	 */
 	private static void saveExcelFile(HSSFWorkbook workbook, String outputPath) {
 		try {
@@ -428,7 +429,7 @@ public class POIUtil {
 	}
 
 	/**
-	 * ÏÂÔØÉèÖÃ
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static void downLoadData(HttpServletResponse response, String path,
 			String uploadedFileName) {
@@ -441,15 +442,15 @@ public class POIUtil {
 		response.setHeader("Content-Type", "application/octet-stream");
 
 		File file = new File(path);
-		BufferedInputStream bis = null;// ¶Áexcel
-		BufferedOutputStream bos = null;// Êä³ö
+		BufferedInputStream bis = null;// ï¿½ï¿½excel
+		BufferedOutputStream bos = null;// ï¿½ï¿½ï¿½
 
 		try {
-			// ¶ÁÈ¡excelÎÄ¼þ
+			// ï¿½ï¿½È¡excelï¿½Ä¼ï¿½
 			bis = new BufferedInputStream(new FileInputStream(file));
-			// Ð´ÈëresponseµÄÊä³öÁ÷ÖÐ
+			// Ð´ï¿½ï¿½responseï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			bos = new java.io.BufferedOutputStream(response.getOutputStream());
-			byte[] buff = new byte[2048];/* ÉèÖÃ»º´æ */
+			byte[] buff = new byte[2048];/* ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ */
 			int bytesRead;
 			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
 				bos.write(buff, 0, bytesRead);
