@@ -16,7 +16,7 @@ public class Itemlevel implements java.io.Serializable {
 	// Fields
 
 	private Integer idItemLevel;
-	private Integer surperId =0;
+	private Integer surperId = 0;
 	private String levelName;
 
 	// Constructors
@@ -43,7 +43,7 @@ public class Itemlevel implements java.io.Serializable {
 		this.idItemLevel = idItemLevel;
 	}
 
-	@Column(name = "surperID", nullable = false)
+	@Column(name = "surperID")
 	public Integer getSurperId() {
 		return this.surperId;
 	}
@@ -52,7 +52,7 @@ public class Itemlevel implements java.io.Serializable {
 		this.surperId = surperId;
 	}
 
-	@Column(name = "LevelName", nullable = false, length = 45)
+	@Column(name = "LevelName", length = 45)
 	public String getLevelName() {
 		return this.levelName;
 	}
