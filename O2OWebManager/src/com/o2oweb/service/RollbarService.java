@@ -4,32 +4,32 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.o2oweb.dao.RollbarDao;
+import com.o2oweb.dao.RollBarDao;
 import com.o2oweb.entity.Rollbar;
 
 @Component("rollbarService")
 public class RollbarService {
 
-	private RollbarDao rollbarDao;
+	private RollBarDao RollBarDao;
 
 	public void save(Rollbar rollbar) {
-		this.rollbarDao.save(rollbar);
+		this.RollBarDao.save(rollbar);
 	}
 
 	public void remove(Rollbar rollbar) {
-		this.rollbarDao.remove(rollbar);
+		this.RollBarDao.remove(rollbar);
 	}
 
 	public void update(Rollbar rollbar) {
-		this.rollbarDao.update(rollbar);
+		this.RollBarDao.update(rollbar);
 	}
 
 	public Rollbar getRollbar(int rollbarId) {
-		return rollbarDao.getRollbar(rollbarId);
+		return RollBarDao.getRollbar(rollbarId);
 	}
 
 	@Resource
-	public void setrollbarDao(RollbarDao rollbarDao) {
-		this.rollbarDao = rollbarDao;
+	public void setRollBarDao(RollBarDao RollBarDao) {
+		this.RollBarDao = RollBarDao;
 	}
 }

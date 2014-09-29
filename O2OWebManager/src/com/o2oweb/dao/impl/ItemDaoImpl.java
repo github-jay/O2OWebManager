@@ -39,8 +39,8 @@ public class ItemDaoImpl extends HibernateEntityDao<Item> implements
 	public Item getItem(int itemId) {
 		try {
 			return super.findUniqueBy("itemId", itemId);
-		} catch (RuntimeException e) {
-			throw e;
+		} catch (Exception e) {
+			return null;
 		}
 	}
 

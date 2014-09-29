@@ -41,7 +41,7 @@ public class SailerAction extends BaseAction {
 
 	public void remove() {
 		Sailer sailer = new Sailer();
-		sailer.setSailerId(sailerId);
+		sailer.setSailerid(sailerId);
 
 		this.sailerService.remove(sailer);
 
@@ -50,7 +50,7 @@ public class SailerAction extends BaseAction {
 
 	public void update() {
 		Sailer sailer = new Sailer(name, address, addCode, conName, conTel);
-		sailer.setSailerId(sailerId);
+		sailer.setSailerid(sailerId);
 
 		this.sailerService.update(sailer);
 
