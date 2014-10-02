@@ -307,6 +307,7 @@ function ajaxupload()
 				error: function (data, status, e)
 				{
 					alert(data.info);
+					reloadimage();
 				}
 			}
 		)
@@ -326,7 +327,7 @@ function excelupload(excelFilename,excelFileExt)
 				url:exceluploadurl,
 				secureuri:true,
 				fileElementId:'excel2upload',
-				dataType: 'json',
+				dataType:'json',
 				data:{fileName:excelFilename,fileExt:excelFileExt},
 				success: function (data, status)
 				{

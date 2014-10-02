@@ -7,7 +7,7 @@ import com.o2oweb.dao.RollBarDao;
 import com.o2oweb.entity.Rollbar;
 
 @Component("rollbarDao")
-public class RollbarDaoImpl extends HibernateEntityDao<Rollbar> implements RollBarDao {
+public class RollBarDaoImpl extends HibernateEntityDao<Rollbar> implements RollBarDao {
 
 	public Rollbar getRollbar(int rollbarID) {
 		// TODO Auto-generated method stub
