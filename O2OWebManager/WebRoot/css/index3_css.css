@@ -1,0 +1,41 @@
+html,body{height:100%;}
+
+.header{
+	height:100px;
+	background-color:#F00;
+	text-align:center
+}
+.container{
+}
+.rollbarImage{
+	width:250px;
+	height:250px;
+	border-bottom-width:2px;
+	border-bottom-color:#000;
+	background-color:#3F3;
+	margin-left:5px;
+	margin-top:5px;
+	float:left
+}
+.itemimage{
+	max-width:150px;
+	max-height:150px;
+	width:expression(this.width > 600 ? "600px" : this.width); height:auto;
+	margin-left:10px;
+}
+.btn_container{
+	margin-top:125px;
+	margin-left:125px;
+	float:left;
+}
+.FEditor{
+	float:none;
+}
+.FItem{
+	width:250px;
+	height:250px;
+	margin-left:15px;
+	margin-top:5px;
+	float:left;
+	background-color:#0C0
+}

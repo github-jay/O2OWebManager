@@ -15,7 +15,7 @@ public class Sailer implements java.io.Serializable {
 
 	// Fields
 
-	private Integer sailerId;
+	private Integer sailerid;
 	private String name;
 	private String address;
 	private Integer addCode;
@@ -49,12 +49,12 @@ public class Sailer implements java.io.Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "sailerid", unique = true, nullable = false)
-	public Integer getSailerId() {
-		return this.sailerId;
+	public Integer getSailerid() {
+		return this.sailerid;
 	}
 
-	public void setSailerId(Integer sailerId) {
-		this.sailerId = sailerId;
+	public void setSailerid(Integer sailerid) {
+		this.sailerid = sailerid;
 	}
 
 	@Column(name = "name", nullable = false, length = 45)

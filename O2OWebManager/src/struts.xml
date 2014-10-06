@@ -19,7 +19,7 @@
 	<!-- <package name="user" extends="struts-default" namespace="/user"> <action 
 		name="userAction" class="userAction"> <result>/pages/Index.jsp</result> <result 
 		name="toSelect">/pages/Index2.jsp</result> <result name="toShop" type="redirectAction">page3/page3Action.action</result> 
-		</action> </package> -->
+		</action> </package> --> 
 	<package name="user" extends="json-default" namespace="/user">
 		
 	</package>
@@ -61,8 +61,13 @@
 			</result>
 		</action>
 	</package>
-	<package name="level" extends="json-default" namespace="/level">
-		<action name="levelAction" class="levelAction">
+	<package name="page" extends="json-default" namespace="/page">
+		<action name="index3Action" class="index3Action">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
+		<action name="itemfAction" class="itemfAction">
 			<result type="json">
 				<param name="root">obj</param>
 			</result>

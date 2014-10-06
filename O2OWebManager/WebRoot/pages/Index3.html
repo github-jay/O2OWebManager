@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Index3.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <link rel="stylesheet" type="text/css" href="../js/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../css/index3_css.css">
+    
+    <script language="javascript" src="../js/jquery-2.1.0.min.js"></script>
+    <script language="javascript" src="../js/jquery.easyui.min.js"></script>
+    
+    <script language="javascript" src="../js/fileupload/ajaxfileupload.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <script>
+	
+		//全局变量
+		var selectFNum;
+		
+		var selectRollimg;	//记录选中的
+		
+		//urls
+		var entirepageurl = '/O2OWebManager/page/index3Action!getEntirePage'	//获取完整页面信息URL
+		var FNameEditurl = '/O2OWebManager/page/itemfAction!changeFname';		//修改楼层名称url
+		var FItemEditurl = '/O2OWebManager/page/itemfAction!changeItem';		//修改楼层商品url
+    	var preimgurl = '/O2OWebManager/image/getImage?imageID=';	//图片URL前缀
+		var rollbarediturl = '/O2OWebManager/file/ajaxfileAction!rollimgedit'
+    	
+    $(window).ready(function(){
+    		//窗口设置
+    		//$('#rollbar_uploader').window('onClose',function(){loadentire();});
+    		
+    		//加载所有页面信息
+			loadentire();
+			
+		});
+		
+	//加载所有页面信息
+	function loadentire(){
+		$.post(entirepageurl,function(result){
+				var pageobj = eval('('+result+')');
+				addinfo2rollbar(pageobj.rollbar);
+				addinfo2Flow(pageobj);
+			});
+	}
+	function addinfo2rollbar(obj){
+		var rollbarimgs = $('#rollbarEditer').children();
+		var jsimgpre = 'image';
+		var jsimgend = 'name';
+		for(var i=0;i<rollbarimgs.length;i++){
+			var rollbarimg = rollbarimgs[i];
+			rollbarimg=$(rollbarimg);
+			var imgobj = rollbarimg.children('img');
+			imgobj = $(imgobj);
+			var imgsrc = jsimgpre+(i+1);
+			var imgid = obj[imgsrc];
+			imgobj.attr('src',preimgurl+imgid);
+			
+			var spanobj = rollbarimg.children('#imgtitle');
+			spanobj = $(spanobj);
+			var imagNamei = jsimgpre+(i+1)+jsimgend;
+			var imgtitle = obj[imagNamei];
+			spanobj.html(imgtitle);
+		}
+	}
+	function addinfo2Flow(obj)
+	{
+		var onefobj = obj.oneF;
+		var twofobj = obj.twoF;
+		var threefobj = obj.threeF;
+		var fourfobj = obj.fourF;
+		
+		//添加楼层名称
+		var oneName = $('#oneF_name');
+		var twoName = $('#twoF_name');
+		var threeName = $('#threeF_name');
+		var fourName = $('#fourF_name');
+		addname2F(oneName,onefobj.FName);
+		addname2F(twoName,twofobj.FName);
+		addname2F(threeName,threefobj.FName);
+		addname2F(fourName,fourfobj.FName);
+		
+		//添加商品
+		var onefEditor = $('#oneFEditor');
+		var twofEditor = $('#twoFEditor');
+		var threefEditor = $('#threeFEditor');
+		var fourfEditor = $('#fourFEditor');
+		
+		additems2F(onefEditor.children(),onefobj.items);
+		additems2F(twofEditor.children(),twofobj.items);
+		additems2F(threefEditor.children(),threefobj.items);
+		additems2F(fourfEditor.children(),fourfobj.items);
+	}
+	//添加楼层名到指定位置
+	function addname2F(spanobj,name)
+	{
+		if(name=='')
+		{
+			spanobj.html('暂时未定义楼层名称');
+		}else
+		{
+			spanobj.html(name);
+		}
+	}
+	//添加商品到对应的楼层
+	function additems2F(divs,items)
+	{
+		for(var i = 0;i<divs.length;i++)
+		{
+			var fitem = divs[i];
+			var itemobj = items[i];
+			additem2div(fitem,itemobj);
+		}
+	}
+	function additem2div(fitem,itemobj)
+	{
+		fitem = $(fitem);
+		var imgobj = fitem.children('img');
+		imgobj = $(imgobj);
+		imgobj.attr('src',preimgurl+itemobj.imageId);
+		
+		var namespan = fitem.children('#itemName');
+		namespan = $(namespan);
+		namespan.html(itemobj.itemName);
+		
+		var pricespan = fitem.children('#itemPrice');
+		pricespan = $(pricespan);
+		pricespan.html(itemobj.price);
+		
+	}
+	//修改楼层按钮点击事件
+	function FNameEditor(btn)
+	{
+		btn = $(btn);
+		selectFNum = btn.attr('FNum');
+		$('#FName_editor').window('open');
+		return false;
+	}
+	
+	//修改楼层名保存按钮点击函数
+	function FNameBtn()
+	{
+		var fname_input = $('#FName_input').val();
+		var sendinfo = {};
+		sendinfo.FNum = selectFNum;
+		sendinfo.FName = fname_input;
+		comajax(sendinfo,FNameEditurl);
+		
+	}
+	//修改楼层商品按钮
+	
+	function itemfchange(divobj)
+	{
+		divobj = $(divobj);
+		var FItemobj = divobj.parent('.FItem');
+		FItemobj = $(FItemobj);
+		var Fobj = FItemobj.parent();
+		var inputobj = FItemobj.children('input');
+		inputobj = $(inputobj);
+		Fobj = $(Fobj);
+		var sendinfo = {};
+		sendinfo.FNum = Fobj.attr('FNum');
+		sendinfo.index = FItemobj.attr('item_index');
+		sendinfo.itemId = inputobj.val();
+		comajax(sendinfo,FItemEditurl);
+	}
+	
+	//通用ajax函数
+	function comajax(ajaxinfo,ajaxurl)
+	{
+		$.post(ajaxurl,ajaxinfo,function(result){
+				result = eval('('+result+')');
+				if(result.status)
+				{
+					$.messager.alert('Warning',result.info);
+					loadentire();
+				}
+				else
+				{
+					$.messager.alert('Warning',result.info);
+				}
+				
+			});
+	}
+	//滚动条上传按钮
+	function rollbar_upload(rollbardiv)
+	{
+		rollbardiv = $(rollbardiv);
+		var prediv = rollbardiv.parent();
+		prediv = $(prediv);
+		selectRollimg = prediv.attr('roll_index');
+		$('#rollbar_uploader').window('open');
+	}
+	
+	function rollimg_upbtn(btndiv)
+	{
+		btndiv = $(btndiv);
+		var prediv = btndiv.parent();
+		prediv = $(prediv);
+		var inputdiv = prediv.children('input');
+		inputdiv = $(inputdiv);
+		
+		var imgtitle = inputdiv.val();
+		var rollbarinfo = {};
+		rollbarinfo.imgindex = selectRollimg;
+		rollbarinfo.imgtitle = imgtitle;
+		
+		comajaxfileupload(rollbarinfo,rollbarediturl);
+		
+	}
+	
+	//通用文件上传函数
+	function comajaxfileupload(sendinfo,sendurl)
+	{
+		$("#loading1").ajaxStart(function(){
+			$(this).show();
+		}).ajaxComplete(function(){
+			$(this).hide();
+		});
+		$.ajaxFileUpload
+		(
+			{
+				url:sendurl,
+				secureuri:true,
+				fileElementId:'file2upload',
+				dataType:'json',
+				data:sendinfo,
+				success: function (data, status)
+				{
+					$.messager.alert('Warning',data.info);
+				},
+				error: function (data, status, e)
+				{
+					alert(data.info);
+				}
+			}
+		)
+	}
+	
+    </script>
+  </head>
+  
+  <body>
+  	<div class="header">
+    	<h2>首页编辑页面</h2>
+    </div>
+    <div id="container">
+    	<p>滚动栏编辑区</p>
+    	<div id="rollbarEditer">
+    		<div class="rollbarImage" roll_index="1">
+    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br><br>
+    			<span id="imgtitle">标题</span><br>
+    			<span id="title_context">标题内容</span><br>
+                <a id="rollbarimg1_save" href="javascript:void(0)" onclick="rollbar_upload(this)" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+    		</div>
+            <div class="rollbarImage">
+    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+    			<span id="imgtitle">标题</span><br>
+                
+                <span id="title_context">标题内容</span><br>
+                <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+    		</div>
+            <div class="rollbarImage">
+    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+    			<span id="imgtitle">标题</span><br>
+               <span id="title_context">标题内容</span><br>
+                <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+    		</div>
+            <div class="rollbarImage">
+    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+    			<span id="imgtitle">标题</span><br>
+                <span id="title_context">标题内容</span><br>
+                <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+    		</div>
+            <div class="rollbarImage">
+    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+    			<span id="imgtitle">标题</span><br>
+                <span id="title_context">标题内容</span><br>
+                <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+    		</div>
+            <div class="rollbarImage">
+    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+    			<span id="imgtitle">标题</span><br>
+                <span id="title_context">标题内容</span><br>
+                <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+    		</div>
+    	</div>
+        <div style="clear:both"></div>
+        <p>一层商品编辑区</p>
+        <span>楼层名称 : </span><br>
+        <span id="oneF_name">xxxxxx</span>
+        <a id="oneF_Namechange" href=" javascript:void(0)" class="easyui-linkbutton" FNum='1' onClick="FNameEditor(this)" data-options="iconCls:'icon-save'">修改名称</a>
+        <div id="oneFEditor" FNum='1'>
+        	<div class="FItem" item_index='1'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span>
+                <input type="text" class="easyui-textbox" value="">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='2'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='3'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='4'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='5'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='6'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='7'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='8'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div> 
+            
+        </div>
+         <div style="clear:both"></div>
+        <p>二层商品编辑区</p>
+        <span>楼层名称 : </span><br>
+        <span id="twoF_name">xxxxxx</span>
+        <a id="oneF_Namechange" href="javascript:void(0)" class="easyui-linkbutton" FNum='2' onClick="FNameEditor(this)" data-options="iconCls:'icon-save'">修改名称</a>
+        <div id="twoFEditor" FNum='2'>
+        	<div class="FItem" item_index='1'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span>
+                <input type="text" class="easyui-textbox" value="">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='2'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='3'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='4'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='5'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='6'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='7'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='8'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div> 
+            
+        </div>
+       <div style="clear:both"></div>
+        <p>三层商品编辑区</p>
+        <span>楼层名称 : </span><br>
+        <span id="threeF_name">xxxxxx</span>
+        <a id="oneF_Namechange" href="javascript:void(0)" FNum='3' onClick="FNameEditor(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">修改名称</a>
+        <div id="threeFEditor" FNum='3'>
+        	<div class="FItem" item_index='1'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span>
+                <input type="text" class="easyui-textbox" value="">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='2'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='3'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='4'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='5'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='6'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='7'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='8'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div> 
+            
+        </div>
+         <div style="clear:both"></div>
+        <p>四层商品编辑区</p>
+        <span>楼层名称 : </span><br>
+        <span id="fourF_name">xxxxxx</span>
+        <a id="oneF_Namechange" href="javascript:void(0)" FNum='4' onClick="FNameEditor(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">修改名称</a>
+        <div id="fourFEditor" FNum='4'>
+        	<div class="FItem" item_index='1'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span>
+                <input type="text" class="easyui-textbox" value="">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='2'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='3'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='4'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='5'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+            <div class="FItem" item_index='6'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='7'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div>
+             <div class="FItem" item_index='8'>
+            	<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+            	<span id="itemName">商品名称</span><br>
+                <span>价格:</span><span id="itemPrice">1112</span><br><br>
+                <span>替换商品或添加</span><input class="easyui-textbox">
+                <a id="item1_save" href="javascript:void(0)" onClick="itemfchange(this)" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+                
+            </div> 
+            
+        </div>
+		
+	</div>
+    
+    <!-- 更改楼层名称窗口-->
+    <div id="FName_editor" class="easyui-window" title="楼层名称编辑窗口" style="width:400px; height:400px; text-align:center"
+ 	data-options="modal:true,closed:true">
+    	<br>
+        <br>
+        <br>
+        <br>
+    	<input id="FName_input" class="easyui-textbox"><br><br><br><br>
+        <a id="btn_upload" href="javascript:void(0)" class="easyui-linkbutton" onClick="FNameBtn()" data-options="iconCls:'icon-save'">保存</a>
+</div>
+
+	<!--滚动条图片编辑窗口-->
+	<div id="rollbar_uploader" class="easyui-window" title="滚动条上传窗口" style="width: 400; height: 300px;" data-options="modal:true,closed:true">
+		<span>图片标题：</span><input class="easyui-textbox"><br>
+		<img id="loading1" src="../js/fileupload/loading.gif" style="display:none;">
+		 <input id="file2upload" name="file2upload" type="file" style="width: 300px">
+		  <a id="rollimg_upload" href="javascript:void(0)" onclick="rollimg_upbtn(this)" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+	</div>
+</body>
+</html>
