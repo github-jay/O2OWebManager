@@ -23,15 +23,39 @@ public class LevelAction extends BaseAction {
 	private Integer category;
 	private String levelName;
 	private Integer superId;
+	private boolean isGen = false;
 
 	@Override
 	public String execute() throws Exception {
+		if (this.isGen) {
+			ItemLevelBean[] ilb = new ItemLevelBean[] { new ItemLevelBean() };
+			ilb[0].setId(this.category);
+			ilb[0].setText("商品分类");
+
+			List<Itemlevel> sublevels = itemLevelService
+					.getNextLevels(this.category);
+			List<ItemLevelBean> toJsonArray = new LinkedList<ItemLevelBean>();
+			for (Itemlevel sublevel : sublevels) {
+				ItemLevelBean sl = new ItemLevelBean();
+				sl.setId(sublevel.getIdItemLevel());
+				sl.setText(sublevel.getLevelName() + " 编号:"
+						+ sublevel.getIdItemLevel());
+				toJsonArray.add(sl);
+			}
+			ilb[0].setChildren(toJsonArray);
+
+			JSONArray jsa = JSONArray.fromObject(ilb);
+			writeResponse(jsa.toString());
+
+			return super.execute();
+		}
 		List<Itemlevel> sublevels = itemLevelService.getNextLevels(category);
 		List<ItemLevelBean> toJsonArray = new LinkedList<ItemLevelBean>();
 		for (Itemlevel sublevel : sublevels) {
 			ItemLevelBean ilb = new ItemLevelBean();
 			ilb.setId(sublevel.getIdItemLevel());
-			ilb.setText(sublevel.getLevelName());
+			ilb.setText(sublevel.getLevelName() + " 编号:"
+					+ sublevel.getIdItemLevel());
 			toJsonArray.add(ilb);
 		}
 		JSONArray jsa = JSONArray.fromObject(toJsonArray);
@@ -51,7 +75,7 @@ public class LevelAction extends BaseAction {
 			ItemLevelBean[] ilb = new ItemLevelBean[] { new ItemLevelBean() };
 			il = this.itemLevelService.getLevel(superId, levelName);
 			ilb[0].setId(il.getIdItemLevel());
-			ilb[0].setText(il.getLevelName());
+			ilb[0].setText(il.getLevelName() + " 编号:" + il.getIdItemLevel());
 			JSONArray jsa = JSONArray.fromObject(ilb);
 			writeResponse(jsa.toString());
 		} else {
@@ -99,6 +123,14 @@ public class LevelAction extends BaseAction {
 
 	public void setSuperId(Integer superId) {
 		this.superId = superId;
+	}
+
+	public boolean getIsGen() {
+		return isGen;
+	}
+
+	public void setIsGen(boolean isGen) {
+		this.isGen = isGen;
 	}
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ItemLevel.html</title>
+<title>ItemLevels.html</title>
 
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css"
@@ -18,6 +18,7 @@
 	var addurl = '/O2OWebManager/level/levelAction!addLevel';
 	var updateurl = '/O2OWebManager/level/levelAction!updateLevel';
 	var deleteurl = '/O2OWebManager/level/levelAction!deleteLevel';
+	var nowtree;
 
 	$(window).ready(
 			function() {
@@ -25,6 +26,7 @@
 					url : url + '?category=0&isGen=true',
 					lines : true,
 					onClick : function(node) {
+						nowtree = $('#tree');
 						nodeClick();
 					}
 				});
@@ -34,6 +36,103 @@
 					onContextMenu : function(e, node) {
 						e.preventDefault();
 						selectnode = node;
+						nowtree = $('#tree');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree1').tree({
+					url : url + '?category=-1&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree1');
+						nodeClick();
+					}
+				});
+
+				//tree1右击事件
+				$('#tree1').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree1');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree2').tree({
+					url : url + '?category=-2&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree2');
+						nodeClick();
+					}
+				});
+
+				//tree2右击事件
+				$('#tree2').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree2');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree3').tree({
+					url : url + '?category=-3&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree3');
+						nodeClick();
+					}
+				});
+
+				//tree3右击事件
+				$('#tree3').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree3');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree4').tree({
+					url : url + '?category=-4&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree4');
+						nodeClick();
+					}
+				});
+
+				//tree4右击事件
+				$('#tree4').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree4');
 						// 显示上下文菜单
 						$('#mm').menu('show', {
 							left : e.pageX,
@@ -45,6 +144,7 @@
 
 				//菜单操作
 				$('#add_level').click(function() {
+					$('#add_levelname').textbox('setValue', getString(''));
 					$('#add_node').window('open');
 				});
 				$('#update_level').click(
@@ -69,7 +169,7 @@
 										$('#delete_dialog').dialog('close');
 
 										var target = eval(selectnode.target);
-										$('#tree').tree('remove', target);
+										nowtree.tree('remove', target);
 									} else {
 										$.messager.alert('Warning', "删除失败！");
 										$('#delete_dialog').dialog('close');
@@ -79,7 +179,7 @@
 						}, {
 							text : '取消',
 							handler : function() {
-								$('#dp_dialog').dialog('close');
+								$('#delete_dialog').dialog('close');
 							}
 						} ]
 
@@ -98,7 +198,7 @@
 							$.messager.alert('Message', '添加成功!');
 							$('#add_node').window('close');
 							var node = eval(result);
-							$('#tree').tree('append', {
+							nowtree.tree('append', {
 								parent : selectnode.target,
 								data : node
 							});
@@ -121,7 +221,7 @@
 							$.messager.alert('Message', '修改成功!');
 							$('#update_node').window('close');
 
-							$('#tree').tree('update', {
+							nowtree.tree('update', {
 								target : selectnode.target,
 								text : lvalue + num
 							});
@@ -133,10 +233,10 @@
 			});
 
 	function nodeClick() {
-		var node = $('#tree').tree('getSelected');
+		var node = nowtree.tree('getSelected');
 		if (node) {
 			var target = eval(node.target);
-			var children = $('#tree').tree('isLeaf', target);
+			var children = nowtree.tree('isLeaf', target);
 			if (children == true) {
 				var id = node.id;
 				$.ajax({
@@ -144,7 +244,7 @@
 					url : url + '?category=' + id,
 					success : function(msg) {
 						var nodes = eval(msg);
-						$('#tree').tree('append', {
+						nowtree.tree('append', {
 							parent : node.target,
 							data : nodes
 						});
@@ -166,9 +266,35 @@
 </head>
 
 <body>
-	<div class="easyui-accordion" style="width:300px;height:400px;">
-		<ul id="tree" class="easyui-tree"></ul>
-	</div>
+	<table>
+		<tr>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>主分类</h2>
+					<ul id="tree" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>1层分类</h2>
+					<ul id="tree1" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>2层分类</h2>
+					<ul id="tree2" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>3层分类</h2>
+					<ul id="tree3" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>4层分类</h2>
+					<ul id="tree4" class="easyui-tree"></ul>
+				</div></td>
+		</tr>
+	</table>
 	<!-- 菜单-->
 	<div id="mm" class="easyui-menu" style="width:100px;">
 		<div id="add_level">添加</div>
@@ -187,7 +313,7 @@
 	</div>
 
 	<!-- 修改节点 -->
-	<div id="update_node" class="easyui-window" title="添加类别"
+	<div id="update_node" class="easyui-window" title="修改类别"
 		style="width:400; height:80px;"
 		data-options="modal:true,closed:true,maximizable:false,minimizable:false,collapsible:false">
 		<input id="update_levelname" type="text" class="easyui-textbox" /><a
@@ -197,7 +323,7 @@
 
 	<!-- 删除节点 -->
 	<div id="delete_dialog" class="easyui-dialog"
-		data-options="modal:true,closed:true" title="确认删除">请确认是否删除该类别！</div>
+		data-options="modal:true,closed:true" title="删除类别">请确认是否删除该类别！</div>
 </body>
 
 </html>
