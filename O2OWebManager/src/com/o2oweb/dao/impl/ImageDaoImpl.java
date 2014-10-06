@@ -13,7 +13,7 @@ import com.o2oweb.entity.Image;
 public class ImageDaoImpl extends HibernateEntityDao<Image> implements ImageDao{
 
 	public void save(Image image) {
-		super.save(image);
+		super.merge(image);
 		
 	}
 

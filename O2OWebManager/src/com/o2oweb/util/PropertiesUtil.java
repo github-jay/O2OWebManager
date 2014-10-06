@@ -9,10 +9,9 @@ import java.util.Properties;
 public class PropertiesUtil {
 	public String getValue(String key) {
 		Properties prop = new Properties();
-//		String url = this.getClass().getClassLoader()
-//				.getResource("config.properties").toString().substring(6);
-//		String empUrl = url.replace("%20", " ");// �������ļ�·���а�ո��Ǳض��ᱨ���
-		String empUrl = this.getClass().getClassLoader().getResource("config.properties").getFile();
+		String url = this.getClass().getClassLoader()
+				.getResource("config.properties").toString().substring(6);
+		String empUrl = url.replace("%20", " ");// �������ļ�·���а�ո��Ǳض��ᱨ���
 		InputStream in = null;
 		try {
 			in = new BufferedInputStream(new FileInputStream(empUrl));

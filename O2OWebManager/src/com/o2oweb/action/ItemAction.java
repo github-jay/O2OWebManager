@@ -64,7 +64,6 @@ public class ItemAction extends BaseAction {
 		Item item = new Item(itemName, levelId, price, inPrice, discount,
 				sailerId, imageId, itemDetail, stockNum, barCode);
 		item.setItemId(itemId);
-		System.out.println(itemName);
 		this.itemService.update(item);
 
 		JSONObject obj = new JSONObject();

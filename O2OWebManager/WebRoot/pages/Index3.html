@@ -20,21 +20,13 @@
 	
 		//全局变量
 		var selectFNum;
-		
-		var selectRollimg;	//记录选中的
-		
 		//urls
 		var entirepageurl = '/O2OWebManager/page/index3Action!getEntirePage'	//获取完整页面信息URL
 		var FNameEditurl = '/O2OWebManager/page/itemfAction!changeFname';		//修改楼层名称url
 		var FItemEditurl = '/O2OWebManager/page/itemfAction!changeItem';		//修改楼层商品url
     	var preimgurl = '/O2OWebManager/image/getImage?imageID=';	//图片URL前缀
-		var rollbarediturl = '/O2OWebManager/file/ajaxfileAction!rollimgedit'
-    	
+		
     $(window).ready(function(){
-    		//窗口设置
-    		//$('#rollbar_uploader').window('onClose',function(){loadentire();});
-    		
-    		//加载所有页面信息
 			loadentire();
 			
 		});
@@ -186,61 +178,6 @@
 				
 			});
 	}
-	//滚动条上传按钮
-	function rollbar_upload(rollbardiv)
-	{
-		rollbardiv = $(rollbardiv);
-		var prediv = rollbardiv.parent();
-		prediv = $(prediv);
-		selectRollimg = prediv.attr('roll_index');
-		$('#rollbar_uploader').window('open');
-	}
-	
-	function rollimg_upbtn(btndiv)
-	{
-		btndiv = $(btndiv);
-		var prediv = btndiv.parent();
-		prediv = $(prediv);
-		var inputdiv = prediv.children('input');
-		inputdiv = $(inputdiv);
-		
-		var imgtitle = inputdiv.val();
-		var rollbarinfo = {};
-		rollbarinfo.imgindex = selectRollimg;
-		rollbarinfo.imgtitle = imgtitle;
-		
-		comajaxfileupload(rollbarinfo,rollbarediturl);
-		
-	}
-	
-	//通用文件上传函数
-	function comajaxfileupload(sendinfo,sendurl)
-	{
-		$("#loading1").ajaxStart(function(){
-			$(this).show();
-		}).ajaxComplete(function(){
-			$(this).hide();
-		});
-		$.ajaxFileUpload
-		(
-			{
-				url:sendurl,
-				secureuri:true,
-				fileElementId:'file2upload',
-				dataType:'json',
-				data:sendinfo,
-				success: function (data, status)
-				{
-					$.messager.alert('Warning',data.info);
-				},
-				error: function (data, status, e)
-				{
-					alert(data.info);
-				}
-			}
-		)
-	}
-	
     </script>
   </head>
   
@@ -251,41 +188,46 @@
     <div id="container">
     	<p>滚动栏编辑区</p>
     	<div id="rollbarEditer">
-    		<div class="rollbarImage" roll_index="1">
-    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br><br>
-    			<span id="imgtitle">标题</span><br>
-    			<span id="title_context">标题内容</span><br>
-                <a id="rollbarimg1_save" href="javascript:void(0)" onclick="rollbar_upload(this)" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
-    		</div>
-            <div class="rollbarImage">
+    		<div class="rollbarImage">
     			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
     			<span id="imgtitle">标题</span><br>
-                
-                <span id="title_context">标题内容</span><br>
+                <input class="easyui-textbox">
+                <span>图片上传</span><input type="file" id="rollbarimg1" name="rollbarimg1"><br>
                 <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
     		</div>
             <div class="rollbarImage">
     			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
     			<span id="imgtitle">标题</span><br>
-               <span id="title_context">标题内容</span><br>
+                <input class="easyui-textbox">
+                <span>图片上传</span><input type="file" id="rollbarimg1" name="rollbarimg1"><br>
                 <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
     		</div>
             <div class="rollbarImage">
     			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
     			<span id="imgtitle">标题</span><br>
-                <span id="title_context">标题内容</span><br>
+                <input class="easyui-textbox">
+                <span>图片上传</span><input type="file" id="rollbarimg1" name="rollbarimg1"><br>
                 <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
     		</div>
             <div class="rollbarImage">
     			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
     			<span id="imgtitle">标题</span><br>
-                <span id="title_context">标题内容</span><br>
+                <input class="easyui-textbox">
+                <span>图片上传</span><input type="file" id="rollbarimg1" name="rollbarimg1"><br>
                 <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
     		</div>
             <div class="rollbarImage">
     			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
     			<span id="imgtitle">标题</span><br>
-                <span id="title_context">标题内容</span><br>
+                <input class="easyui-textbox">
+                <span>图片上传</span><input type="file" id="rollbarimg1" name="rollbarimg1"><br>
+                <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
+    		</div>
+            <div class="rollbarImage">
+    			<img class="itemimage" src="/O2OWebManager/image/getImage?imageID=2"><br>
+    			<span id="imgtitle">标题</span><br>
+                <input class="easyui-textbox">
+                <span>图片上传</span><input type="file" id="rollbarimg1" name="rollbarimg1"><br>
                 <a id="rollbarimg1_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
     		</div>
     	</div>
@@ -581,8 +523,7 @@
             </div> 
             
         </div>
-		
-	</div>
+    </div>
     
     <!-- 更改楼层名称窗口-->
     <div id="FName_editor" class="easyui-window" title="楼层名称编辑窗口" style="width:400px; height:400px; text-align:center"
@@ -593,14 +534,6 @@
         <br>
     	<input id="FName_input" class="easyui-textbox"><br><br><br><br>
         <a id="btn_upload" href="javascript:void(0)" class="easyui-linkbutton" onClick="FNameBtn()" data-options="iconCls:'icon-save'">保存</a>
-</div>
-
-	<!--滚动条图片编辑窗口-->
-	<div id="rollbar_uploader" class="easyui-window" title="滚动条上传窗口" style="width: 400; height: 300px;" data-options="modal:true,closed:true">
-		<span>图片标题：</span><input class="easyui-textbox"><br>
-		<img id="loading1" src="../js/fileupload/loading.gif" style="display:none;">
-		 <input id="file2upload" name="file2upload" type="file" style="width: 300px">
-		  <a id="rollimg_upload" href="javascript:void(0)" onclick="rollimg_upbtn(this)" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
-	</div>
-</body>
+</div> 
+  </body>
 </html>
