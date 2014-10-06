@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ItemLevels.html</title>
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css"
+	href="../js/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../css/items_css.css">
+
+<script language="javascript" src="../js/jquery-2.1.0.min.js"></script>
+<script language="javascript" src="../js/jquery.easyui.min.js"></script>
+
+<script>
+	var selectnode; //记录选中的节点
+	var url = '/O2OWebManager/level/levelAction';
+	var addurl = '/O2OWebManager/level/levelAction!addLevel';
+	var updateurl = '/O2OWebManager/level/levelAction!updateLevel';
+	var deleteurl = '/O2OWebManager/level/levelAction!deleteLevel';
+	var nowtree;
+
+	$(window).ready(
+			function() {
+				$('#tree').tree({
+					url : url + '?category=0&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree');
+						nodeClick();
+					}
+				});
+
+				//tree右击事件
+				$('#tree').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree1').tree({
+					url : url + '?category=-1&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree1');
+						nodeClick();
+					}
+				});
+
+				//tree1右击事件
+				$('#tree1').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree1');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree2').tree({
+					url : url + '?category=-2&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree2');
+						nodeClick();
+					}
+				});
+
+				//tree2右击事件
+				$('#tree2').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree2');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree3').tree({
+					url : url + '?category=-3&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree3');
+						nodeClick();
+					}
+				});
+
+				//tree3右击事件
+				$('#tree3').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree3');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				$('#tree4').tree({
+					url : url + '?category=-4&isGen=true',
+					lines : true,
+					onClick : function(node) {
+						nowtree = $('#tree4');
+						nodeClick();
+					}
+				});
+
+				//tree4右击事件
+				$('#tree4').tree({
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						selectnode = node;
+						nowtree = $('#tree4');
+						// 显示上下文菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						});
+
+					}
+				});
+
+				//菜单操作
+				$('#add_level').click(function() {
+					$('#add_levelname').textbox('setValue', getString(''));
+					$('#add_node').window('open');
+				});
+				$('#update_level').click(
+						function() {
+							$('#update_levelname').textbox('setValue',
+									getString(selectnode.text));
+							$('#update_node').window('open');
+						});
+				$('#delete_level').click(function() {
+					$('#delete_dialog').dialog({
+						closed : false,
+						//按钮  
+						buttons : [ {
+							text : '确定',
+							iconCls : 'icon-ok',
+							handler : function() {
+								var levelobj = {};
+								levelobj.category = selectnode.id;
+								$.post(deleteurl, levelobj, function(result) {
+									if (result == 'true') {
+										$.messager.alert('Message', '删除成功！');
+										$('#delete_dialog').dialog('close');
+
+										var target = eval(selectnode.target);
+										nowtree.tree('remove', target);
+									} else {
+										$.messager.alert('Warning', "删除失败！");
+										$('#delete_dialog').dialog('close');
+									}
+								});
+							}
+						}, {
+							text : '取消',
+							handler : function() {
+								$('#delete_dialog').dialog('close');
+							}
+						} ]
+
+					});
+				});
+
+				//添加按钮
+				$('#add').click(function() {
+					var lvalue = $('#add_levelname').val();
+					var levelobj = {};
+					levelobj.superId = selectnode.id;
+					levelobj.levelName = lvalue;
+
+					$.post(addurl, levelobj, function(result) {
+						if (result != 'false') {
+							$.messager.alert('Message', '添加成功!');
+							$('#add_node').window('close');
+							var node = eval(result);
+							nowtree.tree('append', {
+								parent : selectnode.target,
+								data : node
+							});
+						} else {
+							$.messager.alert('Message', '添加失败，检查是否重名！');
+						}
+					});
+				});
+
+				//修改按钮
+				$('#update').click(function() {
+					var lvalue = $('#update_levelname').val();
+					var levelobj = {};
+					levelobj.category = selectnode.id;
+					levelobj.levelName = lvalue;
+					var num = getNum(selectnode.text);
+
+					$.post(updateurl, levelobj, function(result) {
+						if (result == 'true') {
+							$.messager.alert('Message', '修改成功!');
+							$('#update_node').window('close');
+
+							nowtree.tree('update', {
+								target : selectnode.target,
+								text : lvalue + num
+							});
+						} else {
+							$.messager.alert('Message', '修改失败！');
+						}
+					});
+				});
+			});
+
+	function nodeClick() {
+		var node = nowtree.tree('getSelected');
+		if (node) {
+			var target = eval(node.target);
+			var children = nowtree.tree('isLeaf', target);
+			if (children == true) {
+				var id = node.id;
+				$.ajax({
+					type : "POST",
+					url : url + '?category=' + id,
+					success : function(msg) {
+						var nodes = eval(msg);
+						nowtree.tree('append', {
+							parent : node.target,
+							data : nodes
+						});
+					}
+				});
+			}
+		}
+	}
+
+	function getString(str) {
+		return str.substring(0, str.lastIndexOf(" "));
+	}
+
+	function getNum(str) {
+		return str.substring(str.lastIndexOf(" "));
+	}
+</script>
+
+</head>
+
+<body>
+	<table>
+		<tr>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>主分类</h2>
+					<ul id="tree" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>1层分类</h2>
+					<ul id="tree1" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>2层分类</h2>
+					<ul id="tree2" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>3层分类</h2>
+					<ul id="tree3" class="easyui-tree"></ul>
+				</div></td>
+			<td>
+				<div class="easyui-accordion" style="width:250px;height:400px;">
+					<h2>4层分类</h2>
+					<ul id="tree4" class="easyui-tree"></ul>
+				</div></td>
+		</tr>
+	</table>
+	<!-- 菜单-->
+	<div id="mm" class="easyui-menu" style="width:100px;">
+		<div id="add_level">添加</div>
+		<div id="update_level">修改</div>
+		<div id="delete_level">移除</div>
+		<div class="menu-sep"></div>
+		<div>Exit</div>
+	</div>
+
+	<!-- 添加节点 -->
+	<div id="add_node" class="easyui-window" title="添加类别"
+		style="width:400; height:80px;"
+		data-options="modal:true,closed:true,maximizable:false,minimizable:false,collapsible:false">
+		<input id="add_levelname" class="easyui-textbox" /><a id="add"
+			href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
+	</div>
+
+	<!-- 修改节点 -->
+	<div id="update_node" class="easyui-window" title="修改类别"
+		style="width:400; height:80px;"
+		data-options="modal:true,closed:true,maximizable:false,minimizable:false,collapsible:false">
+		<input id="update_levelname" type="text" class="easyui-textbox" /><a
+			id="update" href="#" class="easyui-linkbutton"
+			data-options="iconCls:'icon-edit'">修改</a>
+	</div>
+
+	<!-- 删除节点 -->
+	<div id="delete_dialog" class="easyui-dialog"
+		data-options="modal:true,closed:true" title="删除类别">请确认是否删除该类别！</div>
+</body>
+
+</html>
