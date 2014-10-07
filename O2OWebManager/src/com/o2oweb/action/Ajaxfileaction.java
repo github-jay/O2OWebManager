@@ -130,6 +130,7 @@ public class Ajaxfileaction extends BaseAction {
 	
 	public void rollimgedit(){
 		
+		
 		Image image = new Image();
 		
 		JSONObject obj = new JSONObject();
