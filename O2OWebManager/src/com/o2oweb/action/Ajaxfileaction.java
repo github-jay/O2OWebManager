@@ -115,6 +115,60 @@ public class Ajaxfileaction extends BaseAction {
 			e.printStackTrace();
 		}
 	}
+	
+	public void rollimgedit(){
+		
+		
+		Image image = new Image();
+		
+		JSONObject obj = new JSONObject();
+		
+		FileOutputStream fout = null;
+		FileInputStream fin = null;
+		File imgfile = null;
+		PropertiesUtil pu = new PropertiesUtil();
+		String root = pu.getValue("imageURL");
+		try {
+			fin = new FileInputStream(file2upload);
+			imgfile = new File(root, createFileName());
+			fout = new FileOutputStream(imgfile);
+			
+			int length = 0;
+			byte[] buffer = new byte[1024];
+			while((length=fin.read(buffer))>0){
+				fout.write(buffer,0,length);
+			}
+			fin.close();
+			fout.close();
+			
+			
+			image.setImageName(imgtitle);
+			image.setImageUrl(imgfile.getAbsolutePath());
+			
+			imageService.save(image);
+			
+			
+			Rollbar rollbar = rollbarService.getRollbar(1);
+			
+			rollbarService.setrollimgid(imgindex, rollbar, image.getIdimage(), imgtitle);
+			
+			rollbarService.update(rollbar);
+			
+			
+			obj.accumulate("status", true);
+			obj.accumulate("info", "图片设置成功，请关闭上传窗口");
+			writeResponse(obj);
+			
+		} catch (Exception e) {
+			imageService.remove(image);
+			imgfile.deleteOnExit();
+			
+			obj.accumulate("status", false);
+			obj.accumulate("info", "图片设置失败");
+			writeResponse(obj);
+			
+		}
+	}
 
 	private String createFileName() {
 		Random r = new Random();

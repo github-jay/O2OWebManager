@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testrun name="TestCode.getValue" project="O2OWebManager" tests="1" started="1" failures="0" errors="0" ignored="0">
-  <testcase name="getValue" classname="test.TestCode" time="0.001"/>
-</testrun>
