@@ -1,0 +1,75 @@
+/* */
+h1,h2,h3,h4,h5,h6,p,ul,ol,li,form,img,dl,dt,dd,table,th,td,blockquote,fieldset,div,strong,label,em{margin:0;padding:0;border:0;}
+ul,ol,li{list-style:none;}
+input,button{margin:0;font-size:12px;vertical-align:middle;}
+body{font-size:12px;font-family:Arial, Helvetica, sans-serif;  margin:0 auto; }
+table{border-collapse:collapse;border-spacing:0;}
+
+.clearfloat{height:0;font-size:1px;clear:both;line-height:0;}
+
+a{color:#333;text-decoration:none;}
+a:hover{color:#ef9b11; text-decoration:underline;}
+.dis {
+	DISPLAY: block
+}
+.undis {
+	DISPLAY: none
+}
+.box{
+	width:440px;
+	margin:0px auto;
+}
+#focuspic {
+	BACKGROUND: #ededed; WIDTH: 440px; PADDING-TOP: 5px; HEIGHT: 570px;border:0px solid #d3d3d3;
+}
+#focuspic .imgWrap {
+	MARGIN: 0px auto; WIDTH: 435px; POSITION: relative; HEIGHT: 435px
+}
+#focuspic .imgWrap img{ width:433px; height:433px;}
+#focuspic .imgbox {
+	Z-INDEX: 99; MARGIN: 0px auto; WIDTH: 435px; POSITION: absolute; HEIGHT: 435px
+}
+#focuspic .imgWrap .txtbg {
+	Z-INDEX: 999; BACKGROUND: none transparent scroll repeat 0% 0%; FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, src='../images3/pic_bg.png'); LEFT: 0px; WIDTH: 440px; POSITION: absolute; TOP: 167px; HEIGHT: 40px
+}
+#focuspic .ftxt {
+	Z-INDEX: 9999; LEFT: 0px; OVERFLOW: hidden; WIDTH: 340px; LINE-HEIGHT: 23px; POSITION: absolute; TOP: 198px; HEIGHT:20px
+}
+#focuspic .ftxt P {
+	MARGIN: 0px auto; WIDTH: 315px
+}
+#focuspic .ftxt .colfff {
+	FONT-SIZE: 12px; COLOR: #fff; 
+}
+#focuspic .ftxt .colfff A {
+	COLOR: #fff
+}
+#focuspic .ftxt .colfff A:visited {
+	COLOR: #fff
+}
+#focuspic .ftxt .colfff A:hover {
+	COLOR: #fff
+}
+#focuspic .ftxt .colhui {
+	COLOR: #c1c1c1
+}
+#focuspic .ftxt .mart10 {
+	MARGIN-TOP: 5px
+}
+.thumbWrap {
+	MARGIN: 5px auto 0px; WIDTH: 440px
+}
+.thumbWrap DIV {
+	DISPLAY: inline; FLOAT: left; MARGIN: 0px 2px 0px 2px; WIDTH: 89px; CURSOR: pointer; HEIGHT: 89px
+}
+.thumbWrap DIV IMG {
+	MARGIN: 0px; WIDTH: 89px; HEIGHT: 89px
+}
+.thumbWrap DIV.on IMG {
+	BORDER-BOTTOM: #f00 3px solid
+}
+.thumbWrap DIV.off IMG {
+	BACKGROUND: #000; FILTER: alpha(Opacity=60); -moz-opacity: 0.6
+}
+
+/* */

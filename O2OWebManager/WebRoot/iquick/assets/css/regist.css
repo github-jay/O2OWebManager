@@ -1,0 +1,245 @@
+@charset "utf-8";
+input,button,dl,dt,dd,ul,ol,li,h1,h2,h3,h4{
+	margin:0;
+	padding:0;
+	list-style:none;
+	font-family:"微软雅黑";
+}
+img{
+	border:0 none;
+	vertical-align:middle;
+}
+
+#top{
+	background:#00003f;
+	margin:0 auto;
+	color:#fff;
+	font-size:12px;
+}
+#top_head{
+	margin: 0 auto;
+	width: 1280px;
+	height: 36px;
+	line-height: 36px;
+}
+#top_head strong{
+	float:left;
+	font-weight:normal;
+}
+#top_head p{
+	float:right;
+	padding:0;
+	margin:0;
+	text-decoration:none;
+}
+#top_head a{
+	color:#fff;
+	text-decoration:none;
+}
+#top_head a:hover{
+	text-decoration:underline;
+}
+#top_head span{
+	padding:0 5px 0 5px;
+}
+
+#top_ad{
+	margin:0 auto;
+	width:1280px;
+}
+#top_ad img{
+	margin:0 auto;
+	padding:0;
+}
+#top_navi{
+	width:1280px;
+	margin:0 auto;
+	padding-top:4px;
+	overflow:hidden;
+	color:#fff;
+}
+#top_navi strong{
+	float:left;
+	font-weight:normal;
+	padding:0;
+}
+#top_navi p{
+	padding:0;
+	margin:0;
+	float:right;
+}
+#top_navi a{color:#fff;text-decoration:none;}
+#top_navi a:hover{text-decoration:underline;}
+#content{
+	background:url(../images/reg-bg.png) no-repeat #fff;
+	width:1280px;
+	height:600px;
+	margin:0 auto;
+}
+
+
+.tab1{
+	float:right;
+	width:481px;
+	border:#ccc solid 5px;
+	margin-top:20px;
+	margin-right:10px;
+}
+
+#con_one_1,#con_one_2{
+	width:421px;
+	margin:10px 0 20px 20px;
+}
+
+.menu{
+	height:35px;
+	border-right:#ccc solid 1px; 
+	font-size:14px;
+}
+.menu li{
+	float:left;
+	width:239px;
+	text-align:center;
+	line-height:35px;
+	height:35px;
+	cursor:pointer;
+	border-left:#ccc solid 1px;
+	border-bottom:#ccc solid 1px;
+	color:#ccc;
+	overflow:hidden;
+	background:#bc001d;
+}
+.menu li.off{background:#bc001d;color:#fff;font-weight:bold; border-bottom:none;}
+.menudiv{
+	border-left:#cccccc solid 1px;
+	border-right:#cccccc solid 1px;
+	border-top:0;
+	background:#fefefe;
+}
+.menudiv div{
+	padding:10px;
+}
+.form_item{
+	line-height:28px;
+	margin:10px;
+	border:1px solid #ccc;
+}
+
+.email{
+	width:312px;
+	height:24px;
+}
+.phone{
+	width:296px;
+	height:24px;
+}
+.password{
+	width:280px;
+	height:24px;
+}
+.validCode{
+	width:40px;
+}
+.validPhoneCode{
+	width:120px;
+}
+.PhoneCode{
+	margin-top:10px;
+	width:131px;
+	height:56px;	
+}
+.verify_code{
+	width:441px;
+	float:left;
+}
+.verify_code_box{
+	display:inline-block;
+	width:122px;
+	height:56px;
+	margin:10px;
+	border:1px solid #efefef;
+	vertical-align:middle;
+	cursor:pointer;
+}
+.menudiv li.verify_code .form_item{
+	float:left;
+	width:118px;
+	padding:14px 38px 14px 18px;
+}
+.menudiv li.verify_phonecode .form_item{
+	float:left;
+	width:200px;
+	padding:14px 38px 14px 18px;
+}
+.change_code{
+	color:#06c;
+	cursor:pointer;
+	font-style:normal;
+	font-size:12px;
+}
+.service_agreement{
+	width:421px;
+	margin:10px 0 10px 20px;
+}
+.menudiv li.service_agreement{
+	margin-top:18px;
+	line-height:18px;
+}
+.menudiv li.service_agreement a.check_agreement{
+	text-decoration:none;
+	padding-left:30px;
+	background:url(../images/regist.png) no-repeat 0 -12px;
+	color:#666;
+}
+.menudiv li.service_agreement a.uncheck_agreement{
+	padding-left:30px;
+	background:url(../images/regist.png) no-repeat;
+	color:#666;
+}
+.menudiv li.service_agreement a.uncheck_agreement:hover{
+	background-position:0 -12px;
+	color:#666;
+}
+
+.menudiv li.regist_btn{margin-top:30px; float:left;}
+.menudiv li.regist_btn button{
+	width:191px;
+	height:45px;
+	border:0 none;
+	background:#f78d1d;
+	font-size:16px;
+	color:#FFF;
+	cursor:pointer;
+}
+.menudiv li.regist_btn .disable_btn{
+	border:1px solid #ccc;
+	background:#eee;
+	color:#ccc;
+	text-shadow:none;
+	cursor:default;
+}
+.menudiv li.regist_btn1{margin-top:30px; float:right;}
+.menudiv li.regist_btn1 button{
+	width:191px;
+	height:45px;
+	border:0 none;
+	background:#bc001d;
+	font-size:16px;
+	color:#FFF;
+	cursor:pointer;
+}
+
+
+#footer{
+	height:70px;
+	text-align:center;
+	color:#b5b5b5;
+	margin:0 auto;
+	font-size:12px;
+	padding:20px 0 20px 0;
+	margin-top:50px;
+	border-top:1px solid #ddd;
+}
+#footer a{color:#b5b5b5;text-decoration:none}
+#footer a:hover{text-decoration:underline}
+#footer_text{ padding-top:10px;}

@@ -1,0 +1,32 @@
+package com.o2oweb.dto;
+
+import java.util.Date;
+
+public class OrderBean {
+	//order
+	private Integer orderId;
+    private String orderNum;
+    private Integer userId;
+    private Date startTime;
+    private Date finishTime;
+    private String orderName;
+    private String address;
+    private boolean isPaied;
+    private boolean chekOut;
+    //orderItem
+    private Integer idOrderItem;
+	private Integer itemNum;
+	private float itemPrice;
+	//item
+	private Integer itemId;
+	private String itemName;
+	private Integer levelId;
+	private float price;
+	private float inPrice;
+	private Integer discount;
+	private Integer sailerId;
+	private Integer imageId;
+	private String itemDetail;
+	private Integer stockNum;
+	private String barCode;
+}

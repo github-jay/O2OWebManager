@@ -1,0 +1,209 @@
+BODY{
+	BACKGROUND:#f8f8f8;
+	margin:0 auto;
+ }
+#main{
+	width:1280px;
+}
+.hide{
+	DISPLAY: none;
+}
+
+IMG{
+	BORDER-BOTTOM: 0px; 
+	BORDER-LEFT: 0px; 
+	BORDER-TOP: 0px; 
+	BORDER-RIGHT: 0px;
+}
+
+.header{
+	padding-top:10px;
+	background: white;
+}
+
+#logo{
+	background:url(../images/logo.jpg) no-repeat #fff;
+	PADDING-BOTTOM: 10px; 
+	MARGIN:0 auto; 
+	WIDTH: 960px;
+	height:90px;
+}
+#content{
+	background:url(../images/login-bg.png) no-repeat;
+	overflow:hidden;
+	margin:0 auto;
+	padding:60px 0 0 0;
+	width:1180px;
+	height:580px;
+}
+#login{
+	float:right;
+	margin-right:40px;
+	WIDTH: 320px;
+	border-radius: 4px 4px 4px 4px;
+	border: 8px solid #e7e7e7;
+	padding: 20px;
+}
+#login FORM{
+	width:320px;
+}
+#login P{
+	float:left;
+	MARGIN:0 auto;
+	font-size:24px;
+	font-family:"微软雅黑"；
+	}
+#box{
+	width:310px;
+	margin:50px 0 10px 0;
+}
+.control-group{
+	width:310px;
+	margin:10px 0 0 0;
+}
+.control-group .icon-user{
+	BORDER-BOTTOM: #cccccc 2px solid; 
+	BORDER-LEFT: #cccccc 2px solid; 
+	PADDING-BOTTOM: 4px; 
+	LINE-HEIGHT: 20px; 
+	PADDING-LEFT: 5px; 
+	WIDTH: 16px; 
+	PADDING-RIGHT: 5px; 
+	DISPLAY: block;  
+	FLOAT: left; 
+	HEIGHT: 20px; 
+	OVERFLOW: hidden; 
+	BORDER-TOP: #cccccc 1px solid; 
+	MARGIN-RIGHT: -1px; 
+	BORDER-RIGHT: #cccccc 1px solid; 
+	PADDING-TOP: 4px; 
+	border-radius: 4px 0 0 4px;
+}
+.control-group .icon-lock{
+	BORDER-BOTTOM: #cccccc 2px solid; 
+	BORDER-LEFT: #cccccc 2px solid; 
+	PADDING-BOTTOM: 4px; 
+	LINE-HEIGHT: 20px; 
+	PADDING-LEFT: 5px; 
+	WIDTH: 16px; 
+	PADDING-RIGHT: 5px; 
+	DISPLAY: block; 
+	FLOAT: left; 
+	HEIGHT: 20px; 
+	OVERFLOW: hidden; 
+	BORDER-TOP: #cccccc 1px solid; 
+	MARGIN-RIGHT: -1px; 
+	BORDER-RIGHT: #cccccc 1px solid; 
+	PADDING-TOP: 4px; 
+	border-radius: 4px 0 0 4px;
+}
+.control-group .icon-mail{
+	BORDER-BOTTOM: #cccccc 1px solid; 
+	BORDER-LEFT: #cccccc 1px solid; 
+	PADDING-BOTTOM: 4px; 
+	LINE-HEIGHT: 20px; 
+	PADDING-LEFT: 5px; 
+	WIDTH: 16px; 
+	PADDING-RIGHT: 5px; 
+	DISPLAY: block; 
+	BACKGROUND: url(/jscss/demoimg/201309/bg-loginicons.png) -1px 0px; 
+	FLOAT: left; 
+	HEIGHT: 20px; 
+	OVERFLOW: hidden; 
+	BORDER-TOP: #cccccc 1px solid; 
+	MARGIN-RIGHT: -1px; 
+	BORDER-RIGHT: #cccccc 1px solid; 
+	PADDING-TOP: 4px; 
+	border-radius: 4px 0 0 4px;
+}
+.control-group INPUT{
+	LINE-HEIGHT: 20px;
+	BACKGROUND-COLOR: #ffffff;
+	PADDING-LEFT: 6px;
+	WIDTH: 300px;
+	DISPLAY: inline-block;
+	FONT-FAMILY: "微软雅黑", Helvetica, Arial, sans-serif;
+	MARGIN-BOTTOM: 10px;
+	HEIGHT: 32px;
+	COLOR: #555555;
+	MARGIN-LEFT: 0px;
+	FONT-SIZE: 14px;
+	VERTICAL-ALIGN: middle;
+	border: 1px solid #cccccc ;
+	border-radius: 0 4px 4px 0;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+	transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+	outline: none;
+}
+.control-group INPUT:focus{
+	border:1px solid #aaa;
+}
+.forget{
+	display:block;
+	text-decoration:none;
+	width:300px;
+	margin:30px 0 0 0;
+}
+.forget a{
+	color:#000;
+	text-decoration:none;
+	font-size:12px;
+}
+.forget a:hover{text-decoration:underline;}
+.remember-me{
+	DISPLAY: block;
+}
+.remember-me INPUT{VERTICAL-ALIGN: middle; CURSOR: pointer}
+.remember-me LABEL{FONT-SIZE: 13px; VERTICAL-ALIGN: middle; CURSOR: pointer}
+.remember-me A{FLOAT: right; COLOR: #333; TEXT-DECORATION: none; PADDING-TOP: 1px}
+.remember-me A:hover{BORDER-BOTTOM: #999 1px dashed; COLOR: #999; TEXT-DECORATION: none}
+.login-btn{
+	width:280px;
+	height:30px;
+	float: none;
+	margin: 0 0 30px 0px;
+}
+.login-btn INPUT{
+	border: none;
+	padding:8px 36px;
+	*padding:6px 20px;
+	LINE-HEIGHT: 24px;
+	BACKGROUND: #f56c06;
+	MARGIN: 0px auto;
+	DISPLAY: block;
+	COLOR: #ffffff;
+	FONT-SIZE: 16px;
+	*FONT-SIZE: 14px;
+	CURSOR: pointer;
+	float: left;
+	zoom:1;
+}
+.login-btn INPUT:hover{BACKGROUND-COLOR: #fa7716}
+.forget-btn{PADDING-TOP: 10px}
+#footer{
+	height:70px;
+	text-align:center;
+	color:#b5b5b5;
+	margin:0 auto;
+	font-size:12px;
+	padding:20px 0 20px 0;
+	margin-top:50px;
+	border-top:1px solid #ddd;
+}
+#footer a{color:#b5b5b5;text-decoration:none}
+#footer a:hover{text-decoration:underline}
+#footer_text{ padding-top:10px;}
+#login-copyright{
+	background-color:#00003f;
+	TEXT-ALIGN: center;
+	PADDING-BOTTOM: 0px;
+	MARGIN:0 auto;
+	PADDING-LEFT: 10px;
+	WIDTH: 1860px;
+	PADDING-RIGHT: 10px;
+	COLOR: #fff;
+	FONT-SIZE: 12px;
+	PADDING-TOP: 10px;
+}
+#login-copyright A{COLOR: #fff; TEXT-DECORATION: none}
+#login-copyright A:hover{TEXT-DECORATION: none}

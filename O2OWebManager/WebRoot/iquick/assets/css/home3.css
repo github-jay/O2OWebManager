@@ -1,0 +1,160 @@
+@charset "utf-8";
+/* CSS Document */
+body,div,p,h1,h2,h3,h4,h5,h6,ul,li,form{
+	margin:0;
+	padding:0;
+}
+ul{
+	list-style:none;
+}
+img{
+	border:none;
+}
+
+#top{
+	background:#00003f;
+	margin:0 auto;
+	color:#fff;
+	font-size:12px;
+}
+#top_head{
+	margin: 0 auto;
+	width: 1280px;
+	height: 36px;
+	line-height: 36px;
+}
+#top_head strong{
+	float:left;
+	font-weight:normal;
+}
+#top_head p{
+	float:right;
+	padding:0;
+	margin:0;
+	text-decoration:none;
+}
+#top_head a{
+	color:#fff;
+	text-decoration:none;
+}
+#top_head a:hover{
+	text-decoration:underline;
+}
+#top_head span{
+	padding:0 5px 0 5px;
+}
+
+#top_ad{
+	margin:0 auto;
+	width:1280px;
+}
+#top_ad img{
+	margin:0 auto;
+	padding:0;
+}
+#top_navi{
+	width:1280px;
+	margin:0 auto;
+	padding-top:4px;
+	overflow:hidden;
+	color:#fff;
+}
+#top_navi strong{
+	float:left;
+	font-weight:normal;
+	padding:0;
+}
+
+a,#mini_nav{
+	color:#fff;
+	font-size:12px;
+	text-decoration:none;
+}
+#mini_nav,#con_inner,#footer p{
+	margin:0 auto;
+	width:960px;
+}
+/* head */
+#mini{
+	background-color:#00003f; 
+	height:25px; 
+	line-height:25px; 
+	text-align:center; 
+	overflow:hidden;
+}
+#mini_nav{
+	overflow:hidden;
+}
+#mini_nav strong{
+	float:left;
+	font-weight:normal;
+}
+#mini_nav p{
+	float:right;
+}
+#mini_nav a:hover{
+	text-decoration:underline;
+}
+#mini_nav span{
+	padding:0 5px;
+}
+#add_desktop{
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	color:#fff;
+	padding:3px 8px;
+}
+
+/* content */
+#content{
+	background:url(../images/bg.png) no-repeat;
+	width:1280px;
+	overflow:hidden;
+	margin: 0 auto;
+	height: 981px;
+}
+
+/* main */
+#con_left{
+	
+	margin:0 auto;
+	width:1280px;
+}
+#logo{
+	background:url(../images/logo.png) no-repeat;
+	margin:0;
+	width:370px;
+	height:191px;
+}
+#top_img{
+	height:275px;
+	width:280px;
+	position:absolute;
+	margin:-160px 0 0 585px;	
+}
+#con_inner{
+	width:860px;
+	margin:0 auto;
+	position:relative;
+}
+
+#border{
+	font-size:18px;
+	height:280px;
+	line-height:40px;
+	text-align:center;
+	font-family:"Times New Roman", Times, serif, "微软雅黑";
+}
+#border a{
+	margin-left:10px;
+}
+#border span{
+	color:#FFF;
+}
+#footer{
+
+	height:181px;
+	text-align:center;
+}
+	

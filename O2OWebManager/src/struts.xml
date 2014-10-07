@@ -40,6 +40,11 @@
 				<param name="root">obj</param>
 			</result>
 		</action>
+		<action name="DetailAction" class="DetailAction">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
 	</package>
 	<package name="file" extends="json-default" namespace="/file">
 		<action name="fileAction" class="fileAction">
@@ -68,6 +73,13 @@
 			</result>
 		</action>
 		<action name="itemfAction" class="itemfAction">
+			<result type="json">
+				<param name="root">obj</param>
+			</result>
+		</action>
+	</package>
+	<package name="level" extends="json-default" namespace="/level">
+		<action name="levelAction" class="levelAction">
 			<result type="json">
 				<param name="root">obj</param>
 			</result>
