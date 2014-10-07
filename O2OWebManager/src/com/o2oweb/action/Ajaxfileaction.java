@@ -20,10 +20,8 @@ import org.springframework.stereotype.Service;
 
 import com.o2oweb.entity.Image;
 import com.o2oweb.entity.Item;
-import com.o2oweb.entity.Rollbar;
 import com.o2oweb.service.ImageService;
 import com.o2oweb.service.ItemService;
-import com.o2oweb.service.RollbarService;
 import com.o2oweb.util.BaseAction;
 import com.o2oweb.util.POIUtil;
 import com.o2oweb.util.PropertiesUtil;
@@ -36,9 +34,6 @@ public class Ajaxfileaction extends BaseAction {
 	private ItemService itemService;
 	@Autowired
 	private ImageService imageService;
-	@Autowired
-	private RollbarService rollbarService;
-	
 
 	private File file2upload;
 	private File excel2upload;
@@ -48,9 +43,6 @@ public class Ajaxfileaction extends BaseAction {
 	private String fileName;
 	private String fileExt;
 
-	private int imgindex;
-	private String imgtitle;
-	
 	@Override
 	public String execute() throws Exception {
 		// 得到工程保存图片的路径
@@ -61,11 +53,7 @@ public class Ajaxfileaction extends BaseAction {
 
 		// 得到图片保存的位置(根据root来得到图片保存的路径在tomcat下的该工程里)
 		File destFile = new File(root, createFileName());
-		
-		if(!destFile.exists()){
-			destFile.createNewFile();
-		}
-		
+
 		// 把图片写入到上面设置的路径里
 		OutputStream os = new FileOutputStream(destFile);
 		byte[] buffer = new byte[400];
@@ -227,21 +215,4 @@ public class Ajaxfileaction extends BaseAction {
 	public void setExcel2upload(File excel2upload) {
 		this.excel2upload = excel2upload;
 	}
-
-	public int getImgindex() {
-		return imgindex;
-	}
-
-	public void setImgindex(int imgindex) {
-		this.imgindex = imgindex;
-	}
-
-	public String getImgtitle() {
-		return imgtitle;
-	}
-
-	public void setImgtitle(String imgtitle) {
-		this.imgtitle = imgtitle;
-	}
-	
 }

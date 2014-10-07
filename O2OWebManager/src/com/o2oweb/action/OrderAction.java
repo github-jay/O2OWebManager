@@ -89,7 +89,13 @@ public class OrderAction extends BaseAction {
 	public void pageQuery() {
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
 		if (orderby != null) {
-			dc.addOrder(org.hibernate.criterion.Order.asc(orderby));
+			if (orderby.equals("chekOutNow")) {
+				dc.add(Restrictions.or(Restrictions.eq("isPaied", false),
+						Restrictions.eq("chekOut", false)));
+				dc.addOrder(org.hibernate.criterion.Order.asc("orderNum"));
+			} else {
+				dc.addOrder(org.hibernate.criterion.Order.asc(orderby));
+			}
 		}
 		if (orderNum != null && !orderNum.trim().equals("")) {
 			dc.add(Restrictions.eq("orderNum", orderNum));
@@ -173,6 +179,21 @@ public class OrderAction extends BaseAction {
 		writeResponse("true");
 	}
 
+	public void checkOrder() {
+		Order order = this.orderService.getOrder(orderNum);
+		if (order.getIsPaied()) {
+			writeResponse("该订单已支付！");
+			return;
+		}
+
+		order.setIsPaied(this.paied);
+		order.setFinishTime(new Date());
+
+		this.orderService.update(order);
+
+		writeResponse("true");
+	}
+	
 	public Integer getOrderId() {
 		return orderId;
 	}
@@ -258,7 +279,10 @@ public class OrderAction extends BaseAction {
 	}
 
 	public void setPage(String page) {
-		this.page = page;
+		if (page.equals("0"))
+			this.page = "1";
+		else
+			this.page = page;
 	}
 
 	public String getOrderby() {

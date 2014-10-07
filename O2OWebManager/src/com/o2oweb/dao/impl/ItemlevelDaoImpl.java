@@ -50,4 +50,14 @@ public class ItemlevelDaoImpl extends HibernateEntityDao<Itemlevel> implements
 		return result;
 	}
 
+	public Itemlevel getLevel(int superId, String levelName) {
+		List<Itemlevel> result = super.find(
+				"from Itemlevel lev where lev.surperId=? and lev.levelName=?",
+				new Object[] { superId, levelName });
+		if (result != null && result.size() > 0) {
+			return result.get(0);
+		}
+		return null;
+	}
+
 }
