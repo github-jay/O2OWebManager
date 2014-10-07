@@ -1,5 +1,7 @@
 package com.o2oweb.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.hibernate.criterion.DetachedCriteria;
@@ -30,13 +32,17 @@ public class OrderService {
 		return orderDao.getOrder(OrderNum);
 	}
 
-	public Page pagedQuery(DetachedCriteria dc,int rows,int page){
+	public Page pagedQuery(DetachedCriteria dc, int rows, int page) {
 		Page p = this.orderDao.pagedQuery(dc, rows * page, rows);
 		return p;
 	}
 
+	public List<Order> getUnchecked() {
+		return this.orderDao.getUnchecked();
+	}
+
 	@Resource
-	public void setorderDao(OrderDao orderDao) {
+	public void setOrderDao(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
 }

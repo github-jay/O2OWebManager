@@ -225,31 +225,38 @@
 			});
 		});
 
-		setInterval("showMessage('message')", 10000);
-
+		//定时检查订单情况
+		setInterval("checkOrder()", 60000);
 		function checkOrder() {
-			$.post('', {}, function(result) {
-				if (result == 'true') {
-					$.messager.alert('Warning', '处理成功');
-					$('#do_dialog').dialog('close');
-					$('#dg').datagrid('reload');
-				} else {
-					$.messager.alert('Warning', result);
-					$('#do_dialog').dialog('close');
+			$.post('/O2OWebManager/order/orderAction!checkOrder', {}, function(result) {
+				if (result != '0') {
+					$.messager.show({
+						title : '提示',
+						msg : '您有' + result + '条订单尚未处理！',
+						timeout : 5000,
+						showType : 'slide'
+					});
 				}
 			});
 		}
-
-		function showMessage(message) {
-			$.messager.show({
-				title : 'My Title',
-				msg : message,
-				timeout : 5000,
-				showType : 'slide'
-			});
+		window.checkOrder = checkOrder;
+		
+		//进度条
+		$('#pbar').progressbar({   
+		    value: 0,
+		    text: '正在保存...{value}%'
+		});  
+		var bar = setInterval("fileBar()", 5000);
+		function fileBar() {
+			var value = $('#pbar').progressbar('getValue');   
+			if (value < 100){   
+			    value += 10;   
+			    $('#pbar').progressbar('setValue', value);  
+			} else {
+				window.clearInterval(bar);
+			}
 		}
-
-		window.showMessage = showMessage;
+		window.fileBar = fileBar;
 
 	});
 </script>
@@ -266,7 +273,7 @@
 	<br /> 指定订单显示类别
 	<select id="filter_type" class="easyui-combobox" name="state"
 		style="width:200px;">
-		<option value="chekOutNow">已支付未处理</option>
+		<option value="chekOutNow">未处理订单</option>
 		<option value="orderNum">按订单编号</option>
 		<option value="startTime">按开始时间</option>
 		<option value="finishTime">按完成时间</option>
@@ -312,6 +319,9 @@
 	<!-- 处理订单对话框 -->
 	<div id="do_dialog" class="easyui-dialog"
 		data-options="modal:true,closed:true" title="处理订单">请确认该订单是否已处理！</div>
+		
+	<div id="pbar" style="width:400px;"></div>  
+
 </body>
 
 </html>

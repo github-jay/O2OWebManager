@@ -90,8 +90,7 @@ public class OrderAction extends BaseAction {
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
 		if (orderby != null) {
 			if (orderby.equals("chekOutNow")) {
-				dc.add(Restrictions.or(Restrictions.eq("isPaied", false),
-						Restrictions.eq("chekOut", false)));
+				dc.add(Restrictions.eq("chekOut", false));
 				dc.addOrder(org.hibernate.criterion.Order.asc("orderNum"));
 			} else {
 				dc.addOrder(org.hibernate.criterion.Order.asc(orderby));
@@ -180,20 +179,11 @@ public class OrderAction extends BaseAction {
 	}
 
 	public void checkOrder() {
-		Order order = this.orderService.getOrder(orderNum);
-		if (order.getIsPaied()) {
-			writeResponse("该订单已支付！");
-			return;
-		}
+		List<Order> os = this.orderService.getUnchecked();
 
-		order.setIsPaied(this.paied);
-		order.setFinishTime(new Date());
-
-		this.orderService.update(order);
-
-		writeResponse("true");
+		writeResponse(os.size() + "");
 	}
-	
+
 	public Integer getOrderId() {
 		return orderId;
 	}
