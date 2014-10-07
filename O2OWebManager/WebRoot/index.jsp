@@ -31,5 +31,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <a  href="/O2OWebManager/pages/Items.html" target="_blank" class="easyui-linkbutton" data-options="">商品库存管理</a>
   <a  href="/O2OWebManager/pages/Orders.html" target="_blank" class="easyui-linkbutton" data-options="">订单管理</a>
   <a  href="/O2OWebManager/pages/Index3.html" target="_blank" class="easyui-linkbutton" data-options="">首页编辑</a>
+  <a  href="/O2OWebManager/pages/ItemLevels.html" target="_blank" class="easyui-linkbutton" data-options="">商品分类管理</a>
   </body>
 </html>
