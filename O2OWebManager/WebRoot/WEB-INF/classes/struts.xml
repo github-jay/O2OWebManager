@@ -19,7 +19,7 @@
 	<!-- <package name="user" extends="struts-default" namespace="/user"> <action 
 		name="userAction" class="userAction"> <result>/pages/Index.jsp</result> <result 
 		name="toSelect">/pages/Index2.jsp</result> <result name="toShop" type="redirectAction">page3/page3Action.action</result> 
-		</action> </package> -->
+		</action> </package> --> 
 	<package name="user" extends="json-default" namespace="/user">
 		
 	</package>
