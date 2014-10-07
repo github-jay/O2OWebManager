@@ -30,6 +30,10 @@ public class ItemLevelService {
 		return ItemLevelDao.getLevel(levelID);
 	}
 
+	public Itemlevel getLevel(int superId, String levelName) {
+		return ItemLevelDao.getLevel(superId, levelName);
+	}
+
 	public List<Itemlevel> getAllLevel(int levelID) {
 		return ItemLevelDao.getAllLevel(levelID);
 	}

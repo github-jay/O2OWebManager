@@ -38,7 +38,6 @@ public class Ajaxfileaction extends BaseAction {
 	private ImageService imageService;
 	@Autowired
 	private RollbarService rollbarService;
-	
 
 	private File file2upload;
 	private File excel2upload;
@@ -49,11 +48,13 @@ public class Ajaxfileaction extends BaseAction {
 	private String fileName;
 	private String fileExt;
 
+
 	private int imgindex;
 	private String imgtitle;
 	
 	private static String urlpre = "/O2OWebManager/image/getImage?imageID=";
 	
+
 	@Override
 	public String execute() throws Exception {
 		// 得到工程保存图片的路径
@@ -64,11 +65,7 @@ public class Ajaxfileaction extends BaseAction {
 
 		// 得到图片保存的位置(根据root来得到图片保存的路径在tomcat下的该工程里)
 		File destFile = new File(root, createFileName());
-		
-		if(!destFile.exists()){
-			destFile.createNewFile();
-		}
-		
+
 		// 把图片写入到上面设置的路径里
 		OutputStream os = new FileOutputStream(destFile);
 		byte[] buffer = new byte[400];
@@ -132,6 +129,7 @@ public class Ajaxfileaction extends BaseAction {
 	}
 	
 	public void rollimgedit(){
+		
 		
 		Image image = new Image();
 		
@@ -299,4 +297,5 @@ public class Ajaxfileaction extends BaseAction {
 		this.detialimg = detialimg;
 	}
 	
+
 }
