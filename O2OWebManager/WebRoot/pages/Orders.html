@@ -35,7 +35,7 @@
 			}, {
 				field : 'orderName',
 				title : '订单名称',
-				width : 100
+				width : 200
 			}, {
 				field : 'startTime',
 				title : '开始时间',
@@ -214,7 +214,7 @@
 		});
 		//打印按钮
 		$('#btn_print').click(function() {
-			$('#item_detial').jqprint();
+			$('#printare').jqprint();
 
 		});
 		//搜索按钮
@@ -296,20 +296,23 @@
 	</div>
 	<!-- 详情窗口-->
 	<div id="item_detial" class="easyui-window" title="订单详情"
-		style="width:600px; height:500px; text-align:center"
+		style="width:800px; height:500px; text-align:center"
 		data-options="closed:true,modal:true ">
+		<div id="printare">
 		<table id="item_property" class="easyui-propertygrid"
-			style="width:500px;"
+			style="width:100%;"
 			data-options="url:'/O2OWebManager/order/orderAction!getOrderItem',showGroup:true,scrollbarSize:0,columns:[[
         		{ field: 'itemId', title: '商品ID', width: 100, resizable: true,hidden:true },
-        		{ field: 'itemName', title: '商品名称', width: 100, resizable: true },
-                { field: 'imageId', title: '图片', width: 100, resizable: false },
-                { field: 'barCode', title: '条形码', width: 100, resizable: false },
-                { field: 'idOrderItem', title: '订单ID', width: 100, resizable: true,hidden:true },
+        		{ field: 'itemName', title: '商品名称', width: 250, resizable: true },
                 { field: 'itemNum', title: '购买数量', width: 100, resizable: true },
-                { field: 'itemPrice', title: '购买价格', width: 100, resizable: true }]]"></table>
+                { field: 'itemPrice', title: '购买价格', width: 100, resizable: true },
+                { field: 'imageId', title: '图片', width: 100, resizable: false },
+                { field: 'barCode', title: '条形码', width: 200, resizable: false },
+                { field: 'idOrderItem', title: '订单ID', width: 100, resizable: true,hidden:true }
+                ]]"></table>
 
 		<div id="address_div"></div>
+		</div>
 		<a id="btn_print" href="#" class="easyui-linkbutton"
 			data-options="iconCls:'icon-save'">打印</a>
 	</div>
