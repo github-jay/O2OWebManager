@@ -8,7 +8,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,9 @@ public class ItemAction extends BaseAction {
 	private String itemDetail;
 	private Integer stockNum;
 	private String barCode;
+	
+	//查询参数
+	private String searchinfo;
 	
 	//分页参数
 	private String rows;	//每页多少行
@@ -87,6 +92,9 @@ public class ItemAction extends BaseAction {
 	@Override
 	public String execute() throws Exception {
 		DetachedCriteria dc = DetachedCriteria.forClass(Item.class);
+		if(searchinfo!=null&&!"".endsWith(searchinfo.trim())){
+			dc.add(Restrictions.like("itemName", searchinfo, MatchMode.ANYWHERE));
+		}
 		if("price_desc".endsWith(orderby)){
 			dc.addOrder(Order.desc("price"));
 		}else if(orderby != null){
@@ -286,6 +294,14 @@ public class ItemAction extends BaseAction {
 
 	public void setOrderby(String orderby) {
 		this.orderby = orderby;
+	}
+
+	public String getSearchinfo() {
+		return searchinfo;
+	}
+
+	public void setSearchinfo(String searchinfo) {
+		this.searchinfo = searchinfo;
 	}
 	
 }

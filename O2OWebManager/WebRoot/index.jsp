@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>网站管理入口</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -18,9 +18,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
+	
+    <link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="js/themes/icon.css">
+	
+    <script language="javascript" src="js/jquery-2.1.0.min.js"></script>
+    
+    <script language="javascript" src="js/jquery.easyui.min.js"></script>
   </head>
   
   <body>
-    This is my JSP page. <br>
+  <a  href="/O2OWebManager/pages/Items.html" target="_blank" class="easyui-linkbutton" data-options="">商品库存管理</a>
+  <a  href="/O2OWebManager/pages/Orders.html" target="_blank" class="easyui-linkbutton" data-options="">订单管理</a>
+  <a  href="/O2OWebManager/pages/Index3.html" target="_blank" class="easyui-linkbutton" data-options="">首页编辑</a>
   </body>
 </html>

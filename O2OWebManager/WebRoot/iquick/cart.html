@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh_CN">
+ <head>
+   		<meta charset="utf-8">
+   		<meta http-equiv="Pragma" CONTENT="no-cache">
+		<meta http-equiv="Expires" CONTENT="-1">
+   		
+   		<title>i&middot;quick--i快客</title>
+   		<meta name="keywords" content="I&middot;快客" />
+   		<meta name="description" content="I&middot;快客" />
+		<meta name="robots" content="all" />
+		
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+		<link href="/assets/css/basic.css" rel="stylesheet" type="text/css" />
+
+		<script src="/assets/js/sea.js" type="text/javascript"></script> 
+		<script src="/assets/js/jquery-1.11.1.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			// IQuick global object
+			window.IQ = {};
+		</script>
+		
+		<!--[if lt IE 9]>
+		  <script src="/assets/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+  	<body>
+
+
+<link href="/assets/css/cart.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/assets/js/clib/toastr/toastr.css" /> 
+
+<div id="top"> 
+  <div id="top_head"> 
+    <strong>您好！欢迎来到I&middot;快客，祝您购物愉快！</strong> 
+    <p><a target="_blank" href="/login">登陆</a><span>|</span><a target="_blank" href="/regist">注册</a><span>|</span><a target="_blank" href="/mine">我的I&middot;快客</a><span>|</span><a target="_blank" href="/collect">我的收藏</a><span>|</span><a target="_blank" href="/cart">我的购物车</a><span>|</span><a target="_blank" href="/cart">去付款</a></p> 
+  </div> 
+</div>
+
+  <div id="head"> 
+   <div id="top_center" class="cf"> 
+     <div id="top_logo">
+      <img src="/assets/images/logo_1.png" alt="" />
+     </div> 
+     <div id="top_serch"> 
+      <form action="#" method="get" class="search_form"> 
+       <input type="text" name="s" class="sinput" placeholder="输入 回车搜索" autofocus="" x-webkit-speech="" /> 
+       <input type="submit" value="搜索" class="sbtn" /> 
+      </form> 
+     </div> 
+    </div> 
+  </div> 
+
+  <div id="content" style="margin:auto"> 
+   <div id="cart_box"> 
+    <div class="cart_navi"> 
+     <strong><a target="_self" href="#">全部商品</a><a target="_self" href="#">降价商品</a></strong> 
+     <p><a target="_self" href="#">继续购物&gt;&gt;</a></p> 
+    </div> 
+    <div id="cart_box_table"> 
+     <table class="cart-tablebox" width="99%" id="cart_table"> 
+      <tbody>
+       <tr class="cart_table_tr"> 
+        <th width="5%"><input id="cart-options-selectall-2" type="checkbox" class="cart-options selectall" data-event="select-all" style="vertical-align:middle" /><label for="cart-options-selectall-2" style="margin-left:5px;">全选</label></th> 
+        <th width="20%">商品信息</th> 
+        <th width="15%">单价（元）</th> 
+        <th width="15%">数量</th> 
+        <th width="15%">金额（元）</th> 
+        <th width="15%">重量</th> 
+        <th width="15%">操作</th> 
+       </tr> 
+      </tbody>
+     </table> 
+     <table class="cart-tablebox" width="1278"> 
+      <tbody class="cart-tablebox-rows" data-template="#t-cartrow">
+
+      </tbody>
+     </table> 
+    </div>
+    <table class="cart-tablebox cart-tablebox-pos" id="b_table"> 
+     <tbody>
+      <tr>
+       <th width="60">
+          <input id="_1" type="checkbox" class="cart-options selectall" data-event="select-all" style="vertical-align:middle" />
+          <label for="_1" style="margin-left:5px;">全选</label>
+       </th> 
+       <th width="80"><a class="cart-options" data-event="delete-selected">删除选中宝贝</a></th> 
+       <th width="80">
+        <a class="cart-options" data-event="collect-one">收藏选中宝贝</a></th> 
+       <th width="40">分享</th> 
+       <th width="330"></th> 
+       <th width="80" class="tl">运费:　&yen;<span class="tTraffic">10</span></th> 
+       <th width="120" class="tl">重量合计:　<span class="tWeight">0</span>g</th> 
+       <th width="150" class="tl price_box">商品总金额:　<strong>&yen;<span class="tPrice">0</span></strong></th> 
+       <th width="100" class="tr"><button class="jbtn cart-options" data-event="submit">结算</button></th> 
+      </tr>
+     </tbody>
+    </table> 
+   </div> 
+   <div id="demo"> 
+    <div id="demo_navi"> 
+     <strong>爱快客为您推荐：</strong> 
+     <p style="color:#000;"><a target="_blank" href="#">最近浏览过的商品</a><a target="_blank" href="#">您可能感兴趣的商品</a><a target="_blank" href="#">最新收藏的商品</a></p> 
+    </div> 
+    <div class="demo_box"> 
+     <div class="LeftBotton">
+      <a onmousedown="ISL_GoUp_1()" onmouseup="ISL_StopUp_1()" onmouseout="ISL_StopUp_1()" href="javascript:void(0);" target="_self"></a>
+     </div> 
+     <div class="pcont" id="ISL_Cont_1"> 
+      <div class="ScrCont"> 
+       <div id="List1_1"> 
+        <!-- piclist begin --> 
+        <a class="pl" href="#"><img src="/assets/images/product_r.png" alt="" width="188" height="188" />妙妙 鸡味香脆片 60g 马来西亚进口</a> 
+        <a class="pl" href="#"><img src="/assets/images/product_r.png" alt="" width="188" height="188" />妙妙 鸡味香脆片 60g 马来西亚进口</a> 
+        <a class="pl" href="#"><img src="/assets/images/product_r.png" alt="" width="188" height="188" />妙妙 鸡味香脆片 60g 马来西亚进口</a> 
+        <a class="pl" href="#"><img src="/assets/images/product_r.png" alt="" width="188" height="188" />妙妙 鸡味香脆片 60g 马来西亚进口</a> 
+        <a class="pl" href="#"><img src="/assets/images/product_r.png" alt="" width="188" height="188" />妙妙 鸡味香脆片 60g 马来西亚进口</a> 
+        <a class="pl" href="#"><img src="/assets/images/product_r.png" alt="" width="188" height="188" />妙妙 鸡味香脆片 60g 马来西亚进口</a> 
+        <!-- piclist end --> 
+       </div> 
+       <div id="List2_1"></div> 
+      </div> 
+     </div> 
+     <div class="RightBotton"> 
+      <a onmousedown="ISL_GoDown_1()" onmouseup="ISL_StopDown_1()" onmouseout="ISL_StopDown_1()" href="javascript:void(0);" target="_self"></a>
+     </div> 
+    </div>
+   </div> 
+  </div> 
+  <script type="text/javascript">
+
+    var Speed_1 = 10; //速度(毫秒)
+    var Space_1 = 20; //每次移动(px)
+    var PageWidth_1 = 107 * 6; //翻页宽度
+    var interval_1 = 5000; //翻页间隔时间
+    var fill_1 = 0; //整体移位
+    var MoveLock_1 = false;
+    var MoveTimeObj_1;
+    var MoveWay_1 = "right";
+    var Comp_1 = 0;
+    var AutoPlayObj_1 = null;
+    function GetObj(objName) {
+        if (document.getElementById) {
+            return eval('document.getElementById("' + objName + '")')
+        } else {
+            return eval('document.all.' + objName)
+        }
+    }
+    function AutoPlay_1() {
+        clearInterval(AutoPlayObj_1);
+        AutoPlayObj_1 = setInterval('ISL_GoDown_1();ISL_StopDown_1();', interval_1)
+    }
+    function ISL_GoUp_1() {
+        if (MoveLock_1) return;
+        clearInterval(AutoPlayObj_1);
+        MoveLock_1 = true;
+        MoveWay_1 = "left";
+        MoveTimeObj_1 = setInterval('ISL_ScrUp_1();', Speed_1);
+    }
+    function ISL_StopUp_1() {
+        if (MoveWay_1 == "right") {
+            return
+        };
+        clearInterval(MoveTimeObj_1);
+        if ((GetObj('ISL_Cont_1').scrollLeft - fill_1) % PageWidth_1 != 0) {
+            Comp_1 = fill_1 - (GetObj('ISL_Cont_1').scrollLeft % PageWidth_1);
+            CompScr_1()
+        } else {
+            MoveLock_1 = false
+        }
+        AutoPlay_1()
+    }
+    function ISL_ScrUp_1() {
+        if (GetObj('ISL_Cont_1').scrollLeft <= 0) {
+            GetObj('ISL_Cont_1').scrollLeft = GetObj('ISL_Cont_1').scrollLeft + GetObj('List1_1').offsetWidth
+        }
+        GetObj('ISL_Cont_1').scrollLeft -= Space_1
+    }
+    function ISL_GoDown_1() {
+        clearInterval(MoveTimeObj_1);
+        if (MoveLock_1) return;
+        clearInterval(AutoPlayObj_1);
+        MoveLock_1 = true;
+        MoveWay_1 = "right";
+        ISL_ScrDown_1();
+        MoveTimeObj_1 = setInterval('ISL_ScrDown_1()', Speed_1)
+    }
+    function ISL_StopDown_1() {
+        if (MoveWay_1 == "left") {
+            return
+        };
+        clearInterval(MoveTimeObj_1);
+        if (GetObj('ISL_Cont_1').scrollLeft % PageWidth_1 - (fill_1 >= 0 ? fill_1: fill_1 + 1) != 0) {
+            Comp_1 = PageWidth_1 - GetObj('ISL_Cont_1').scrollLeft % PageWidth_1 + fill_1;
+            CompScr_1()
+        } else {
+            MoveLock_1 = false
+        }
+        AutoPlay_1()
+    }
+    function ISL_ScrDown_1() {
+        if (GetObj('ISL_Cont_1').scrollLeft >= GetObj('List1_1').scrollWidth) {
+            GetObj('ISL_Cont_1').scrollLeft = GetObj('ISL_Cont_1').scrollLeft - GetObj('List1_1').scrollWidth
+        }
+        GetObj('ISL_Cont_1').scrollLeft += Space_1
+    }
+    function CompScr_1() {
+        if (Comp_1 == 0) {
+            MoveLock_1 = false;
+            return
+        }
+        var num, TempSpeed = Speed_1,
+        TempSpace = Space_1;
+        if (Math.abs(Comp_1) < PageWidth_1 / 2) {
+            TempSpace = Math.round(Math.abs(Comp_1 / Space_1));
+            if (TempSpace < 1) {
+                TempSpace = 1
+            }
+        }
+        if (Comp_1 < 0) {
+            if (Comp_1 < -TempSpace) {
+                Comp_1 += TempSpace;
+                num = TempSpace
+            } else {
+                num = -Comp_1;
+                Comp_1 = 0
+            }
+            GetObj('ISL_Cont_1').scrollLeft -= num;
+            setTimeout('CompScr_1()', TempSpeed)
+        } else {
+            if (Comp_1 > TempSpace) {
+                Comp_1 -= TempSpace;
+                num = TempSpace
+            } else {
+                num = Comp_1;
+                Comp_1 = 0
+            }
+            GetObj('ISL_Cont_1').scrollLeft += num;
+            setTimeout('CompScr_1()', TempSpeed)
+        }
+    }
+    function picrun_ini() {
+        GetObj("List2_1").innerHTML = GetObj("List1_1").innerHTML;
+        GetObj('ISL_Cont_1').scrollLeft = fill_1 >= 0 ? fill_1: GetObj('List1_1').scrollWidth - Math.abs(fill_1);
+        GetObj("ISL_Cont_1").onmouseover = function() {
+            clearInterval(AutoPlayObj_1)
+        }
+        GetObj("ISL_Cont_1").onmouseout = function() {
+            AutoPlay_1()
+        }
+        AutoPlay_1();
+    }
+
+    $(function() {
+        picrun_ini()
+    });
+
+  </script> 
+
+  <!-- by daidai.in -->
+
+  <script type="text/template" id="t-cartrow">
+    <{ $.each(items, function(idx, item){ with(item.item){ }>
+  <tr id="p-<{= itemId }>" class="cart-tablebox-row cart_table_tr2" data-id="<{= itemId }>"> 
+    <th width="58">
+      <input type="checkbox" class="p-checkbox cart-options" data-id="<{= itemId }>" data-event="select" data-price="<{= inPrice }>" data-weight="60" style="vertical-align:middle;" />
+    </th> 
+    <td width="90">
+      <img src="/assets/images/product_s.png?<{= imageId }>" width="60" height="60" border="0" style="vertical-align:middle" />
+    </td> 
+    <td width="161" class="table_css">
+      <a target="_blank" href="/item/<{= itemId }>"><{= itemName }></a>
+    </td> 
+    <td width="187" class="price_box">
+      <strong>&yen;<{= inPrice }></strong>
+      <br />
+      <p>&yen;<{= price }></p>
+    </td> 
+    <td width="187" class="textnum">
+      <button class="button_num cart-options" data-event="number-del">-</button><input id="p-number-<{= itemId }>" type="text" name="" value="<{= item.num }>" class="nummber cart-options" data-event="input-number"/><button class="button_num cart-options" data-event="number-add">+</button> 
+    </td> 
+    <td width="187" class="price_box">
+      <strong class="price">&yen;<b></b></strong>
+    </td> 
+    <td width="187">
+      <p class="weight"><b></b>g</p>
+    </td> 
+    <td width="185" class="td_cz">
+      <a class="cart-options" data-event="collect-one" href="javascript:;">移入收藏</a><br />
+      <a class="cart-options" data-event="delete-one" href="javascript:;">删除</a>
+    </td> 
+  </tr>
+<{ };}); }>
+  </script>
+
+  <script type="text/javascript">
+
+    $(function(){
+
+      IQ.cart = {
+        order: '/order',
+        getcart: '/item/buyAction!getCart.action',
+        collect: '/collect',
+        remove: '/item/buyAction!removeItem.action',
+        add: '/item/buyAction!addItem.action'
+      };
+
+      seajs.config({
+        debug: true,
+        charset: 'utf-8'
+      });
+
+      seajs.use('module/cart');
+
+    });
+
+  </script>
+
+  <!-- by daidai.in end -->
+
+  <div id="footer">
+    <div id="border"> 
+      <p><a target="_blank" href="#">关于我们</a><span> |</span><a target="_blank" href="#">我们的团队</a><span> |</span><a target="_blank" href="#">热门搜索</a><span> |</span><a target="_blank" href="#">爱快客评论</a><span> |</span><a target="_blank" href="#">诚聘英才</a><span> |</span><a target="_blank" href="#">商家登录</a><span> |</span><a target="_blank" href="#">快客新品</a></p> 
+      <a>版权所有 &copy; 2014-2024 网上超市爱快客www.aquick.com保留全部权利. 网站运营：爱快客同城购物 网站备案：新ICP备13005397号-1</a> 
+    </div> 
+
+    <div class="desc">
+      <img src="/assets/images/footer.png" /> 
+    </div>
+  </div>   
+  </body>
+</html>

@@ -1,0 +1,416 @@
+body {
+	margin:0;
+	padding:0;
+	font-family:"微软雅黑";
+	background:#fff;
+}
+input[type="checkbox"]{
+	width:14px;
+	height:14px;
+	border:1px solid #ddd;
+}
+input[type="checkbox"]:visited{
+	background:#bc001d;
+}
+#head{
+	width:1280px;
+	margin:0 auto;
+}
+#top{
+	background:#00003f;
+	margin:0 auto;
+	color:#fff;
+	font-size:12px;
+}
+#top_head{
+	margin: 0 auto;
+	width: 1280px;
+	height: 36px;
+	line-height: 36px;
+}
+#top_head strong{
+	float:left;
+	font-weight:normal;
+}
+#top_head p{
+	float:right;
+	padding:0;
+	margin:0;
+	text-decoration:none;
+}
+#top_head a{
+	color:#fff;
+	text-decoration:none;
+}
+#top_head a:hover{
+	text-decoration:underline;
+}
+#top_head span{
+	padding:0 5px 0 5px;
+}
+
+#top_ad{
+	margin:0 auto;
+	width:1280px;
+}
+#top_ad img{
+	margin:0 auto;
+	padding:0;
+}
+
+#top_center{
+	width:1280px;
+	margin:0 auto;
+	padding: 10px 0;
+}
+#top_logo{
+	float:left;
+	margin:10px;
+	width:202px;
+}
+#top_serch{
+	float:left;
+	width:930px;
+}
+.search_form{
+	position:relative; 
+	height:50px; 
+	margin:24px 0 0 90px;
+	display:inline-block;
+} 
+.search_form:hover{
+	-webkit-box-shadow:0 0 3px #bc001d;
+	-moz-box-shadow:0 0 3px #bc001d;
+} 
+.sinput{
+	float:left; 
+	width:600px; 
+	height:40px; 
+	*height:38px; 
+	line-height:21px; 
+	padding:4px 7px;
+	font-size:16px;
+	color: #b3b3b3;
+	border:1px solid #bc001d; 
+	border-radius:2px 0 0 2px; 
+	background-color:#fbfbfb;
+} 
+.sbtn{
+	float:left; 
+	width:100px; 
+	height:48px; 
+	padding:0 12px; 
+	margin-left:-1px;  
+	border-radius:0 2px 2px 0; 
+	border:1px solid #bc001d; 
+	background-color:#bc001d; 
+	cursor:pointer;  
+	display:inline-block; 
+	font-size:18px; 
+	vertical-align:middle; 
+	color:#f3f7fc;
+} 
+.sbtn:hover{background:#8d0f15;}
+
+
+#content{
+	width:1280px;
+	margin-top:20px;
+}
+
+#cart_box{
+	width:1280px;
+	margin:0 auto;
+}
+.cart_navi{
+	width:1280px;
+	height:25px;
+	margin:0 auto;
+}
+.cart_navi a{
+	padding:0 20px;
+	text-decoration:none;
+	color:#666;
+}
+.cart_navi a:hover{text-decoration:underline;}
+.cart_navi strong{
+	float:left;
+}
+.cart_navi p{
+	float:right;
+	margin:0;
+	padding:0;
+}
+/*checkbox*/
+
+#cart_box_table{
+	width:1280;
+	border:solid 1px #ccc;
+}
+table{
+	border-collapse:collapse;
+}
+#cart_table{
+	width:100%;
+	text-align:center;
+	border-bottom:1px solid #ccc;
+}
+.cart_table_tr{
+	width:1280px;
+	background:#f5f5f5;
+}
+.cart_table_tr th{
+	height:40px;
+	font-size:14px;
+	font-weight:normal;
+	vertical-align:middle;
+}
+.cart_table_tr1{
+	width:1280px;
+	background:#f8f8f8;
+	border-bottom:1px solid #ccc;
+}
+.cart_table_tr1 td{
+	height:30px;
+}
+.dianmian{
+	text-decoration:none;
+	padding:0 10px;
+	color:#000;
+}
+.nummber{
+	width:40px;
+	height:20px;
+	*height:18px;
+	line-height: 20px;
+	*line-height: 20px;
+	text-align:center;
+	border: 1px solid #ddd;
+	margin:0;
+	padding:0;
+	margin:0 5px;
+	outline:none;
+	vertical-align:middle;
+}
+.button_num{
+	display: inline-block;
+	background: #ebebeb;
+	border: 1px solid #ddd;
+	line-height: 21px;
+	*line-height: 16px;
+	font-size: 16px;
+	width:20px;
+	height:20px;
+	margin:0;
+	padding:0;
+	vertical-align:middle;
+	outline:none;
+}
+
+.button_num:hover{
+	background: #ddd;
+}
+.button_num:active{
+	background: #ccc;
+}
+
+.textnum{
+	text-align:center;
+	vertical-align:middle;
+}
+.price_box strong{
+	font-size:18px;
+	margin:0;
+	padding:0;
+	color:#bc001d;
+}
+.price_box p{
+	font-size:12px;
+	text-decoration:line-through;
+	margin:0;
+	padding:0;
+	color:#898989;
+}
+.td_cz a{
+	text-decoration:none;
+	color:#000;
+}
+.td_cz a:hover{text-decoration:underline;}
+.cart_table_tr2{
+	width:1280px;
+	height:100px;
+	background:#fff;
+	border-bottom:1px solid #eee;
+
+}
+.cart_table_tr2 td{
+	text-align:center;
+	height:80px;
+}
+.table_css a{
+	text-decoration:none;
+	padding:0 10px;
+	color:#000;
+}
+.table_css a:hover{text-decoration:underline;}
+.table_css img{
+	float:left;
+}
+
+#b_table{
+	width:1280px;
+	height:50px;
+	background:#e6e6e6;
+	margin-top:20px;
+	font-size:12px;
+}
+
+#b_table th{
+}
+
+.jbtn{
+	width: 100px;
+	height: 50px;
+	background-color: #bc001d;
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	font-size: 18px;
+	vertical-align: middle;
+	color: #f3f7fc;
+	border: none;
+} 
+.jbtn:hover{background:#8d0f15;}
+	
+#demo{
+	width:1280px;
+	margin:0 auto;
+	border:1px solid #e3e3e3;
+	margin-top:50px;
+}
+#demo_navi{
+	height:20px;
+	padding:10px;
+}
+#demo_navi strong{
+	color:#898989;
+	padding-left:20px;
+	float:left;
+	font-weight:normal;
+}
+#demo_navi p{
+	float:right;
+	padding:0 10px;
+	margin:0;
+	text-decoration:none;
+}
+#demo_navi a{
+	padding:0 10px;
+	text-decoration:none;
+	color:#898989;
+}
+#demo_navi a:hover{text-decoration:underline;}
+
+.demo_box {
+	overflow:hidden;
+	zoom:1;
+	font-size:9pt;
+	border:1px solid #e3e3e3;
+	background:#fff;
+	width:1280px;
+	margin:0 auto;
+}
+.demo_box .pcont {
+	width:1216px;
+	float:left;
+	overflow:hidden;
+	padding: 5px;
+}
+.demo_box .ScrCont {
+	width:32766px; 
+	zoom:1; 
+}
+.demo_box #List1_1, .demo_box #List2_1 {
+	float:left; 
+	width:1216px; 
+	margin:0 auto; 
+}
+.demo_box .LeftBotton {
+	width:25px; 
+	height:270px; 
+	float:left; 
+	background:url(../images/prev.png) no-repeat center; 
+	border-right:1px solid #ccc; 
+}
+.demo_box .RightBotton {
+	width:25px; 
+	height:270px; 
+	float:right; 
+	background:url(../images/next.png) no-repeat center; 
+	border-left:1px solid #ccc; 
+}
+
+.demo_box .RightBotton a, .demo_box .LeftBotton a{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.demo_box .pl img {
+	display:block; 
+	cursor:pointer; 
+	border:none; 
+	margin:6px auto 1px auto; 
+}
+.demo_box .pl {
+	width:200px;
+	float:left; 
+	text-align:center; 
+	height:260px; 
+	line-height:24px; 
+}
+.demo_box a.pl{
+	text-decoration:none;
+	white-space:normal;
+	border: 1px solid transparent;
+}
+.demo_box a.pl:hover {
+	border:1px solid #5dacec; 
+	color:#5dacec; 
+	background:#fff; 
+	text-decoration:underline; 
+}
+
+#border{
+	font-size:12px;
+	line-height:28px;
+	text-align:center;
+	font-family:"Times New Roman", Times, serif, "微软雅黑";
+	padding-bottom:10px;
+}
+
+#border a{
+	text-decoration:none;
+	color:#000;
+	margin-left:10px;
+}
+#border a:hover{
+	text-decoration:underline;
+}
+#border span{
+	color:#000;
+}
+#footer{
+	padding-top:40px;
+	margin:0 auto;
+	text-align:center;
+}
+
+#footer .desc{
+	background: #140f2f;
+}
+
+#footer img{
+	display: block;
+	margin: 0 auto;
+}

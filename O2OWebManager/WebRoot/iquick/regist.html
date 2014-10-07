@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh_CN">
+ <head>
+   		<meta charset="utf-8">
+   		<meta http-equiv="Pragma" CONTENT="no-cache">
+		<meta http-equiv="Expires" CONTENT="-1">
+   		
+   		<title>i&middot;quick--i快客</title>
+   		<meta name="keywords" content="I&middot;快客" />
+   		<meta name="description" content="I&middot;快客" />
+		<meta name="robots" content="all" />
+		
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+		<link href="/assets/css/basic.css" rel="stylesheet" type="text/css" />
+
+		<script src="/assets/js/sea.js" type="text/javascript"></script> 
+		<script src="/assets/js/jquery-1.11.1.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			// IQuick global object
+			window.IQ = {};
+		</script>
+		
+		<!--[if lt IE 9]>
+		  <script src="/assets/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+  	<body>
+
+
+<link href="/assets/css/regist.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/assets/js/clib/toastr/toastr.css" /> 
+
+  <div id="top"> 
+  <div id="top_head"> 
+    <strong>您好！欢迎来到I&middot;快客，祝您购物愉快！</strong> 
+    <p><a target="_blank" href="/login">登陆</a><span>|</span><a target="_blank" href="/regist">注册</a><span>|</span><a target="_blank" href="/mine">我的I&middot;快客</a><span>|</span><a target="_blank" href="/collect">我的收藏</a><span>|</span><a target="_blank" href="/cart">我的购物车</a><span>|</span><a target="_blank" href="/cart">去付款</a></p> 
+  </div> 
+</div>
+  <!-- tab标签代码begin --> 
+  <div id="content"> 
+   <div class="tab1" id="tab1"> 
+    <div class="menu"> 
+     <ul> 
+      <li id="one1" class="off" data-target="1">邮箱注册</li> 
+      <li id="one2" data-target="2">手机注册</li> 
+     </ul> 
+    </div> 
+
+    <!--邮箱注册begin--> 
+    <div class="menudiv"> 
+     <div id="con_one_1" class="tabcon cf">
+      <form id="registform" method="post" action="/user/userRegOnMail">
+      <input type="hidden" name="activities" value="0" id="activities" /> 
+      <input type="hidden" name="returnUrl" value="" id="returnUrl" /> 
+      <input type="hidden" id="lockEmail" name="lockEmail" value="0" /> 
+      <ul class="clearfix"> 
+       <li> 
+        <div class="form_item"> 
+         <label>邮箱：</label> 
+         <input type="text" name="email" class="email" autocomplete="off" placeholder="请输入邮箱"
+          data-validate="username" data-describedby="for-username" data-description="username"/> 
+        </div>
+        <span id="for-username" class="for-message"></span>
+      </li> 
+       <li> 
+        <div class="form_item"> 
+         <label>设置密码：</label> 
+         <input type="password" name="password" class="password" placeholder="6-20个大小写英文字母、符号或数字" 
+         data-validate="password" data-describedby="for-password" data-description="password"/> 
+        </div>
+        <span id="for-password" class="for-message"></span>
+      </li> 
+       <li> 
+        <div class="form_item"> 
+         <label>确认密码：</label> 
+         <input type="password" name="pwd" class="password" placeholder="请再次输入密码" 
+         data-validate="rpassword" data-describedby="for-rpassword" data-description="rpassword" />
+         <span id="for-rpassword" class="for-message"></span>
+        </div> </li> 
+       <li class="verify_code"> 
+        <div class="form_item"> 
+         <label>验证码：</label>
+          <input class="verify-code-input validCode" name="validCode" maxlength="4" data-ref="#verify-code" type="text"
+          data-validate="verifycode" data-describedby="for-verifycode" data-description="verifycode"/>
+          <span id="for-verifycode" class="for-message"></span>
+        </div> <span class="verify_code_box"><img id="verify-code" src="" data-src="/user/validCode?_=" /></span>
+        <button type="button" class="verify-code-change" data-ref="#verify-code">换一张</button>
+        </li> 
+       <li class="service_agreement"> 
+        <input type="checkbox" name="service_agreement" value="service_agreement">我已阅读并同意 《<a href="#" class="blue_link" target="_blank">爱快客服务协议</a>》
+       </li> 
+       <li class="regist_btn"><button type="submit">注册</button></li>
+       <li class="regist_btn1"><button type="button">企业注册</button></li> 
+      </ul>
+    </form>
+     </div> 
+     <!--邮箱注册end--> 
+
+     <!--手机注册begin--> 
+     <div id="con_one_2" style="display:none;" class="tabcon cf"> 
+      <h3>建设中。。。</h3>
+      <!--<input type="hidden" name="activities" value="0" id="activities" /> 
+      <input type="hidden" name="returnUrl" value="" id="returnUrl" /> 
+      <input type="hidden" id="lockEmail" name="lockEmail" value="0" /> 
+      <ul class="clearfix"> 
+       <li> 
+        <div class="form_item"> 
+         <label>手机号：</label> 
+         <input type="text" placeholder="请输入手机号" id="phone" name="phone" autocomplete="off" maxlength="100" /> 
+        </div> </li> 
+       <li> 
+        <div class="form_item"> 
+         <label>设置密码：</label> 
+         <input type="password" id="password" name="pwd" placeholder="6-20个大小写英文字母、符号或数字" /> 
+        </div> </li> 
+       <li> 
+        <div class="form_item"> 
+         <label>确认密码：</label> 
+         <input type="password" id="password" name="pwd" placeholder="请再次输入密码" /> 
+        </div> </li> 
+       <li class="verify_phonecode"> 
+        <div class="form_item"> 
+         <label>验证码：</label> 
+         <input type="text" id="validPhoneCode" name="validPhoneCode" placeholder="六位验证码" maxlength="6" /> 
+         <span class="code_right" style="display:none" id="code_right"></span> 
+         <span class="code_wrong" id="code_wrong"></span> 
+        </div> <span><input type="button" id="PhoneCode" value="获取验证码" /></span> </li> 
+       <li class="service_agreement"> <a href="#" class="check_agreement">我已阅读并同意 《</a><a href="#" class="blue_link" target="_blank">爱快客服务协议</a>》</li> 
+       <li class="regist_btn"><button type="button" onclick="javascript:registerSubmit();return false;">注册</button></li> 
+       <li class="regist_btn1"><button type="button" onclick="javascript:registerSubmit();return false;">企业注册</button> </li> 
+      </ul> -->
+     </div> 
+     <!--手机注册end--> 
+    </div> 
+   </div> 
+  </div> 
+    <!-- by daidai.in -->
+
+    <script type="text/javascript">
+
+      $(function(){
+        $('#tab1 .menu li').on('click', function(e){
+
+          $('.tabcon').hide();
+          $('#tab1 .menu li').removeClass('off');
+
+          var $el = $(e.target),
+              target = $el.data('target');
+
+          $el.addClass('off');
+          $('#con_one_' + target).show();
+        });
+
+
+        seajs.config({
+          debug: true,
+          charset: 'utf-8'
+        });
+
+        seajs.use('module/regist');
+    });
+
+    </script>
+
+  <!-- by daidai.in end -->
+  <div id="footer"> 
+   <p id="footer_text">版权所有 &copy; 2014-2024 网上超市爱快客<a target="_blank" href="#">www.aquick.com</a>保留全部权利.<br />网站运营：爱快客同城购物 网站备案：新ICP备13005397号-1 </p>
+  </div>  
+ </body>
+</html>

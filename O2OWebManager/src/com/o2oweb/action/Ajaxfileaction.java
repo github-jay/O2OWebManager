@@ -42,6 +42,7 @@ public class Ajaxfileaction extends BaseAction {
 
 	private File file2upload;
 	private File excel2upload;
+	private File detialimg;
 	
 
 	private String itemId;
@@ -50,6 +51,8 @@ public class Ajaxfileaction extends BaseAction {
 
 	private int imgindex;
 	private String imgtitle;
+	
+	private static String urlpre = "/O2OWebManager/image/getImage?imageID=";
 	
 	@Override
 	public String execute() throws Exception {
@@ -181,6 +184,51 @@ public class Ajaxfileaction extends BaseAction {
 		}
 	}
 
+	public void detialImgupload() {
+		Image image = new Image();
+
+		JSONObject obj = new JSONObject();
+
+		FileOutputStream fout = null;
+		FileInputStream fin = null;
+		File imgfile = null;
+		PropertiesUtil pu = new PropertiesUtil();
+		String root = pu.getValue("imageURL");
+		try {
+			fin = new FileInputStream(detialimg);
+			imgfile = new File(root, createFileName());
+			fout = new FileOutputStream(imgfile);
+
+			int length = 0;
+			byte[] buffer = new byte[1024];
+			while ((length = fin.read(buffer)) > 0) {
+				fout.write(buffer, 0, length);
+			}
+			fin.close();
+			fout.close();
+
+			image.setImageUrl(imgfile.getAbsolutePath());
+			
+
+			imageService.save(image);
+
+			int imgid = image.getIdimage();
+
+			obj.accumulate("status", true);
+			obj.accumulate("info", urlpre+imgid);
+			writeResponse(obj);
+
+		} catch (Exception e) {
+			imageService.remove(image);
+			imgfile.deleteOnExit();
+
+			obj.accumulate("status", false);
+			obj.accumulate("info", "图片设置失败");
+			writeResponse(obj);
+
+		}
+	}
+	
 	private String createFileName() {
 		Random r = new Random();
 		DateFormat df = new SimpleDateFormat("yyMMddhhmmss");
@@ -241,6 +289,14 @@ public class Ajaxfileaction extends BaseAction {
 
 	public void setImgtitle(String imgtitle) {
 		this.imgtitle = imgtitle;
+	}
+
+	public File getDetialimg() {
+		return detialimg;
+	}
+
+	public void setDetialimg(File detialimg) {
+		this.detialimg = detialimg;
 	}
 	
 }

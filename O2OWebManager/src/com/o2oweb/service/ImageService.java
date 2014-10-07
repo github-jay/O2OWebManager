@@ -126,4 +126,22 @@ public class ImageService {
 		return obj;
 	}
 	
+	public int[] getImageIDS(int itemID){
+		int[] images = null;
+		DetachedCriteria dc = DetachedCriteria.forClass(Image.class);
+		dc.add(Restrictions.eq("itemId", itemID));
+		
+		Page p = imageDao.query(dc, 0, 100);
+		List datas = (List) p.getData();
+		int length = datas.size();
+		if(length > 0){
+			images = new int[length];
+			for(int i = 0;i<length;i++){
+				Image image = (Image) datas.get(i);
+				images[i] = image.getIdimage();
+			}
+		}
+		
+		return images;
+	}
 }

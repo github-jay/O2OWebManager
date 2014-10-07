@@ -30,6 +30,9 @@
    var fileuploadurl = '/O2OWebManager/file/ajaxfileAction';	//上传图片url	
    var imageremoveurl = '/O2OWebManager/image/getImage!removeItemimage';	//移除图片url
    var exceluploadurl = '/O2OWebManager/file/ajaxfileAction!importExcel';	//上传excel的URL
+   var detial_imgurl = '/O2OWebManager/file/ajaxfileAction!detialImgupload';		//内容图片上传url
+   
+   var previewurl = '/O2OWebManager/iquick/details.jsp?itemId=';		//商品预览url
    
    	$(window).ready(function() {
 		
@@ -209,6 +212,11 @@
 			var fileExt=(/[.]/.exec(filename)) ? /[^.]+$/.exec(filename.toLowerCase()) : '';
 			excelupload(filename,fileExt);
 		});
+	
+	//预览按钮
+	$('#detial_preview').click(function(){
+		preview();
+	});
 });
 
 //通用函数
@@ -342,6 +350,61 @@ function excelupload(excelFilename,excelFileExt)
 		//return false;
 }
 
+//内容图片上传
+	function detial_imguploader()
+	{
+	
+		$("#loading1").ajaxStart(function(){
+			$(this).show();
+		}).ajaxComplete(function(){
+			$(this).hide();
+		});
+		$.ajaxFileUpload
+		(
+			{
+				url:detial_imgurl,
+				secureuri:true,
+				fileElementId:'detialimg',
+				dataType:'text',
+				success: function (data, status)
+				{
+					//data = eval('('+data+')');
+					var jsondata = catchjson(data);
+					jsondata = eval('('+jsondata+')');
+					$.messager.alert('Warning',jsondata.info);
+				},
+				error: function (data, status, e)
+				{
+					//alert(data);
+					$.messager.alert('Warning',data.info);
+				}
+			}
+		)
+	}
+	function catchjson(strobj)
+	{
+		var i = 0;
+		for(;i<strobj.length;i++){
+			if(strobj[i]=='<'){
+				break;
+			}
+		}
+		return strobj.substring(0,i);
+	}
+	//菜单预览按钮
+	function preview()
+	{
+		var jumpurl = previewurl+selectitemid;
+		window.open(jumpurl);
+	}
+	//查询函数
+	function searchitem()
+	{
+		var searchinfo = $('#searchinfo').val();
+		var qp = $('#dg').datagrid('options').queryParams;
+		qp.searchinfo = searchinfo;
+		$('#dg').datagrid('reload');
+	}
   </script>
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
@@ -360,7 +423,8 @@ function excelupload(excelFilename,excelFileExt)
       <option value="price_desc">价格递减</option>
       <option value="stockNum">库存数量</option>
 	</select>
-<a id="mult_updatebase" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">批量导入库存</a>
+<a id="mult_updatebase" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">批量导入库存</a><br>
+<span>按名称关键字查询</span><input class="easyui-textbox" id="searchinfo"><a href="javascript:void(0)" onclick="searchitem()" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>
   <table id="dg"></table>
 
   <!-- 菜单-->
@@ -368,6 +432,7 @@ function excelupload(excelFilename,excelFileExt)
     <div id="show_detial">查看详情</div>
     <div id="editdetial">编辑详细介绍</div>
     <div id="editimage">编辑图片</div>  
+    <div id="detial_preview">商品页面预览</div>
     <div>移除</div>  
     <div class="menu-sep"></div>  
     <div>Exit</div>
@@ -394,6 +459,12 @@ function excelupload(excelFilename,excelFileExt)
  	data-options="modal:true,closed:true">
     	<textarea id="detial_context" class="ckeditor" name="detial_context"></textarea>
         <a id="det_save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+        <br>
+        <div>
+        	<span>文本图片上传</span>
+        	<input type="file" id="detialimg" name="detialimg">
+        	<a id="detial_imgupload" herf="javascript:void(0)" onclick="detial_imguploader()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传图片</a>
+        </div>
     </div>
     
     
