@@ -210,7 +210,12 @@
 			var filevaule = $('#excel2upload').val();
 			var filename = filevaule.replace(/.*(\/|\\)/, "");
 			var fileExt=(/[.]/.exec(filename)) ? /[^.]+$/.exec(filename.toLowerCase()) : '';
-			excelupload(filename,fileExt);
+			if(filename != '') {
+				excelupload(filename,fileExt);
+				startBar();
+			} else {
+				$.messager.alert('Warning','请选择Excel文件!');
+			}
 		});
 	
 	//预览按钮
@@ -405,6 +410,30 @@ function excelupload(excelFilename,excelFileExt)
 		qp.searchinfo = searchinfo;
 		$('#dg').datagrid('reload');
 	}
+	
+	//进度条
+	var bar;
+	function startBar() {
+		$('#pbar').window('open');
+		$('#pbar').progressbar({   
+		    value: 0.0,
+		    text: '正在保存...{value}%'
+		});  
+		bar = setInterval("fileBar()", 1000);
+	}
+		
+		function fileBar() {
+			$.post('/O2OWebManager/item/percentAction!getExcelPercent', {}, function(result) {
+				if (result < 100){
+				    $('#pbar').progressbar('setValue', result);  
+				} else {
+					$('#pbar').progressbar('setValue', 100); 
+					window.clearInterval(bar);
+					$.messager.alert('Msg', '保存成功！');
+					$('#pbar').dialog('close');
+				}
+			});
+		}
   </script>
     
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
@@ -483,6 +512,8 @@ function excelupload(excelFilename,excelFileExt)
  		<input id="excel2upload" name="excel2upload" type="file" style="width:300px">
         <a id="exl_upload" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</a>
 </div> 
+
+	<div id="pbar" class="easyui-dialog" title="进度条" data-options="modal:true,closed:true,closable:false" style="width:400px;"></div> 
 
   </body>
 

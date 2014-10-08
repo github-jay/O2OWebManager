@@ -241,23 +241,6 @@
 		}
 		window.checkOrder = checkOrder;
 		
-		//进度条
-		$('#pbar').progressbar({   
-		    value: 0,
-		    text: '正在保存...{value}%'
-		});  
-		var bar = setInterval("fileBar()", 5000);
-		function fileBar() {
-			var value = $('#pbar').progressbar('getValue');   
-			if (value < 100){   
-			    value += 10;   
-			    $('#pbar').progressbar('setValue', value);  
-			} else {
-				window.clearInterval(bar);
-			}
-		}
-		window.fileBar = fileBar;
-
 	});
 </script>
 
@@ -322,8 +305,6 @@
 	<!-- 处理订单对话框 -->
 	<div id="do_dialog" class="easyui-dialog"
 		data-options="modal:true,closed:true" title="处理订单">请确认该订单是否已处理！</div>
-		
-	<div id="pbar" style="width:400px;"></div>  
 
 </body>
 

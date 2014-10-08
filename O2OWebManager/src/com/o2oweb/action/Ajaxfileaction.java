@@ -8,9 +8,12 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -42,18 +45,15 @@ public class Ajaxfileaction extends BaseAction {
 	private File file2upload;
 	private File excel2upload;
 	private File detialimg;
-	
 
 	private String itemId;
 	private String fileName;
 	private String fileExt;
 
-
 	private int imgindex;
 	private String imgtitle;
-	
+
 	private static String urlpre = "/O2OWebManager/image/getImage?imageID=";
-	
 
 	@Override
 	public String execute() throws Exception {
@@ -105,6 +105,10 @@ public class Ajaxfileaction extends BaseAction {
 			List<Map<String, String>> list = POIUtil.importExcelToMap(
 					excel2upload, keys);
 
+			double total = list.size();
+			double now = 0;
+			HttpSession session = getSession();
+
 			for (Map<String, String> row : list) {
 				Item item = new Item();
 				item.setDiscount(1);
@@ -115,6 +119,10 @@ public class Ajaxfileaction extends BaseAction {
 				item.setBarCode(row.get("条码（必填）").trim());
 				item.setInPrice(Float.valueOf(row.get("进货价（必填）").trim()));
 				itemService.save(item);
+
+				now++;
+				session.setAttribute("percent", now / total);
+				System.out.println("insert percent " + now / total);
 			}
 			obj.accumulate("status", true);
 			obj.accumulate("info", "导入成功");
@@ -127,14 +135,13 @@ public class Ajaxfileaction extends BaseAction {
 			e.printStackTrace();
 		}
 	}
-	
-	public void rollimgedit(){
-		
-		
+
+	public void rollimgedit() {
+
 		Image image = new Image();
-		
+
 		JSONObject obj = new JSONObject();
-		
+
 		FileOutputStream fout = null;
 		FileInputStream fin = null;
 		File imgfile = null;
@@ -144,41 +151,39 @@ public class Ajaxfileaction extends BaseAction {
 			fin = new FileInputStream(file2upload);
 			imgfile = new File(root, createFileName());
 			fout = new FileOutputStream(imgfile);
-			
+
 			int length = 0;
 			byte[] buffer = new byte[1024];
-			while((length=fin.read(buffer))>0){
-				fout.write(buffer,0,length);
+			while ((length = fin.read(buffer)) > 0) {
+				fout.write(buffer, 0, length);
 			}
 			fin.close();
 			fout.close();
-			
-			
+
 			image.setImageName(imgtitle);
 			image.setImageUrl(imgfile.getAbsolutePath());
-			
+
 			imageService.save(image);
-			
-			
+
 			Rollbar rollbar = rollbarService.getRollbar(1);
-			
-			rollbarService.setrollimgid(imgindex, rollbar, image.getIdimage(), imgtitle);
-			
+
+			rollbarService.setrollimgid(imgindex, rollbar, image.getIdimage(),
+					imgtitle);
+
 			rollbarService.update(rollbar);
-			
-			
+
 			obj.accumulate("status", true);
 			obj.accumulate("info", "图片设置成功，请关闭上传窗口");
 			writeResponse(obj);
-			
+
 		} catch (Exception e) {
 			imageService.remove(image);
 			imgfile.deleteOnExit();
-			
+
 			obj.accumulate("status", false);
 			obj.accumulate("info", "图片设置失败");
 			writeResponse(obj);
-			
+
 		}
 	}
 
@@ -206,14 +211,13 @@ public class Ajaxfileaction extends BaseAction {
 			fout.close();
 
 			image.setImageUrl(imgfile.getAbsolutePath());
-			
 
 			imageService.save(image);
 
 			int imgid = image.getIdimage();
 
 			obj.accumulate("status", true);
-			obj.accumulate("info", urlpre+imgid);
+			obj.accumulate("info", urlpre + imgid);
 			writeResponse(obj);
 
 		} catch (Exception e) {
@@ -226,7 +230,7 @@ public class Ajaxfileaction extends BaseAction {
 
 		}
 	}
-	
+
 	private String createFileName() {
 		Random r = new Random();
 		DateFormat df = new SimpleDateFormat("yyMMddhhmmss");
@@ -265,6 +269,7 @@ public class Ajaxfileaction extends BaseAction {
 	public void setFileExt(String fileExt) {
 		this.fileExt = fileExt;
 	}
+
 	public File getExcel2upload() {
 		return excel2upload;
 	}
@@ -296,6 +301,5 @@ public class Ajaxfileaction extends BaseAction {
 	public void setDetialimg(File detialimg) {
 		this.detialimg = detialimg;
 	}
-	
 
 }
