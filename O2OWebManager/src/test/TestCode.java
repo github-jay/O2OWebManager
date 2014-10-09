@@ -60,8 +60,12 @@ public class TestCode {
 
 	@Test
 	public void getPath() {
-		System.out.println(this.getClass().getClassLoader()
-				.getResource("server.properties").toString());
+//		System.out.println(this.getClass().getClassLoader()
+//				.getResource("server.properties").toString());
+		Double dou = (Double)null;
+		if(dou == null)
+			dou = 0.0;
+		System.out.println(dou.toString());
 	}
 	
 	@Test
