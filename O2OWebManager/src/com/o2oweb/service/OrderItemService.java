@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.o2oweb.dao.OrderItemDao;
 import com.o2oweb.entity.OrderItem;
+import com.o2oweb.util.PriceUtil;
 
 @Component("orderItemService")
 public class OrderItemService {
@@ -36,17 +37,8 @@ public class OrderItemService {
 
 	public float getTotalPriceByOrderNum(String orderNum) {
 		List<OrderItem> list = this.orderItemDao.getItems(orderNum);
-		float total = 0;
-		for (OrderItem oi : list) {
-			total += oi.getItemPrice() * oi.getItemNum();
-		}
 
-		// 不足100加5元快递费
-		if (total < 100) {
-			total += 5;
-		}
-
-		return total;
+		return PriceUtil.getTotal(list);
 	}
 
 	@Resource
